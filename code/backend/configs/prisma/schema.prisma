@@ -1,0 +1,25 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  MAHASISWA
+  DOSEN
+  PENGURUS
+  KALAB
+  KAJUR
+  ADMIN
+}
+
+model User {
+  id                  String  @id @unique @default(uuid())
+  email               String  @unique
+  role                Role
+  webRefreshToken     String? @db.VarChar(512)
+  androidRefreshToken String? @db.VarChar(512)
+}
