@@ -31,16 +31,40 @@ export default function SignIn() {
         } else if (errorType === 'popup_failed_to_open') {
           setError('Pop up window failed to open');
         } else {
-          setError('Unknow error');
+          setError('Unknow error on web sign in');
         }
       },
     });
   } else {
-    onSignIn = () => {
-      console.warn('Signin in on Android');
+    const {
+      GoogleSignin,
+      statusCodes,
+    } = require('@react-native-google-signin/google-signin');
 
-      signIn();
-      router.replace('/');
+    onSignIn = async () => {
+      try {
+        await GoogleSignin.hasPlayServices();
+
+        const userInfo = await GoogleSignin.signIn();
+        console.log(
+          'User info response from Android Google authentication:',
+          JSON.stringify(userInfo, null, 2)
+        );
+
+        signIn();
+        router.replace('/');
+      } catch (error) {
+        if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+          setError('Sign in is cancelled by the user');
+        } else if (error.code === statusCodes.IN_PROGRESS) {
+          setError('Sign in is in process already');
+        } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+          setError('GooglePlay Service is outdated or unavailable');
+        } else {
+          setError('Unknow error on Android sign in');
+        }
+        console.error('Error signing in user on Android: ', error);
+      }
     };
   }
 
