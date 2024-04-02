@@ -1,6 +1,6 @@
 import { Box, Button, ButtonText } from '@gluestack-ui/themed';
 import { router } from 'expo-router';
-import { useSession } from '../../providers/AuthProvider';
+import { useSession } from '../../providers/SessionProvider';
 
 export default function App() {
   const { signOut } = useSession();

@@ -1,5 +1,5 @@
 import { Redirect, Stack } from 'expo-router';
-import { useSession } from '../../providers/AuthProvider';
+import { useSession } from '../../providers/SessionProvider';
 import { Text } from '@gluestack-ui/themed';
 
 export default function Layout() {

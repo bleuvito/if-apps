@@ -14,14 +14,7 @@ const AuthContext = createContext<{
 });
 
 export function useSession() {
-  const value = useContext(AuthContext);
-  if (process.env.NODE_ENV !== 'production') {
-    if (!value) {
-      throw new Error('useSession must be wrapped in a <SessionProvider />');
-    }
-  }
-
-  return value;
+  return useContext(AuthContext);
 }
 
 export function SessionProvider(props: PropsWithChildren) {
@@ -32,7 +25,11 @@ export function SessionProvider(props: PropsWithChildren) {
       value={{
         signIn: () => {
           // Perform sign-in logic here
-          setSession('xxx');
+          try {
+            setSession('xxx');
+          } catch (error: any) {
+            console.error(error.message);
+          }
         },
         signOut: () => {
           setSession(null);
