@@ -1,27 +1,31 @@
-import { Box, Button, ButtonText, Text } from '@gluestack-ui/themed';
-import { useSession } from '../providers/SessionProvider';
-import { router } from 'expo-router';
-import { scopes } from '../../constants';
 import { useState } from 'react';
 import { Platform } from 'react-native';
+import { router } from 'expo-router';
+import { useSession } from '../providers/SessionProvider';
+import { Box, Button, ButtonText, Text } from '@gluestack-ui/themed';
+import { scopes } from '../../constants';
 
 export default function SignIn() {
   const { signIn } = useSession();
   const [error, setError] = useState(null);
 
-  let onSignIn;
+  let handleSignIn;
   if (Platform.OS === 'web') {
     const { useGoogleLogin } = require('@react-oauth/google');
 
-    onSignIn = useGoogleLogin({
+    handleSignIn = useGoogleLogin({
       flow: 'auth-code',
       scope: scopes.join(' '),
       onSuccess: (response) => {
-        console.log(response);
+        console.log(
+          'Google authentication response from web: ',
+          JSON.stringify(response, null, 2)
+        );
+
         signIn();
         router.replace('/');
       },
-      onError: ({ error, error_description, error_uri }) => {
+      onError: ({ error, error_description }) => {
         console.error('Error authenticating user: ', error);
         setError(error_description);
       },
@@ -33,6 +37,7 @@ export default function SignIn() {
         } else {
           setError('Unknow error on web sign in');
         }
+        console.error('Error signing in user on web: ', errorType);
       },
     });
   } else {
@@ -41,13 +46,13 @@ export default function SignIn() {
       statusCodes,
     } = require('@react-native-google-signin/google-signin');
 
-    onSignIn = async () => {
+    handleSignIn = async () => {
       try {
         await GoogleSignin.hasPlayServices();
 
         const userInfo = await GoogleSignin.signIn();
         console.log(
-          'User info response from Android Google authentication:',
+          'User info response from Android Google authentication on Android:',
           JSON.stringify(userInfo, null, 2)
         );
 
@@ -59,7 +64,7 @@ export default function SignIn() {
         } else if (error.code === statusCodes.IN_PROGRESS) {
           setError('Sign in is in process already');
         } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-          setError('GooglePlay Service is outdated or unavailable');
+          setError('Google Play Service is outdated or unavailable');
         } else {
           setError('Unknow error on Android sign in');
         }
@@ -78,7 +83,7 @@ export default function SignIn() {
       <Text>{error}</Text>
       <Button
         onPress={() => {
-          onSignIn();
+          handleSignIn();
         }}
       >
         <ButtonText>Sign in with Google</ButtonText>

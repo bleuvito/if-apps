@@ -4,10 +4,11 @@ import { Slot } from 'expo-router';
 import { SessionProvider } from '../providers/SessionProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Platform } from 'react-native';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { scopes } from '../../constants';
 
-if (Platform.OS !== 'web') {
+if (Platform.OS === 'android') {
+  const { GoogleSignin } = require('@react-native-google-signin/google-signin');
+
   GoogleSignin.configure({
     scopes,
     webClientId: process.env.EXPO_PUBLIC_GAUTH_WEB_CLIENT_ID,
@@ -20,17 +21,16 @@ export default function Layout() {
   if (Platform.OS === 'web') {
     return (
       <GluestackUIProvider config={config}>
-        <GoogleOAuthProvider
-          clientId={process.env.EXPO_PUBLIC_GAUTH_WEB_CLIENT_ID}
-        >
-          <SessionProvider>
+        <SessionProvider>
+          <GoogleOAuthProvider
+            clientId={process.env.EXPO_PUBLIC_GAUTH_WEB_CLIENT_ID}
+          >
             <Slot />
-          </SessionProvider>
-        </GoogleOAuthProvider>
+          </GoogleOAuthProvider>
+        </SessionProvider>
       </GluestackUIProvider>
     );
   }
-
   return (
     <GluestackUIProvider config={config}>
       <SessionProvider>

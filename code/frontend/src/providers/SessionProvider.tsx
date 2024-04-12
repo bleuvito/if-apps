@@ -24,7 +24,6 @@ export function SessionProvider(props: PropsWithChildren) {
     <AuthContext.Provider
       value={{
         signIn: () => {
-          // Perform sign-in logic here
           try {
             setSession('xxx');
           } catch (error: any) {
