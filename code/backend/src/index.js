@@ -3,6 +3,7 @@ import cors from 'cors';
 import 'dotenv/config';
 
 import AuthencticationService from './services/authentication.service.js';
+import { createResponse } from './helpers/createResponse.js';
 
 const app = express();
 
@@ -15,11 +16,11 @@ app.use('/api/v1/authenticate', AuthencticationService);
 app.use((err, req, res, next) => {
   console.error(err);
   if (err.message === 'Invalid credentials') {
-    res.status(401).json({ message: err.message });
+    res.status(401).json(createResponse(401, err.message));
   } else {
     res
       .status(err.status || 500)
-      .json({ message: err.message || 'Internal Server Error' });
+      .json(createResponse(err.status || 500, 'Internal server error'));
   }
 });
 

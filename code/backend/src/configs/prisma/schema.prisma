@@ -22,4 +22,14 @@ model User {
   name                String?
   webRefreshToken     String? @db.VarChar(512)
   androidRefreshToken String? @db.VarChar(512)
+  
+  roleId              String
+  role                Role    @relation(fields: [roleId], references: [id])
+}
+
+model Role {
+  id    String  @id @unique @default(uuid()) 
+  name  String  @unique
+
+  users User[]
 }
