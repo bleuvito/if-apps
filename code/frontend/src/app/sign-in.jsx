@@ -4,10 +4,24 @@ import { router } from 'expo-router';
 import { useSession } from '../providers/SessionProvider';
 import { Box, Button, ButtonText, Text } from '@gluestack-ui/themed';
 import { scopes } from '../../constants';
+import axios from 'axios';
 
 export default function SignIn() {
   const { signIn } = useSession();
   const [error, setError] = useState(null);
+
+  async function backendAuth(code, clientType) {
+    console.log(code, clientType);
+    const { data } = await axios.post(
+      `http://192.168.1.2:8000/api/v1/authenticate`,
+      {
+        code,
+        clientType,
+      }
+    );
+
+    console.log('Backend authentication result:', data);
+  }
 
   let handleSignIn;
   if (Platform.OS === 'web') {
@@ -16,14 +30,16 @@ export default function SignIn() {
     handleSignIn = useGoogleLogin({
       flow: 'auth-code',
       scope: scopes.join(' '),
-      onSuccess: (response) => {
+      onSuccess: async (response) => {
         console.log(
           'Google authentication response from web: ',
           JSON.stringify(response, null, 2)
         );
 
-        signIn();
-        router.replace('/');
+        await backendAuth(response.code, 'web');
+
+        // signIn();
+        // router.replace('/');
       },
       onError: ({ error, error_description }) => {
         console.error('Error authenticating user: ', error);

@@ -16,6 +16,7 @@
     "@react-native-google-signin/google-signin": "^10.1.2",
     "@react-oauth/google": "^0.12.1",
     "@types/react": "~18.2.45",
+    "axios": "^1.6.7",
     "expo": "~50.0.14",
     "expo-constants": "~15.4.5",
     "expo-linking": "~6.2.2",
