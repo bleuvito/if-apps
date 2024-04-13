@@ -3,12 +3,14 @@
   "type": "module",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon src/index.js",
+    "seed": "node src/seeder.js",
+    "studio": "npx prisma studio -p 8001"
   },
   "prisma": {
-    "schema": "./configs/prisma/schema.prisma"
+    "schema": "src/configs/prisma/schema.prisma"
   },
   "author": "vitofevrier",
   "license": "ISC",
