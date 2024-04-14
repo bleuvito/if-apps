@@ -1,10 +1,10 @@
 import { config } from '@gluestack-ui/config';
 import { GluestackUIProvider } from '@gluestack-ui/themed';
 import { Slot } from 'expo-router';
-import { SessionProvider } from '../providers/SessionProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Platform } from 'react-native';
-import { scopes } from '../../constants';
+import { SessionProvider } from '../providers/SessionProvider';
+import { scopes } from '../constants';
 
 if (Platform.OS === 'android') {
   const { GoogleSignin } = require('@react-native-google-signin/google-signin');
@@ -31,6 +31,7 @@ export default function Layout() {
       </GluestackUIProvider>
     );
   }
+
   return (
     <GluestackUIProvider config={config}>
       <SessionProvider>

@@ -1,26 +1,25 @@
 import { useState } from 'react';
 import { Platform } from 'react-native';
 import { router } from 'expo-router';
-import { useSession } from '../providers/SessionProvider';
-import { Box, Button, ButtonText, Text } from '@gluestack-ui/themed';
-import { scopes } from '../../constants';
 import axios from 'axios';
+import { Box, Button, ButtonText, Text } from '@gluestack-ui/themed';
+import { useSession } from '../providers/SessionProvider';
+import { scopes } from '../constants';
 
-export default function SignIn() {
+export default function SignInScreen() {
   const { signIn } = useSession();
   const [error, setError] = useState(null);
 
   async function backendAuth(code, clientType) {
-    console.log(code, clientType);
     const { data } = await axios.post(
-      `http://192.168.1.2:8000/api/v1/authenticate`,
+      `${process.env.EXPO_PUBLIC_BASE_URL}/authenticate`,
       {
         code,
         clientType,
       }
     );
 
-    console.log('Backend authentication result:', data);
+    return data;
   }
 
   let handleSignIn;
@@ -30,16 +29,21 @@ export default function SignIn() {
     handleSignIn = useGoogleLogin({
       flow: 'auth-code',
       scope: scopes.join(' '),
-      onSuccess: async (response) => {
+      onSuccess: async ({ code }) => {
         console.log(
-          'Google authentication response from web: ',
-          JSON.stringify(response, null, 2)
+          'Google authentication code from web: ',
+          JSON.stringify(code, null, 2)
         );
 
-        await backendAuth(response.code, 'web');
+        const { success, errorCode, message, data } = await backendAuth(
+          code,
+          'web'
+        );
 
-        // signIn();
-        // router.replace('/');
+        if (success) {
+          signIn(data);
+          router.replace('/');
+        }
       },
       onError: ({ error, error_description }) => {
         console.error('Error authenticating user: ', error);
@@ -66,14 +70,21 @@ export default function SignIn() {
       try {
         await GoogleSignin.hasPlayServices();
 
-        const userInfo = await GoogleSignin.signIn();
+        const { serverAuthCode } = await GoogleSignin.signIn();
         console.log(
-          'User info response from Android Google authentication on Android:',
-          JSON.stringify(userInfo, null, 2)
+          'Serverauth code response from Android Google authentication on Android:',
+          JSON.stringify(serverAuthCode, null, 2)
         );
 
-        signIn();
-        router.replace('/');
+        const { success, errorCode, message, data } = await backendAuth(
+          serverAuthCode,
+          'android'
+        );
+
+        if (success) {
+          signIn(data);
+          router.replace('/');
+        }
       } catch (error) {
         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
           setError('Sign in is cancelled by the user');
