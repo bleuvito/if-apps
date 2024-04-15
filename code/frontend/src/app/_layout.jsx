@@ -1,5 +1,5 @@
 import { config } from '@gluestack-ui/config';
-import { GluestackUIProvider } from '@gluestack-ui/themed';
+import { GluestackUIProvider, SafeAreaView } from '@gluestack-ui/themed';
 import { Slot } from 'expo-router';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Platform } from 'react-native';
@@ -18,25 +18,21 @@ if (Platform.OS === 'android') {
 }
 
 export default function Layout() {
-  if (Platform.OS === 'web') {
-    return (
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
       <GluestackUIProvider config={config}>
         <SessionProvider>
-          <GoogleOAuthProvider
-            clientId={process.env.EXPO_PUBLIC_GAUTH_WEB_CLIENT_ID}
-          >
+          {Platform.OS === 'web' ? (
+            <GoogleOAuthProvider
+              clientId={process.env.EXPO_PUBLIC_GAUTH_WEB_CLIENT_ID}
+            >
+              <Slot />
+            </GoogleOAuthProvider>
+          ) : (
             <Slot />
-          </GoogleOAuthProvider>
+          )}
         </SessionProvider>
       </GluestackUIProvider>
-    );
-  }
-
-  return (
-    <GluestackUIProvider config={config}>
-      <SessionProvider>
-        <Slot />
-      </SessionProvider>
-    </GluestackUIProvider>
+    </SafeAreaView>
   );
 }

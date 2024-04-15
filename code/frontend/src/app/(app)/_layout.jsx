@@ -1,14 +1,14 @@
 import { Platform } from 'react-native';
-import { Redirect, Stack, router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { Text } from '@gluestack-ui/themed';
-import { useSession } from '../../providers/SessionProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
+import { useSession } from '../../providers/SessionProvider';
 
 function DrawerContent(props) {
   const { signOut } = useSession();
@@ -68,12 +68,13 @@ export default function Layout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer drawerContent={DrawerContent}>
+      <Drawer>
         <Drawer.Screen
           name='announcement'
           options={{
             drawerLabel: 'Announcement',
             title: 'Announcement',
+            headerShown: false,
           }}
         />
         <Drawer.Screen
@@ -81,6 +82,7 @@ export default function Layout() {
           options={{
             drawerLabel: 'Appointment',
             title: 'Appointment',
+            headerShown: false,
           }}
         />
         <Drawer.Screen
@@ -88,6 +90,7 @@ export default function Layout() {
           options={{
             drawerLabel: 'Room',
             title: 'Room',
+            headerShown: false,
           }}
         />
       </Drawer>
