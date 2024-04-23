@@ -7,13 +7,13 @@ import { Platform } from 'react-native';
 export default function BurgerMenuButton() {
   const navigation = useNavigation();
 
-  function onToggle() {
+  function handlePress() {
     navigation.dispatch(DrawerActions.openDrawer());
   }
 
   let props = {
     asChild: true,
-    onPress: onToggle,
+    onPress: handlePress,
     mr: '$12',
   };
 

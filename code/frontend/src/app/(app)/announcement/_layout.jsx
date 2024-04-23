@@ -20,6 +20,12 @@ export default function Layout() {
           headerTitle: 'Announcement Details',
         }}
       />
+      <Stack.Screen
+        name='create'
+        options={{
+          headerTitle: 'Create Announcement',
+        }}
+      />
     </Stack>
   );
 }

@@ -28,10 +28,10 @@ export default function SignInWithGoogleButton({ handleError }) {
       flow: 'auth-code',
       scope: scopes.join(' '),
       onSuccess: async ({ code }) => {
-        console.log(
-          'Google authentication code from web: ',
-          JSON.stringify(code, null, 2)
-        );
+        // console.log(
+        //   'Google authentication code from web: ',
+        //   JSON.stringify(code, null, 2)
+        // );
 
         const { success, errorCode, message, data } = await backendAuth(
           code,
@@ -69,15 +69,17 @@ export default function SignInWithGoogleButton({ handleError }) {
         await GoogleSignin.hasPlayServices();
 
         const { serverAuthCode } = await GoogleSignin.signIn();
-        console.log(
-          'Serverauth code response from Android Google authentication on Android:',
-          JSON.stringify(serverAuthCode, null, 2)
-        );
+        // console.log(
+        //   'Serverauth code response from Android Google authentication on Android:',
+        //   JSON.stringify(serverAuthCode, null, 2)
+        // );
 
         const { success, errorCode, message, data } = await backendAuth(
           serverAuthCode,
           'android'
         );
+
+        // console.log(success);
 
         if (success) {
           signIn(data);
