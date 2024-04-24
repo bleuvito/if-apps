@@ -1,3 +1,4 @@
+import { useCallback, useRef } from 'react';
 import axios from 'axios';
 import JWT from 'expo-jwt';
 import base64 from 'Base64';
@@ -10,14 +11,17 @@ import {
   FormControlErrorText,
   FormControlLabel,
   FormControlLabelText,
+  FormControl,
   HStack,
   Input,
   InputField,
-  Textarea,
-  TextareaInput,
   VStack,
 } from '@gluestack-ui/themed';
-import { FormControl } from '@gluestack-ui/themed';
+import {
+  RichEditor,
+  RichToolbar,
+  actions,
+} from 'react-native-pell-rich-editor';
 import { CircleAlert } from 'lucide-react-native';
 import { useSession } from '../../../providers/SessionProvider';
 
@@ -28,11 +32,15 @@ export default function AnnouncementCreateScreen() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const richEditor = useRef();
+  const content = useRef();
+
+  const handleChange = useCallback((html) => {
+    content.current = html;
+  }, []);
 
   async function onSubmit(formData) {
     try {
-      console.log('Collected form data: ', formData);
-
       const { data: serverTokenResponse } = await axios.post(
         `${process.env.EXPO_PUBLIC_BASE_URL}/tokens`,
         {
@@ -53,13 +61,12 @@ export default function AnnouncementCreateScreen() {
             `To: ${formData.recipientEmail}\r\n` +
             `Subject: ${formData.subject}\r\n` +
             `Content-Type: text/html; charset=UTF-8\r\n\r\n` +
-            `${formData.body}`
-          // `<p>This is the <strong>HTML</strong> version of the message.</p><ul><li>One</li><li>Two</li></ul>`
+            `${content.current}`
         )
         .replace(/\+/g, '-')
         .replace(/\//g, '_');
 
-      const sendEmailResponse = await axios.post(
+      await axios.post(
         'https://gmail.googleapis.com/gmail/v1/users/me/messages/send',
         {
           raw: encodedEmail,
@@ -70,8 +77,6 @@ export default function AnnouncementCreateScreen() {
           },
         }
       );
-
-      console.log('Sending email response: ', sendEmailResponse);
     } catch (error) {
       console.error('Error creating announcement: ', error);
     }
@@ -152,31 +157,35 @@ export default function AnnouncementCreateScreen() {
           </FormControl>
         )}
       />
-      <Controller
-        name='body'
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <FormControl size='md'>
-            <FormControlLabel>
-              <FormControlLabelText>Body</FormControlLabelText>
-            </FormControlLabel>
-            <Textarea>
-              <TextareaInput
-                onChangeText={onChange}
-                value={value}
-              />
-            </Textarea>
-            {errors.body && (
-              <FormControlError>
-                <FormControlErrorIcon as={CircleAlert} />
-                <FormControlErrorText>
-                  {errors.body.message}
-                </FormControlErrorText>
-              </FormControlError>
-            )}
-          </FormControl>
+      <FormControl size='md'>
+        <FormControlLabel>
+          <FormControlLabelText>Body</FormControlLabelText>
+        </FormControlLabel>
+        <RichToolbar
+          editor={richEditor}
+          actions={[
+            actions.setBold,
+            actions.setItalic,
+            actions.setUnderline,
+            actions.insertBulletsList,
+            actions.insertOrderedList,
+            actions.insertLink,
+          ]}
+        />
+        <RichEditor
+          ref={richEditor}
+          initialContentHTML={
+            'Hello <b>World</b> <p>this is a new paragraph</p> <p>this is another new paragraph</p>'
+          }
+          onChange={handleChange}
+        />
+        {errors.body && (
+          <FormControlError>
+            <FormControlErrorIcon as={CircleAlert} />
+            <FormControlErrorText>{errors.body.message}</FormControlErrorText>
+          </FormControlError>
         )}
-      />
+      </FormControl>
       <HStack>
         <FormControl>
           <Button onPress={handleSubmit(onSubmit, onInvalid)}>
