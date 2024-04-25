@@ -16,6 +16,7 @@ import {
   Input,
   InputField,
   VStack,
+  Text,
 } from '@gluestack-ui/themed';
 import {
   RichEditor,
@@ -24,6 +25,8 @@ import {
 } from 'react-native-pell-rich-editor';
 import { CircleAlert } from 'lucide-react-native';
 import { useSession } from '../../../providers/SessionProvider';
+import { Platform } from 'react-native';
+import Editor from '../../../components/Editor.jsx';
 
 export default function AnnouncementCreateScreen() {
   const { session, signIn } = useSession();
@@ -31,13 +34,24 @@ export default function AnnouncementCreateScreen() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      recipientEmail: '',
+      subject: '',
+      body: '',
+    },
+  });
   const richEditor = useRef();
-  const content = useRef();
+  const content = useRef('');
 
   const handleChange = useCallback((html) => {
     content.current = html;
   }, []);
+
+  // let Editor;
+  // if (Platform.OS === 'web') {
+  //   Editor = require('../../../components/Editor.jsx');
+  // }
 
   async function onSubmit(formData) {
     try {
@@ -61,7 +75,7 @@ export default function AnnouncementCreateScreen() {
             `To: ${formData.recipientEmail}\r\n` +
             `Subject: ${formData.subject}\r\n` +
             `Content-Type: text/html; charset=UTF-8\r\n\r\n` +
-            `${content.current}`
+            `${formData.body}`
         )
         .replace(/\+/g, '-')
         .replace(/\//g, '_');
@@ -157,34 +171,50 @@ export default function AnnouncementCreateScreen() {
           </FormControl>
         )}
       />
-      <FormControl size='md'>
-        <FormControlLabel>
-          <FormControlLabelText>Body</FormControlLabelText>
-        </FormControlLabel>
-        <RichToolbar
-          editor={richEditor}
-          actions={[
-            actions.setBold,
-            actions.setItalic,
-            actions.setUnderline,
-            actions.insertBulletsList,
-            actions.insertOrderedList,
-            actions.insertLink,
-          ]}
-        />
-        <RichEditor
-          ref={richEditor}
-          initialContentHTML={
-            'Hello <b>World</b> <p>this is a new paragraph</p> <p>this is another new paragraph</p>'
-          }
-          onChange={handleChange}
-        />
-        {errors.body && (
-          <FormControlError>
-            <FormControlErrorIcon as={CircleAlert} />
-            <FormControlErrorText>{errors.body.message}</FormControlErrorText>
-          </FormControlError>
+      <Controller
+        name='body'
+        // rules={{ required: 'Subject cannot empty' }}
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <FormControl size='md'>
+            <FormControlLabel>
+              <FormControlLabelText>Body</FormControlLabelText>
+            </FormControlLabel>
+            {Platform.OS === 'android' ? (
+              <>
+                <RichToolbar
+                  editor={richEditor}
+                  actions={[
+                    actions.setBold,
+                    actions.setItalic,
+                    actions.setUnderline,
+                    actions.insertBulletsList,
+                    actions.insertOrderedList,
+                    actions.insertLink,
+                  ]}
+                />
+                <RichEditor
+                  ref={richEditor}
+                  initialContentHTML={value}
+                  onChange={onChange}
+                />
+                <Text>{value}</Text>
+              </>
+            ) : (
+              <div>
+                <Editor
+                  value={value}
+                  onChange={onChange}
+                />
+              </div>
+            )}
+          </FormControl>
         )}
+      />
+      <FormControl>
+        <FormControlLabel>
+          <FormControlLabelText>Attachment</FormControlLabelText>
+        </FormControlLabel>
       </FormControl>
       <HStack>
         <FormControl>
