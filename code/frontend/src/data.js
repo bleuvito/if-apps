@@ -45,3 +45,31 @@ export const announcements = [
     isPinned: false,
   },
 ];
+
+export const tags = [
+  {
+    id: 'd581b8b2-1de3-49a9-9381-36b8a582a42f',
+    name: 'Informatika',
+    isDeleted: true,
+  },
+  {
+    id: '2942c38b-d1c0-45dc-a02a-3bebec38bdf9',
+    name: 'Ganjil2324',
+    isDeleted: false,
+  },
+  {
+    id: '382cc651-5bf5-456f-b097-362e3fb93568',
+    name: 'TA1',
+    isDeleted: false,
+  },
+  {
+    id: '4dd45ae2-b528-4c62-a605-6d6a7090d47a',
+    name: 'TA2',
+    isDeleted: false,
+  },
+  {
+    id: '0ee09b3e-9b1a-4ef8-8b57-ada0a42935e6',
+    name: 'Kelas',
+    isDeleted: false,
+  },
+];

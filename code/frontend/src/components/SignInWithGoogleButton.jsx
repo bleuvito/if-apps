@@ -1,9 +1,9 @@
-import { Platform } from 'react-native';
-import { router } from 'expo-router';
-import axios from 'axios';
 import { Button, ButtonText } from '@gluestack-ui/themed';
-import { useSession } from '../providers/SessionProvider';
+import axios from 'axios';
+import { router } from 'expo-router';
+import { Platform } from 'react-native';
 import { scopes } from '../constants';
+import { useSession } from '../providers/SessionProvider';
 
 export default function SignInWithGoogleButton({ handleError }) {
   const { signIn } = useSession();
@@ -28,11 +28,6 @@ export default function SignInWithGoogleButton({ handleError }) {
       flow: 'auth-code',
       scope: scopes.join(' '),
       onSuccess: async ({ code }) => {
-        // console.log(
-        //   'Google authentication code from web: ',
-        //   JSON.stringify(code, null, 2)
-        // );
-
         const { success, errorCode, message, data } = await backendAuth(
           code,
           'web'
@@ -69,17 +64,11 @@ export default function SignInWithGoogleButton({ handleError }) {
         await GoogleSignin.hasPlayServices();
 
         const { serverAuthCode } = await GoogleSignin.signIn();
-        // console.log(
-        //   'Serverauth code response from Android Google authentication on Android:',
-        //   JSON.stringify(serverAuthCode, null, 2)
-        // );
 
         const { success, errorCode, message, data } = await backendAuth(
           serverAuthCode,
           'android'
         );
-
-        // console.log(success);
 
         if (success) {
           signIn(data);

@@ -1,15 +1,15 @@
-import { Platform } from 'react-native';
-import { Redirect, router } from 'expo-router';
-import { Drawer } from 'expo-router/drawer';
 import { Text } from '@gluestack-ui/themed';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import { useSession } from '../../providers/SessionProvider';
+import { Redirect, router } from 'expo-router';
+import { Drawer } from 'expo-router/drawer';
+import { Platform } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import DrawerContent from '../../components/DrawerContent';
+import { useSession } from '../../providers/SessionProvider';
 
 export default function Layout() {
   const { session, isLoading } = useSession();
@@ -46,6 +46,14 @@ export default function Layout() {
           options={{
             drawerLabel: 'Room',
             title: 'Room',
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name='tag'
+          options={{
+            drawerLabel: 'Tag',
+            title: 'Tag',
             headerShown: false,
           }}
         />

@@ -1,7 +1,7 @@
-import ReactQuill from 'react-quill';
 import 'quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill';
 
-export default function Editor({ onChange, value }) {
+export default function Editor({ value, onChange }) {
   const formats = ['bold', 'italic', 'underline', 'list', 'bullet', 'link'];
 
   const modules = {

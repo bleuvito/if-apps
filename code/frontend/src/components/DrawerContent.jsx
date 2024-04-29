@@ -1,12 +1,12 @@
-import { Platform } from 'react-native';
-import { useSession } from '../providers/SessionProvider';
+import { Button, ButtonText } from '@gluestack-ui/themed';
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import { Button, ButtonText } from '@gluestack-ui/themed';
 import { router } from 'expo-router';
+import { Platform } from 'react-native';
+import { useSession } from '../providers/SessionProvider';
 
 export default function DrawerContent(props) {
   const { signOut } = useSession();

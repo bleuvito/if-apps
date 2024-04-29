@@ -1,11 +1,11 @@
-import { Pressable } from '@gluestack-ui/themed';
 import {
   Card,
   HStack,
-  Text,
-  VStack,
   Heading,
   Icon,
+  Pressable,
+  Text,
+  VStack,
 } from '@gluestack-ui/themed';
 import { Link } from 'expo-router';
 import { Pin } from 'lucide-react-native';

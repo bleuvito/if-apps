@@ -1,7 +1,7 @@
-import { Text, View, Heading, HStack } from '@gluestack-ui/themed';
+import { HStack, Heading, Text, View } from '@gluestack-ui/themed';
 import { useLocalSearchParams } from 'expo-router';
-import { announcements } from '../../../data';
 import CategoryChip from '../../../components/CategoryChip';
+import { announcements } from '../../../data';
 
 export default function AnnouncementDetailScreen() {
   const { id } = useLocalSearchParams();

@@ -10,7 +10,6 @@ import {
   HStack,
   Input,
   InputField,
-  ScrollView,
   Text,
   VStack,
 } from '@gluestack-ui/themed';
@@ -38,7 +37,7 @@ export default function AnnouncementCreateScreen() {
 
   async function refreshToken() {
     const { data: serverTokenResponse } = await axios.post(
-      `${process.env.EXPO_PUBLIC_BASE_URL}/token`,
+      `${process.env.EXPO_PUBLIC_BASE_URL}/tokens`,
       {
         clientJwt: session,
       }
@@ -86,18 +85,7 @@ export default function AnnouncementCreateScreen() {
 
     const uri = 'https://gmail.googleapis.com/gmail/v1/users/me/messages/send';
     try {
-      const { data: createGmailResponse } = await axios.post(uri, body, {
-        headers,
-      });
-      console.log(createGmailResponse);
-      const announcement = {
-        gmailThreadId: createGmailResponse.threadId,
-        body: {
-          subject: formData.subject,
-          body: formData.body,
-          attachments: fileDriveInfos,
-        },
-      };
+      await axios.post(uri, body, { headers });
     } catch (error) {
       console.error('Error creating announcement: ', error);
     }
@@ -171,22 +159,14 @@ export default function AnnouncementCreateScreen() {
       selectedFiles.map(async (selectedFile) => {
         const { name, mimeType, uri, file } = selectedFile;
         if (Platform.OS === 'web') {
-          return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = async (ev) => {
-              const fileContent = ev.target.result.split(',')[1];
-              const fileDriveInfo = await uploadFile(
-                name,
-                mimeType,
-                fileContent
-              );
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = async (ev) => {
+            const fileContent = ev.target.result.split(',')[1];
+            const fileDriveInfo = await uploadFile(name, mimeType, fileContent);
 
-              resolve(fileDriveInfo);
-            };
-
-            reader.onerror = reject;
-          });
+            return fileDriveInfo;
+          };
         } else {
           const fileContent = await FileSystem.readAsStringAsync(uri, {
             encoding: FileSystem.EncodingType.Base64,
@@ -203,125 +183,123 @@ export default function AnnouncementCreateScreen() {
   }
 
   return (
-    <ScrollView>
-      <VStack>
-        <Controller
-          name='recipientEmail'
-          // rules={{
-          //   required: 'Recipient email cannot empty',
-          //   required: true,
-          //   pattern: {
-          //     value: /^\S+@\S+$/i,
-          //     message: 'Enter a valid email address',
-          //   },
-          // }}
-          defaultValue={''}
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <FormControl
-              size='md'
-              isRequired
-            >
-              <FormControlLabel>
-                <FormControlLabelText>Recipient Email</FormControlLabelText>
-              </FormControlLabel>
-              <Input>
-                <InputField
-                  type='text'
-                  // defaultValue={value}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              </Input>
-              {errors.recipientEmail && (
-                <FormControlError>
-                  <FormControlErrorIcon as={CircleAlert} />
-                  <FormControlErrorText>
-                    {errors.recipientEmail.message}
-                  </FormControlErrorText>
-                </FormControlError>
-              )}
-            </FormControl>
-          )}
-        />
-        <Controller
-          name='subject'
-          // rules={{ required: 'Subject cannot empty' }}
-          control={control}
-          defaultValue={''}
-          render={({ field: { onChange, value } }) => (
-            <FormControl
-              size='md'
-              isRequired
-            >
-              <FormControlLabel>
-                <FormControlLabelText>Subject</FormControlLabelText>
-              </FormControlLabel>
-              <Input>
-                <InputField
-                  type='text'
-                  // defaultValue={value}
-                  value={value}
-                  onChangeText={onChange}
-                />
-              </Input>
-              {errors.subject && (
-                <FormControlError>
-                  <FormControlErrorIcon as={CircleAlert} />
-                  <FormControlErrorText>
-                    {errors.subject.message}
-                  </FormControlErrorText>
-                </FormControlError>
-              )}
-            </FormControl>
-          )}
-        />
-        <Controller
-          name='body'
-          // rules={{ required: 'Subject cannot empty' }}
-          control={control}
-          defaultValue={''}
-          render={({ field: { onChange, value } }) => (
-            <FormControl size='md'>
-              <FormControlLabel>
-                <FormControlLabelText>Body</FormControlLabelText>
-              </FormControlLabel>
-              {Platform.OS === 'android' ? (
+    <VStack>
+      <Controller
+        name='recipientEmail'
+        // rules={{
+        //   required: 'Recipient email cannot empty',
+        //   required: true,
+        //   pattern: {
+        //     value: /^\S+@\S+$/i,
+        //     message: 'Enter a valid email address',
+        //   },
+        // }}
+        defaultValue={''}
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <FormControl
+            size='md'
+            isRequired
+          >
+            <FormControlLabel>
+              <FormControlLabelText>Recipient Email</FormControlLabelText>
+            </FormControlLabel>
+            <Input>
+              <InputField
+                type='text'
+                // defaultValue={value}
+                onChangeText={onChange}
+                value={value}
+              />
+            </Input>
+            {errors.recipientEmail && (
+              <FormControlError>
+                <FormControlErrorIcon as={CircleAlert} />
+                <FormControlErrorText>
+                  {errors.recipientEmail.message}
+                </FormControlErrorText>
+              </FormControlError>
+            )}
+          </FormControl>
+        )}
+      />
+      <Controller
+        name='subject'
+        // rules={{ required: 'Subject cannot empty' }}
+        control={control}
+        defaultValue={''}
+        render={({ field: { onChange, value } }) => (
+          <FormControl
+            size='md'
+            isRequired
+          >
+            <FormControlLabel>
+              <FormControlLabelText>Subject</FormControlLabelText>
+            </FormControlLabel>
+            <Input>
+              <InputField
+                type='text'
+                // defaultValue={value}
+                value={value}
+                onChangeText={onChange}
+              />
+            </Input>
+            {errors.subject && (
+              <FormControlError>
+                <FormControlErrorIcon as={CircleAlert} />
+                <FormControlErrorText>
+                  {errors.subject.message}
+                </FormControlErrorText>
+              </FormControlError>
+            )}
+          </FormControl>
+        )}
+      />
+      <Controller
+        name='body'
+        // rules={{ required: 'Subject cannot empty' }}
+        control={control}
+        defaultValue={''}
+        render={({ field: { onChange, value } }) => (
+          <FormControl size='md'>
+            <FormControlLabel>
+              <FormControlLabelText>Body</FormControlLabelText>
+            </FormControlLabel>
+            {Platform.OS === 'android' ? (
+              <Editor
+                value={value}
+                onChange={onChange}
+              />
+            ) : (
+              <div>
                 <Editor
                   value={value}
                   onChange={onChange}
                 />
-              ) : (
-                <div>
-                  <Editor
-                    value={value}
-                    onChange={onChange}
-                  />
-                </div>
-              )}
-            </FormControl>
-          )}
-        />
-        <Attachment
-          selectedFiles={selectedFiles}
-          setSelectedFiles={setSelectedFiles}
-        />
-        <HStack>
-          <FormControl>
-            <Button onPress={handleSubmit(onSubmit, onInvalid)}>
-              <ButtonText>Submit</ButtonText>
-            </Button>
+              </div>
+            )}
           </FormControl>
-          <FormControl>
-            <Button
-              variant='outline'
-              action='secondary'
-            >
-              <ButtonText>Cancel</ButtonText>
-            </Button>
-          </FormControl>
-        </HStack>
-      </VStack>
-    </ScrollView>
+        )}
+      />
+      <Attachment
+        selectedFiles={selectedFiles}
+        setSelectedFiles={setSelectedFiles}
+      />
+      <HStack>
+        <FormControl>
+          <Button onPress={handleSubmit(onSubmit, onInvalid)}>
+            <ButtonText>Submit</ButtonText>
+          </Button>
+        </FormControl>
+        <FormControl>
+          <Button
+            variant='outline'
+            action='secondary'
+          >
+            <ButtonText>Cancel</ButtonText>
+          </Button>
+        </FormControl>
+      </HStack>
+    </VStack>
   );
 }

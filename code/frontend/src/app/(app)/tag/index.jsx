@@ -1,26 +1,28 @@
-import { AddIcon, Box, Fab, FabIcon, FabLabel } from '@gluestack-ui/themed';
+import {
+  AddIcon,
+  Box,
+  Fab,
+  FabIcon,
+  FabLabel,
+  Text,
+} from '@gluestack-ui/themed';
 import { Link } from 'expo-router';
 import { FlatList } from 'react-native';
 import AnnouncementCard from '../../../components/AnnouncementCard';
-import { announcements } from '../../../data';
+import { tags } from '../../../data';
 
 export default function AnnouncementScreen() {
   return (
     <>
       <FlatList
-        data={announcements}
+        data={tags}
         renderItem={({ item, index }) => {
-          return (
-            <AnnouncementCard
-              key={item.id}
-              announcement={item}
-            />
-          );
+          return <Text>{index}</Text>;
         }}
       />
       <Link
         asChild
-        href={'/announcement/create'}
+        href={'/tag/create'}
       >
         <Fab
           size='md'
