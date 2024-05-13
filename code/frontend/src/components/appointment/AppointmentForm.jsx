@@ -49,7 +49,12 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           defaultValue=''
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
-            return <AppointmentDateField />;
+            return (
+              <AppointmentDateField
+                onChange={onChange}
+                value={value}
+              />
+            );
           }}
         />
         <View
@@ -98,6 +103,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
                 <TextInput
                   // disabled={editMode}
                   mode='outlined'
+                  editable={false}
                   value={value}
                   onBlur={onBlur}
                   onChangeText={onChange}

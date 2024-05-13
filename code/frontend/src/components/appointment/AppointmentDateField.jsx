@@ -2,16 +2,13 @@ import { useCallback, useState } from 'react';
 import { Chip, Text, TextInput } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 
-export default function AppointmentDateField() {
-  const [date, setDate] = useState();
+export default function AppointmentDateField({ onChange, value }) {
+  // const [date, setDate] = useState(value);
   const [open, setOpen] = useState(false);
 
-  const handleOpen = useCallback(
-    (params) => {
-      setOpen(true);
-    },
-    [setOpen]
-  );
+  const handleOpen = useCallback(() => {
+    setOpen(true);
+  }, [setOpen]);
 
   const handleDismiss = useCallback(() => {
     setOpen(false);
@@ -20,9 +17,9 @@ export default function AppointmentDateField() {
   const handleConfirm = useCallback(
     (params) => {
       setOpen(false);
-      setDate(params.date);
+      onChange(params.date);
     },
-    [setOpen, setDate]
+    [setOpen]
   );
 
   return (
@@ -31,6 +28,14 @@ export default function AppointmentDateField() {
       <TextInput
         mode='outlined'
         editable={false}
+        value={
+          value &&
+          `${value.toLocaleString('en-GB', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric',
+          })}`
+        }
         right={
           <TextInput.Icon
             icon='calendar'
@@ -43,7 +48,7 @@ export default function AppointmentDateField() {
         mode='single'
         visible={open}
         onDismiss={handleDismiss}
-        date={date}
+        date={value}
         onConfirm={handleConfirm}
         // validRange={{
         //   startDate: new Date(2021, 1, 2),  // optional
