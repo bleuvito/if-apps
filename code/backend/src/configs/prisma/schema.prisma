@@ -16,15 +16,44 @@ generator client {
 //   ADMIN
 // }
 
+// enum Role {
+//   MAHASISWA
+//   DOSEN
+//   KALAB
+//   KAPRODI
+//   ADMIN
+// }
+
+enum Day {
+  SUN
+  MON
+  TUE
+  WED
+  THU
+  FRI
+  SAT
+}
+
+enum LecturerScheduleType {
+  CONSULTATION
+  CLASS
+  OTHER
+}
+
 model User {
-  id                  String  @id @unique @default(uuid())
-  email               String  @unique
-  name                String?
-  webRefreshToken     String? @db.VarChar(512)
-  androidRefreshToken String? @db.VarChar(512)
+  id                      String  @id @unique @default(uuid())
+  email                   String  @unique
+  name                    String?
+  webRefreshToken         String? @db.VarChar(512)
+  androidRefreshToken     String? @db.VarChar(512)
+  announcements           AnnouncementHeader[]
+  announcementTags        AnnouncementTag[]
+  schedule                LecturerSchedule[]
+  appointmentOrganizer    Appointment[] @relation(name: "appointmentOrganizer")
+  appointmentParticipant  Appointment[] @relation(name: "appointmentParticipant")
   
-  roleId              String
-  role                Role    @relation(fields: [roleId], references: [id])
+  roleId                  String
+  role                    Role    @relation(fields: [roleId], references: [id])
 }
 
 model Role {
@@ -32,4 +61,84 @@ model Role {
   name  String  @unique
 
   users User[]
+}
+
+model AnnouncementHeader {
+  id            String  @id @unique @default(uuid())
+  gmailThreadId String
+  recipient     String
+  subject       String
+  isPinned      Boolean @default(false)
+  createDate    DateTime @default(now())
+  modifiedDate  DateTime @default(now())
+  bodies        AnnouncementBody[]
+  tags          AnnouncementTag[]
+  
+  authorId      String
+  author        User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+model AnnouncementBody {
+  id            String @id @unique @default(uuid())
+  gmailId       String
+  body          String
+  snippet       String
+  createDate    DateTime @default(now())
+  isLatest      Boolean @default(true)
+  attachments   AnnoucementAttachment[]
+
+  headerId      String
+  header        AnnouncementHeader @relation(fields: [headerId], references: [id], onDelete: Cascade)
+}
+
+model AnnouncementTag {
+  id            String  @id @unique @default(uuid())
+  name          String  @unique
+  isDeleted     Boolean @default(false)
+
+  // headerId      String
+  // header        AnnouncementHeader @relation(fields: [headerId], references: [id])
+  headers       AnnouncementHeader[]
+  authorId      String
+  author        User @relation(fields: [authorId], references: [id])
+}
+
+model AnnoucementAttachment {
+  id                  String @id @unique @default(uuid())
+  gDriveId            String
+  name                String
+  size                String
+  webViewLink         String
+
+  announcementBodyId  String
+  announcementBody    AnnouncementBody @relation(fields: [announcementBodyId], references: [id], onDelete: Cascade)
+}
+
+model Appointment {
+  id                      String @id @unique @default(uuid())
+  topic                   String
+  startDateTime           DateTime
+  endDateTime             DateTime
+  isParticipantAttending  Boolean @default(false)
+  type                    LecturerScheduleType @default(CONSULTATION)
+  createDate              DateTime @default(now())
+  modifiedDate            DateTime @default(now())
+
+  organizerId             String
+  organizer               User @relation(name: "appointmentOrganizer", fields: [organizerId], references: [id], onDelete: Cascade)
+  participantId           String
+  participant             User @relation(name: "appointmentParticipant", fields: [participantId], references: [id], onDelete: Cascade)
+}
+
+model LecturerSchedule {
+  id                String @id @unique @default(uuid())
+  day               Day
+  startTime         DateTime @db.Timetz()
+  endTime           DateTime @db.Timetz()
+  type              LecturerScheduleType
+  createdDateTime   DateTime @default(now())
+  modifiedDateTime  DateTime @default(now())
+  
+  lecturerId        String
+  lecturer          User @relation(fields: [lecturerId], references: [id], onDelete: Cascade)
 }

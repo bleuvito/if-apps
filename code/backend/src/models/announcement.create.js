@@ -1,0 +1,92 @@
+import { PrismaClient } from '@prisma/client';
+import { getMessageMetadata, sendMessage } from '../utils/gmailApi.js';
+import {
+  generateAttachmentUrls,
+  getRefreshToken,
+  uploadAttachments,
+} from '../utils/helpers.js';
+
+const prisma = new PrismaClient();
+
+async function createAnnouncement(args) {
+  const {
+    locals: { user, clientType },
+    body: requestBody,
+    files: attachments,
+  } = args;
+
+  const { pin, recipient, subject, body, tags } = requestBody;
+  const refreshToken = await getRefreshToken(clientType, user.id);
+
+  try {
+    const uploadResponse = await uploadAttachments(
+      clientType,
+      refreshToken,
+      attachments
+    );
+    const transformedAttachments = uploadResponse.map(
+      ({ id, name, webViewLink, size }) => {
+        return { gDriveId: id, name, webViewLink, size };
+      }
+    );
+    const attachmentString = await generateAttachmentUrls(
+      transformedAttachments
+    );
+
+    const emailContent = body + attachmentString;
+    const gmailSendResponse = await sendMessage(
+      clientType,
+      refreshToken,
+      user.name,
+      user.email,
+      recipient,
+      subject,
+      emailContent
+    );
+
+    const gmailGetResponse = await getMessageMetadata(
+      clientType,
+      refreshToken,
+      gmailSendResponse.id
+    );
+
+    const announcement = await prisma.announcementHeader.create({
+      data: {
+        gmailThreadId: gmailGetResponse.threadId,
+        recipient,
+        subject,
+        isPinned: JSON.parse(pin),
+        bodies: {
+          create: {
+            gmailId: gmailGetResponse.id,
+            snippet: gmailGetResponse.snippet,
+            body,
+            attachments: {
+              createMany: {
+                data: transformedAttachments,
+              },
+            },
+          },
+        },
+        tags: {
+          connect: JSON.parse(tags),
+        },
+        author: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
+    });
+
+    const payload = {
+      announcement,
+    };
+
+    return payload;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export { createAnnouncement };

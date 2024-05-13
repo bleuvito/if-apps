@@ -1,6 +1,6 @@
 import express from 'express';
 import { authenticate } from '../models/authentication.js';
-import { createResponse } from '../helpers/createResponse.js';
+import { createResponse } from '../utils/createResponse.js';
 
 const AuthenticationService = express.Router();
 

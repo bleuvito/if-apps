@@ -9,7 +9,8 @@ async function seed() {
         { name: 'MAHASISWA' },
         { name: 'DOSEN' },
         { name: 'KALAB' },
-        { name: 'KAJUR' },
+        { name: 'KAPRODI' },
+        { name: 'ADMIN' },
       ],
     });
 
@@ -17,16 +18,12 @@ async function seed() {
       {
         email: 'vitofev15202@gmail.com',
         role: {
-          connectOrCreate: {
-            where: {
-              name: 'MAHASISWA',
-            },
-            create: {
-              name: 'MAHASISWA',
-            },
+          connect: {
+            name: 'ADMIN',
           },
         },
       },
+
       {
         email: 'renasarinah@gmail.com',
         role: {
@@ -47,7 +44,7 @@ async function seed() {
         email: 'putrahharta@gmail.com',
         role: {
           connect: {
-            name: 'KAJUR',
+            name: 'MAHASISWA',
           },
         },
       },
@@ -55,6 +52,13 @@ async function seed() {
 
     users.map(async (user) => {
       await prisma.user.create({ data: user });
+    });
+
+    await prisma.announcementTag.create({
+      data: {
+        name: 'Labkom',
+        author: { connect: { email: 'vitofev15202@gmail.com' } },
+      },
     });
   } catch (e) {
     console.error(e);
