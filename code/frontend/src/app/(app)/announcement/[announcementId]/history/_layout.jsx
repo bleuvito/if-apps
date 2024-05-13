@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 
-import AppHeader from '../../../components/AppHeader';
+import AppHeader from '../../../../../components/AppHeader';
 
 export default function Layout() {
   return (
@@ -12,8 +12,13 @@ export default function Layout() {
       <Stack.Screen
         name='index'
         options={{
-          title: 'Room',
-          headerTitle: 'Room',
+          title: 'Announcement History',
+        }}
+      />
+      <Stack.Screen
+        name='[historyId]'
+        options={{
+          title: 'Announcement History Details',
         }}
       />
     </Stack>

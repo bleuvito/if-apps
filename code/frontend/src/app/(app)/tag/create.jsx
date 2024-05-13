@@ -1,92 +1,75 @@
-import {
-  Button,
-  ButtonText,
-  FormControl,
-  FormControlError,
-  FormControlErrorIcon,
-  FormControlErrorText,
-  FormControlHelper,
-  FormControlHelperText,
-  FormControlLabel,
-  FormControlLabelText,
-  HStack,
-  Input,
-  InputField,
-  Text,
-  VStack,
-} from '@gluestack-ui/themed';
 import axios from 'axios';
-import { AlertCircleIcon } from 'lucide-react-native';
 import { Controller, useForm } from 'react-hook-form';
+import { View } from 'react-native';
+import { Button, HelperText, TextInput } from 'react-native-paper';
 import { useSession } from '../../../providers/SessionProvider';
 
+const defaultValues = {
+  tag: '',
+};
+
 export default function TagCreateScreen() {
-  const { control, handleSubmit } = useForm({ defaultValues: {} });
   const { session } = useSession();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues,
+  });
 
-  async function onSubmit(formData) {
-    const postUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag`;
-    const { data: response } = await axios.post(postUri, {
-      clientJwt: session,
-      data: formData,
-    });
-
-    console.log(response);
+  async function onSubmit(data) {
+    const createUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag`;
+    try {
+      const { data: response } = await axios.post(createUri, data, {
+        headers: { Authorization: `Bearer ${session}` },
+      });
+    } catch (error) {
+      console.error('Error creating tag', error);
+    }
   }
 
   return (
-    <VStack>
+    <View style={{ flex: 1, padding: 16 }}>
       <Controller
+        name='tag'
+        defaultValue=''
         control={control}
-        name={'tagName'}
-        render={({ field: { value, onChange }, fieldState: { error } }) => {
+        render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <FormControl
-              size='md'
-              isRequired
-            >
-              <FormControlLabel mb='$1'>
-                <FormControlLabelText>Tag Name</FormControlLabelText>
-              </FormControlLabel>
-              <Input>
-                <InputField
-                  type='text'
-                  value={value}
-                  onChangeText={onChange}
-                />
-              </Input>
-              <FormControlHelper>
-                <FormControlHelperText>
-                  Must be at least 6 characters.
-                </FormControlHelperText>
-              </FormControlHelper>
-              {error && (
-                <FormControlError>
-                  <FormControlErrorIcon as={AlertCircleIcon} />
-                  <FormControlErrorText>
-                    At least 6 characters are required.
-                  </FormControlErrorText>
-                </FormControlError>
+            <View>
+              <TextInput
+                label='Tag Name'
+                mode='outlined'
+                value={value}
+                onBlur={onBlur}
+                onChangeText={onChange}
+              />
+              {errors.tag && (
+                <HelperText
+                  type='error'
+                  visible={errors.tag}
+                >
+                  {errors.tag.message}
+                </HelperText>
               )}
-            </FormControl>
+            </View>
           );
         }}
       />
-      <HStack>
-        <FormControl>
-          <Button onPress={handleSubmit(onSubmit)}>
-            <ButtonText>Submit</ButtonText>
-          </Button>
-        </FormControl>
-        <FormControl>
-          <Button
-            variant='outline'
-            action='secondary'
-          >
-            <ButtonText>Cancel</ButtonText>
-          </Button>
-        </FormControl>
-      </HStack>
-    </VStack>
+      <View
+        style={{
+          flexDirection: 'row',
+        }}
+      >
+        <Button mode='outlined'>Cancel</Button>
+        <Button
+          mode='contained'
+          onPress={handleSubmit(onSubmit)}
+        >
+          Submit
+        </Button>
+      </View>
+    </View>
   );
 }

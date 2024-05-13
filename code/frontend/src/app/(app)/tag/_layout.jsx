@@ -1,17 +1,25 @@
 import { Stack } from 'expo-router';
-import BurgerMenuButton from '../../../components/BurgerMenuButton';
+import AppHeader from '../../../components/AppHeader';
 
 export default function Layout() {
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        header: (props) => <AppHeader {...props} />,
+      }}
+    >
       <Stack.Screen
         name='index'
         options={{
           title: 'Tag',
           headerTitle: 'Tag',
-          headerLeft: () => {
-            return <BurgerMenuButton />;
-          },
+        }}
+      />
+      <Stack.Screen
+        name='create'
+        options={{
+          title: 'Create Tag',
+          headerTitle: 'Create Tag',
         }}
       />
     </Stack>

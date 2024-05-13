@@ -1,40 +1,83 @@
-import {
-  AddIcon,
-  Box,
-  Fab,
-  FabIcon,
-  FabLabel,
-  Text,
-} from '@gluestack-ui/themed';
-import { Link } from 'expo-router';
-import { FlatList } from 'react-native';
-import AnnouncementCard from '../../../components/AnnouncementCard';
-import { tags } from '../../../data';
+import axios from 'axios';
+import { Redirect, router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
+import { FAB, Text } from 'react-native-paper';
 
-export default function AnnouncementScreen() {
+import TagCard from '../../../components/TagCard';
+import { useSession } from '../../../providers/SessionProvider';
+
+export default function TagScreen() {
+  const { getRole, session } = useSession();
+  const [tags, setTags] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const role = getRole();
+
+  if (role === 'MAHASISWA') {
+    return <Redirect href={'/'} />;
+  }
+
+  async function getTags() {
+    setIsLoading(true);
+    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag`;
+    const {
+      data: { data },
+    } = await axios.get(getUri, {
+      headers: { Authorization: `Bearer ${session}` },
+    });
+    setTags(data.tags);
+    setIsLoading(false);
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      getTags();
+    }, [])
+  );
+
+  async function handleRefresh() {
+    setRefreshing(true);
+    await getTags();
+    setRefreshing(false);
+  }
+
+  if (isLoading) {
+    return <Text>Loading data...</Text>;
+  }
+
   return (
     <>
       <FlatList
         data={tags}
-        renderItem={({ item, index }) => {
-          return <Text>{index}</Text>;
+        contentContainerStyle={styles.contentContainer}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
+        keyExtractor={(tag, index) => tag.id}
+        renderItem={({ item }) => {
+          return <TagCard tag={item} />;
         }}
       />
-      <Link
-        asChild
-        href={'/tag/create'}
-      >
-        <Fab
-          size='md'
-          placement='bottom right'
-        >
-          <FabIcon
-            as={AddIcon}
-            mr='$1'
-          />
-          <FabLabel>Create</FabLabel>
-        </Fab>
-      </Link>
+      <FAB
+        icon='plus'
+        style={styles.fab}
+        onPress={() => router.push('/tag/create')}
+      />
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
+  contentContainer: {
+    gap: 16,
+    padding: 16,
+    paddingBottom: 48,
+  },
+});

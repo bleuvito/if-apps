@@ -9,7 +9,8 @@ export const announcements = [
       Selain itu saya juga mau mengingatkan untuk ujian di labkom, mohon dapat membaca pedoman (terlampir) karena ada bbrp aturan khusus labkom terutama mohon meluangkan waktu untuk datang lebih awal dikarenakan pintu akan dibuka dari 20 menit sampai 5 menit sebelum ujian dimulai. Mohon kerjasamanya demi kelancaran pelaksanaan kuliah. 
       
       Terimakasih.`,
-    categories: ['UTS', 'Labkom'],
+    tags: ['UTS', 'Labkom'],
+    date: '29 Jan 2024',
     isPinned: true,
   },
   {
@@ -17,7 +18,8 @@ export const announcements = [
     title: 'Survey Kebutuhan Topik Tugas Akhir Semester Ganjil 2024-2025',
     shortDescription:
       'Information Technology and Siences Parahyangan Catholic University Bandung, Indonesia...',
-    categories: ['Tugas Akhir'],
+    tags: ['Tugas Akhir'],
+    date: '29 Jan 2024',
     isPinned: false,
   },
   {
@@ -25,7 +27,8 @@ export const announcements = [
     title: 'Kuliah Tamu, Senin, 1 April 2024',
     shortDescription:
       'Information Technology and Siences Parahyangan Catholic University Bandung, Indonesia...',
-    categories: ['Skripsi 2'],
+    tags: ['Skripsi 2'],
+    date: '29 Jan 2024',
     isPinned: false,
   },
   {
@@ -33,7 +36,8 @@ export const announcements = [
     title: 'Kartu Bimbingan TA',
     shortDescription:
       'Information Technology and Siences Parahyangan Catholic University Bandung, Indonesia...',
-    categories: ['Skripsi 2'],
+    tags: ['Skripsi 2'],
+    date: '29 Jan 2024',
     isPinned: false,
   },
   {
@@ -41,7 +45,8 @@ export const announcements = [
     title: 'Perubahan Rencana Studi (PRS) Semester Genap 2023-2024',
     shortDescription:
       'ke alamat informatika@unpar.ac.id sebelum hari Kamis 7 Maret 2024 pukul 23.59',
-    categories: ['PRS'],
+    tags: ['PRS'],
+    date: '29 Jan 2024',
     isPinned: false,
   },
 ];

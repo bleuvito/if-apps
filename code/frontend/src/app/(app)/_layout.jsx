@@ -1,18 +1,13 @@
-import { Text } from '@gluestack-ui/themed';
-import {
-  DrawerContentScrollView,
-  DrawerItem,
-  DrawerItemList,
-} from '@react-navigation/drawer';
-import { Redirect, router } from 'expo-router';
+import { Redirect } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
-import { Platform } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Text, useTheme } from 'react-native-paper';
+
 import DrawerContent from '../../components/DrawerContent';
 import { useSession } from '../../providers/SessionProvider';
 
 export default function Layout() {
   const { session, isLoading } = useSession();
+  const theme = useTheme();
 
   if (isLoading) {
     return <Text>Loading...</Text>;
@@ -23,41 +18,44 @@ export default function Layout() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer drawerContent={DrawerContent}>
-        <Drawer.Screen
-          name='announcement'
-          options={{
-            drawerLabel: 'Announcement',
-            title: 'Announcement',
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name='appointment'
-          options={{
-            drawerLabel: 'Appointment',
-            title: 'Appointment',
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name='room'
-          options={{
-            drawerLabel: 'Room',
-            title: 'Room',
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name='tag'
-          options={{
-            drawerLabel: 'Tag',
-            title: 'Tag',
-            headerShown: false,
-          }}
-        />
-      </Drawer>
-    </GestureHandlerRootView>
+    <Drawer
+      drawerContent={DrawerContent}
+      screenOptions={{
+        drawerStyle: { backgroundColor: theme.colors.background },
+      }}
+    >
+      <Drawer.Screen
+        name='announcement'
+        options={{
+          headerShown: false,
+          drawerLabel: 'Announcement',
+          title: 'Announcement',
+        }}
+      />
+      <Drawer.Screen
+        name='appointment'
+        options={{
+          headerShown: false,
+          drawerLabel: 'Appointment',
+          title: 'Appointment',
+        }}
+      />
+      <Drawer.Screen
+        name='room'
+        options={{
+          headerShown: false,
+          drawerLabel: 'Room',
+          title: 'Room',
+        }}
+      />
+      <Drawer.Screen
+        name='tag'
+        options={{
+          headerShown: false,
+          drawerLabel: 'Tag',
+          title: 'Tag',
+        }}
+      />
+    </Drawer>
   );
 }

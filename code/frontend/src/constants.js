@@ -7,94 +7,130 @@ export const scopes = [
   'https://www.googleapis.com/auth/userinfo.profile',
 ];
 
-{
-  /* <FormControl size='md'>
-        <FormControlLabel mb='$1'>
-          <FormControlLabelText>To</FormControlLabelText>
-        </FormControlLabel>
-        <Input>
-          <InputField placeholder='johndoe@mail.to' />
-        </Input>
-        <FormControlHelper>
-          <FormControlHelperText>Max character 100.</FormControlHelperText>
-        </FormControlHelper>
-        <FormControlError>
-          <FormControlErrorIcon as={CircleAlert} />
-          <FormControlErrorText>Max character exceeded</FormControlErrorText>
-        </FormControlError>
-      </FormControl>
+export const ifAppsTheme = {
+  light: {
+    primary: '#415E91',
+    surfaceTint: '#415E91',
+    onPrimary: '#FFFFFF',
+    primaryContainer: '#D7E3FF',
+    onPrimaryContainer: '#001B3E',
+    secondary: '#565E71',
+    onSecondary: '#FFFFFF',
+    secondaryContainer: '#DAE2F9',
+    onSecondaryContainer: '#131C2B',
+    tertiary: '#705574',
+    onTertiary: '#FFFFFF',
+    tertiaryContainer: '#FAD8FD',
+    onTertiaryContainer: '#28132E',
+    error: '#BA1A1A',
+    onError: '#FFFFFF',
+    errorContainer: '#FFDAD6',
+    onErrorContainer: '#410002',
+    background: '#F9F9FF',
+    onBackground: '#191C20',
+    surface: '#F9F9FF',
+    onSurface: '#191C20',
+    surfaceVariant: '#E0E2EC',
+    onSurfaceVariant: '#44474E',
+    outline: '#74777F',
+    outlineVariant: '#C4C6D0',
+    shadow: '#000000',
+    scrim: '#000000',
+    inverseSurface: '#2E3036',
+    inverseOnSurface: '#F0F0F7',
+    inversePrimary: '#AAC7FF',
+    primaryFixed: '#D7E3FF',
+    onPrimaryFixed: '#001B3E',
+    primaryFixedDim: '#AAC7FF',
+    onPrimaryFixedVariant: '#284777',
+    secondaryFixed: '#DAE2F9',
+    onSecondaryFixed: '#131C2B',
+    secondaryFixedDim: '#BEC6DC',
+    onSecondaryFixedVariant: '#3E4759',
+    tertiaryFixed: '#FAD8FD',
+    onTertiaryFixed: '#28132E',
+    tertiaryFixedDim: '#DDBCE0',
+    onTertiaryFixedVariant: '#573E5C',
+    surfaceDim: '#D9D9E0',
+    surfaceBright: '#F9F9FF',
+    surfaceContainerLowest: '#FFFFFF',
+    surfaceContainerLow: '#F3F3FA',
+    surfaceContainer: '#EDEDF4',
+    surfaceContainerHigh: '#E7E8EE',
+    surfaceContainerHighest: '#E2E2E9',
+  },
+  dark: {
+    primary: '#AAC7FF',
+    surfaceTint: '#AAC7FF',
+    onPrimary: '#0B305F',
+    primaryContainer: '#284777',
+    onPrimaryContainer: '#D7E3FF',
+    secondary: '#BEC6DC',
+    onSecondary: '#283141',
+    secondaryContainer: '#3E4759',
+    onSecondaryContainer: '#DAE2F9',
+    tertiary: '#DDBCE0',
+    onTertiary: '#3F2844',
+    tertiaryContainer: '#573E5C',
+    onTertiaryContainer: '#FAD8FD',
+    error: '#FFB4AB',
+    onError: '#690005',
+    errorContainer: '#93000A',
+    onErrorContainer: '#FFDAD6',
+    background: '#111318',
+    onBackground: '#E2E2E9',
+    surface: '#111318',
+    onSurface: '#E2E2E9',
+    surfaceVariant: '#44474E',
+    onSurfaceVariant: '#C4C6D0',
+    outline: '#8E9099',
+    outlineVariant: '#44474E',
+    shadow: '#000000',
+    scrim: '#000000',
+    inverseSurface: '#E2E2E9',
+    inverseOnSurface: '#2E3036',
+    inversePrimary: '#415E91',
+    primaryFixed: '#D7E3FF',
+    onPrimaryFixed: '#001B3E',
+    primaryFixedDim: '#AAC7FF',
+    onPrimaryFixedVariant: '#284777',
+    secondaryFixed: '#DAE2F9',
+    onSecondaryFixed: '#131C2B',
+    secondaryFixedDim: '#BEC6DC',
+    onSecondaryFixedVariant: '#3E4759',
+    tertiaryFixed: '#FAD8FD',
+    onTertiaryFixed: '#28132E',
+    tertiaryFixedDim: '#DDBCE0',
+    onTertiaryFixedVariant: '#573E5C',
+    surfaceDim: '#111318',
+    surfaceBright: '#37393E',
+    surfaceContainerLowest: '#0C0E13',
+    surfaceContainerLow: '#191C20',
+    surfaceContainer: '#1E2025',
+    surfaceContainerHigh: '#282A2F',
+    surfaceContainerHighest: '#33353A',
+  },
+};
 
-      <FormControl size='md'>
-        <FormControlLabel mb='$1'>
-          <FormControlLabelText>Subject</FormControlLabelText>
-        </FormControlLabel>
-        <Input>
-          <InputField placeholder='Subject' />
-        </Input>
-        <FormControlHelper>
-          <FormControlHelperText>Max character 100.</FormControlHelperText>
-        </FormControlHelper>
-        <FormControlError>
-          <FormControlErrorIcon as={CircleAlert} />
-          <FormControlErrorText>Max character exceeded</FormControlErrorText>
-        </FormControlError>
-      </FormControl>
-
-      <FormControl>
-        <FormControlLabel>
-          <FormControlLabelText>Body</FormControlLabelText>
-        </FormControlLabel>
-        <Textarea>
-          <TextareaInput />
-        </Textarea>
-        <FormControlHelper>
-          <FormControlHelperText>Max character 5000</FormControlHelperText>
-        </FormControlHelper>
-      </FormControl>
-
-      <FormControl>
-        <FormControlLabel>
-          <FormControlLabelText>Attachment</FormControlLabelText>
-        </FormControlLabel>
-        <Button
-          variant='outline'
-          action='secondary'
-        >
-          <ButtonText>Upload File</ButtonText>
-        </Button>
-      </FormControl>
-
-      <FormControl>
-        <FormControlLabel>
-          <FormControlLabelText>Tag</FormControlLabelText>
-        </FormControlLabel>
-        <Button
-          variant='link'
-          action='secondary'
-        >
-          <ButtonText>Add a Tag</ButtonText>
-          <ButtonIcon as={Plus} />
-        </Button>
-      </FormControl>
-
-      <HStack>
-        <FormControl>
-          <Button
-            variant='outline'
-            action='secondary'
-            mr='$4'
-          >
-            <ButtonText>Cancel</ButtonText>
-          </Button>
-        </FormControl>
-        <FormControl>
-          <Button
-            variant='solid'
-            action='primary'
-            onPress={handleSubmit}
-          >
-            <ButtonText>Submit</ButtonText>
-          </Button>
-        </FormControl>
-      </HStack> */
-}
+export const drawerItem = {
+  annnouncement: {
+    label: 'Announcement',
+    route: 'announcement',
+  },
+  appointment: {
+    label: 'Appointment',
+    route: 'appointment',
+  },
+  room: {
+    label: 'Room',
+    route: 'room',
+  },
+  tag: {
+    label: 'Tag',
+    route: 'tag',
+  },
+  signOut: {
+    label: 'Sign out',
+    route: '/',
+  },
+};

@@ -1,24 +1,25 @@
-import { Button, ButtonText } from '@gluestack-ui/themed';
 import axios from 'axios';
 import { router } from 'expo-router';
 import { Platform } from 'react-native';
+import { Button } from 'react-native-paper';
+
 import { scopes } from '../constants';
 import { useSession } from '../providers/SessionProvider';
 
+async function backendAuth(code, clientType) {
+  const { data } = await axios.post(
+    `${process.env.EXPO_PUBLIC_BASE_URL}/authenticate`,
+    {
+      code,
+      clientType,
+    }
+  );
+
+  return data;
+}
+
 export default function SignInWithGoogleButton({ handleError }) {
   const { signIn } = useSession();
-
-  async function backendAuth(code, clientType) {
-    const { data } = await axios.post(
-      `${process.env.EXPO_PUBLIC_BASE_URL}/authenticate`,
-      {
-        code,
-        clientType,
-      }
-    );
-
-    return data;
-  }
 
   let handleSignIn;
   if (Platform.OS === 'web') {
@@ -91,11 +92,13 @@ export default function SignInWithGoogleButton({ handleError }) {
 
   return (
     <Button
+      mode='elevated'
+      icon='google'
       onPress={() => {
         handleSignIn();
       }}
     >
-      <ButtonText>Sign in with Google</ButtonText>
+      Sign in with Google
     </Button>
   );
 }
