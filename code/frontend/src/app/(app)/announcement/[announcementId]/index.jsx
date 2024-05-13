@@ -15,7 +15,7 @@ import {
 import { Button, Chip, Dialog, Portal, Text } from 'react-native-paper';
 import RenderHTML from 'react-native-render-html';
 
-import AnnouncementDetailsHeaderRight from '../../../../components/Announcement/AnnouncementDetailsHeaderRight';
+import AnnouncementDetailsHeaderRight from '../../../../components/announcement/AnnouncementDetailsHeaderRight';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function AnnouncementDetailScreen() {

@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { FAB } from 'react-native-paper';
 
-import AnnouncementCard from '../../../components/Announcement/AnnouncementCard';
+import AnnouncementCard from '../../../components/announcement/AnnouncementCard';
 import { useSession } from '../../../providers/SessionProvider';
 
 export default function AnnouncementScreen() {

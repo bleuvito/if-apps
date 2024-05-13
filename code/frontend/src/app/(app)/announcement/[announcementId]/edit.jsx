@@ -3,7 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 
 import { Text } from 'react-native-paper';
-import AnnouncementForm from '../../../../components/Announcement/AnnouncementForm';
+import AnnouncementForm from '../../../../components/announcement/AnnouncementForm';
 import { createAnnouncementFormData } from '../../../../helpers/utils';
 import { useSession } from '../../../../providers/SessionProvider';
 
