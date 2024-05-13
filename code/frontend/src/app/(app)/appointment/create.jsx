@@ -1,5 +1,14 @@
 import { Text } from 'react-native-paper';
+import AppointmentForm from '../../../components/appointment/AppointmentForm';
 
 export default function AppointmentCreate() {
-  return <Text>Appiontment Create Screen</Text>;
+  const defaultValues = {
+    topic: '',
+    date: '',
+    timeStart: undefined,
+    timeEnd: undefined,
+    participant: '',
+  };
+
+  return <AppointmentForm defaultValues={defaultValues} />;
 }
