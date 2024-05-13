@@ -16,6 +16,13 @@ export default function Layout() {
           headerTitle: 'Appointment',
         }}
       />
+      <Stack.Screen
+        name='create'
+        options={{
+          title: 'Appointment Create',
+        }}
+      />
+      <Stack.Screen name='[appointmentId]' />
     </Stack>
   );
 }
