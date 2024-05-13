@@ -4,9 +4,9 @@ import { ScrollView, View } from 'react-native';
 import { Button, Checkbox, TextInput } from 'react-native-paper';
 
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
-import AttachmentField from './AttachmentField';
-import TagBottomSheet from './TagBottomSheet';
-import TagField from './TagField';
+import AttachmentField from './AttachmentField.jsx';
+import TagBottomSheet from './TagBottomSheet.jsx';
+import TagField from './TagField.jsx';
 
 export default function AnnouncementForm({
   defaultValues,
