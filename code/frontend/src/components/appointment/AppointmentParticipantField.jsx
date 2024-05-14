@@ -30,7 +30,7 @@ export default function AppointmentParticipantField({
             />
           )
         }
-        value={selectedParticipant.name && selectedParticipant.name}
+        value={selectedParticipant.name || ''}
       />
     </>
   );

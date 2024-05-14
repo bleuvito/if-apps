@@ -1,14 +1,11 @@
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import axios from 'axios';
+import { useCallback, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { en, id, registerTranslation } from 'react-native-paper-dates';
 
+import { useSession } from '../../providers/SessionProvider';
 import AppointmentDateField from './AppointmentDateField';
 import AppointmentParticipantField from './AppointmentParticipantField';
 import AppointmentTimeField from './AppointmentTimeField';
@@ -17,6 +14,7 @@ import ParticipantBottomSheet from './ParticipantBottomSheet';
 export default function AppointmentForm({ defaultValues }) {
   registerTranslation('en', en);
 
+  const { session } = useSession();
   const [selectedParticipant, setSelectedParticipant] = useState({});
   const bottomSheetModalRef = useRef(null);
   const {
@@ -30,8 +28,37 @@ export default function AppointmentForm({ defaultValues }) {
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
+
+  const timeToISOString = (time) => {
+    const [hour, minute] = time.split(':');
+    const date = new Date();
+
+    date.setHours(hour);
+    date.setMinutes(minute);
+
+    return date.toISOString();
+  };
+
   async function handleFormSubmit(data) {
-    data = { ...data, selectedParticipant };
+    const isoStartTime = timeToISOString(data.startTime);
+    const isoEndTime = timeToISOString(data.endTime);
+    data = {
+      ...data,
+      startTime: isoStartTime,
+      endTime: isoEndTime,
+      selectedParticipant,
+    };
+
+    const postUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment`;
+    try {
+      const { data: response } = await axios.post(postUri, data, {
+        headers: {
+          Authorization: `Bearer ${session}`,
+        },
+      });
+    } catch (error) {
+      console.error('Error creating appointment', error);
+    }
   }
 
   return (
@@ -76,8 +103,8 @@ export default function AppointmentForm({ defaultValues }) {
           }}
         >
           <Controller
-            name='timeStart'
-            defaultValue={defaultValues.timeEnd}
+            name='startTime'
+            defaultValue={defaultValues.startTime}
             control={control}
             render={({ field: { onChange, onBlur, value } }) => {
               return (
@@ -90,8 +117,8 @@ export default function AppointmentForm({ defaultValues }) {
             }}
           />
           <Controller
-            name='timeEnd'
-            defaultValue={defaultValues.timeEnd}
+            name='endTime'
+            defaultValue={defaultValues.endTime}
             control={control}
             render={({ field: { onChange, onBlur, value } }) => {
               return (

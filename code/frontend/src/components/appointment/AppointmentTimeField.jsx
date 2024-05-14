@@ -16,14 +16,19 @@ export default function AppointmentTimeField({ title, value, onChange }) {
   }, [setDialogVisible]);
 
   const handleConfirm = (hour, minute) => {
-    onChange(new Date().setHours(hour, minute, 0, 0));
+    // const date = new Date();
+    // date.setHours(hour);
+    // date.setMinutes(minute);
+    // onChange(date);
+    onChange(`${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`);
     setDialogVisible(false);
   };
 
-  function formatTime(timestampInMilliseconds) {
-    const dateObject = new Date(timestampInMilliseconds);
-    const hours = dateObject.getHours().toString().padStart(2, '0');
-    const minutes = dateObject.getMinutes().toString().padStart(2, '0');
+  function formatTime(dateTime) {
+    const time = new Date(dateTime);
+    const hours = time.getHours().toString().padStart(2, '0');
+    const minutes = time.getMinutes().toString().padStart(2, '0');
+
     return `${hours}:${minutes}`;
   }
 
@@ -33,7 +38,7 @@ export default function AppointmentTimeField({ title, value, onChange }) {
       <TextInput
         editable={false}
         mode='outlined'
-        value={value && formatTime(value)}
+        value={value}
         right={
           <TextInput.Icon
             icon='clock-outline'

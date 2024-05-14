@@ -4,8 +4,8 @@ export default function AppointmentCreate() {
   const defaultValues = {
     topic: '',
     date: '',
-    timeStart: '',
-    timeEnd: '',
+    startTime: '',
+    endTime: '',
   };
 
   return <AppointmentForm defaultValues={defaultValues} />;

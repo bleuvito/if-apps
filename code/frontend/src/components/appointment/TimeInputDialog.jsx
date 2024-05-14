@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import {
   Button,
   Dialog,
@@ -20,6 +20,7 @@ export default function TimeInputDialog({ visible, onHide, onConfirm }) {
     onHide(false);
   }, []);
   const handleConfirm = () => {
+    // onConfirm(`${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`);
     onConfirm(hour, minute);
   };
 
@@ -55,7 +56,13 @@ export default function TimeInputDialog({ visible, onHide, onConfirm }) {
       <Dialog
         visible={visible}
         onDismiss={handleHide}
-        style={{ backgroundColor: theme.colors.surface }}
+        style={[
+          { backgroundColor: theme.colors.surface },
+          [
+            styles.timePickerAndroid,
+            Platform.OS === 'web' ? styles.timePickerWeb : null,
+          ],
+        ]}
       >
         <Dialog.Content>
           <Text>Select time</Text>
@@ -85,5 +92,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  timePickerAndroid: {
+    alignSelf: 'auto',
+  },
+  timePickerWeb: {
+    alignSelf: 'center',
   },
 });
