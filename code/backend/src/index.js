@@ -3,8 +3,10 @@ import 'dotenv/config';
 import express from 'express';
 
 import AnnouncementService from './services/announcement.service.js';
+import AppointmentService from './services/appointment.service.js';
 import AuthenticationService from './services/authentication.service.js';
 import TagService from './services/tag.service.js';
+import UserService from './services/user.service.js';
 
 import { createResponse } from './utils/createResponse.js';
 
@@ -15,8 +17,10 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(cors());
 
 app.use('/api/v1/authenticate', AuthenticationService);
+app.use('/api/v1/user', UserService);
 app.use('/api/v1/announcement', AnnouncementService);
 app.use('/api/v1/tag', TagService);
+app.use('/api/v1/appointment', AppointmentService);
 
 app.use((err, req, res, next) => {
   console.error(err);

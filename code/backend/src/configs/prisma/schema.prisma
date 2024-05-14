@@ -35,16 +35,15 @@ enum LecturerScheduleType {
 model User {
   id                      String  @id @unique @default(uuid())
   email                   String  @unique
-  name                    String?
+  name                    String
   role                    Role
   webRefreshToken         String? @db.VarChar(512)
   androidRefreshToken     String? @db.VarChar(512)
   announcements           AnnouncementHeader[]
   announcementTags        AnnouncementTag[]
   schedule                LecturerSchedule[]
-  appointmentOrganizer    Appointment[] @relation(name: "appointmentOrganizer")
-  appointmentParticipant  Appointment[] @relation(name: "appointmentParticipant")
-  
+  appointmentOrganizer    Appointment[] @relation("organizer")
+  appointmentParticipant  Appointment[] @relation("participant")
 }
 
 // model Role {
@@ -108,7 +107,7 @@ model AnnoucementAttachment {
 model Appointment {
   id                      String @id @unique @default(uuid())
   topic                   String
-  date                    DateTime @db.Date
+  date                    DateTime
   startTime               DateTime
   endTime                 DateTime
   isParticipantAttending  Boolean @default(false)
@@ -117,16 +116,16 @@ model Appointment {
   modifiedDate            DateTime @default(now())
 
   organizerId             String
-  organizer               User @relation(name: "appointmentOrganizer", fields: [organizerId], references: [id], onDelete: Cascade)
+  organizer               User @relation("organizer", fields: [organizerId], references: [id])
   participantId           String
-  participant             User @relation(name: "appointmentParticipant", fields: [participantId], references: [id], onDelete: Cascade)
+  participant             User @relation("participant", fields: [participantId], references: [id])
 }
 
 model LecturerSchedule {
   id                String @id @unique @default(uuid())
   day               Day
-  startTime         DateTime @db.Timetz()
-  endTime           DateTime @db.Timetz()
+  startTime         DateTime
+  endTime           DateTime
   type              LecturerScheduleType
   createdDateTime   DateTime @default(now())
   modifiedDateTime  DateTime @default(now())

@@ -64,7 +64,6 @@ AnnouncementService.put(
   upload.array('attachments'),
   async (req, res, next) => {
     try {
-      console.log('PUT IS HIT');
       const result = await putAnnouncement(req);
       res.json(
         createResponse(

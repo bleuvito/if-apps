@@ -5,10 +5,18 @@ const prisma = new PrismaClient();
 async function main() {
   const users = await prisma.user.createMany({
     data: [
-      { email: 'vitofev15202@gmail.com', role: 'ADMIN' },
-      { email: '6182001033@student.unpar.ac.id', role: 'KALAB' },
-      { email: 'putrahharta@gmail.com', role: 'MAHASISWA' },
-      { email: 'renasarinah@gmail.com', role: 'DOSEN' },
+      { email: 'vitofev15202@gmail.com', name: 'VITO FEVRIER', role: 'ADMIN' },
+      {
+        email: '6182001033@student.unpar.ac.id',
+        name: 'ALEXANDER BLEUVITO FEVRIER',
+        role: 'KALAB',
+      },
+      {
+        email: 'putrahharta@gmail.com',
+        name: 'PUTRA HARTA',
+        role: 'MAHASISWA',
+      },
+      { email: 'renasarinah@gmail.com', name: 'RENA SARINAH', role: 'DOSEN' },
     ],
   });
 
