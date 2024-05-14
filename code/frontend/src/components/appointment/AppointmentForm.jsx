@@ -1,11 +1,24 @@
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { en, id, registerTranslation } from 'react-native-paper-dates';
-import AppointmentDateField from './AppointmentDateField';
-import AppointmentTimeField from './AppointmentTimeField';
 
-export default function AppointmentForm({ defaultValues, onSubmit }) {
+import AppointmentDateField from './AppointmentDateField';
+import AppointmentParticipantField from './AppointmentParticipantField';
+import AppointmentTimeField from './AppointmentTimeField';
+import ParticipantBottomSheet from './ParticipantBottomSheet';
+
+export default function AppointmentForm({ defaultValues }) {
+  registerTranslation('en', en);
+
+  const [selectedParticipant, setSelectedParticipant] = useState({});
+  const bottomSheetModalRef = useRef(null);
   const {
     control,
     handleSubmit,
@@ -13,13 +26,12 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
   } = useForm({
     defaultValues,
   });
-  registerTranslation('en', en);
 
-  const editMode = false;
-
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
   async function handleFormSubmit(data) {
-    data = { ...data, tags: selectedTags };
-    await onSubmit(data);
+    data = { ...data, selectedParticipant };
   }
 
   return (
@@ -92,25 +104,10 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
             }}
           />
         </View>
-        <Controller
-          name='participant'
-          defaultValue=''
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => {
-            return (
-              <>
-                <Text>Participant</Text>
-                <TextInput
-                  // disabled={editMode}
-                  mode='outlined'
-                  editable={false}
-                  value={value}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                />
-              </>
-            );
-          }}
+        <AppointmentParticipantField
+          selectedParticipant={selectedParticipant}
+          setSelectedParticipant={setSelectedParticipant}
+          onPresentModalPress={handlePresentModalPress}
         />
         <View
           style={{
@@ -126,6 +123,11 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           </Button>
         </View>
       </ScrollView>
+      <ParticipantBottomSheet
+        ref={bottomSheetModalRef}
+        selectedParticipant={selectedParticipant}
+        setSelectedParticipant={setSelectedParticipant}
+      />
     </View>
   );
 }

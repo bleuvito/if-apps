@@ -5,7 +5,7 @@ import {
 } from '@react-navigation/native';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Slot } from 'expo-router';
-import { Platform, SafeAreaView, useColorScheme } from 'react-native';
+import { Platform, StyleSheet, useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   MD3DarkTheme,
@@ -13,7 +13,7 @@ import {
   PaperProvider,
   adaptNavigationTheme,
 } from 'react-native-paper';
-
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ifAppsTheme, scopes } from '../constants';
 import { SessionProvider } from '../providers/SessionProvider';
 
@@ -59,7 +59,7 @@ export default function Layout() {
 
   return (
     <SessionProvider>
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <PaperProvider theme={theme}>
             <ThemeProvider value={theme}>
@@ -75,7 +75,7 @@ export default function Layout() {
             </ThemeProvider>
           </PaperProvider>
         </GestureHandlerRootView>
-      </SafeAreaView>
+      </SafeAreaProvider>
     </SessionProvider>
   );
 }
