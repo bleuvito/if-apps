@@ -6,11 +6,11 @@
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon src/index.js",
-    "seed": "node src/seeder.js",
     "studio": "npx prisma studio -p 8001"
   },
   "prisma": {
-    "schema": "src/configs/prisma/schema.prisma"
+    "schema": "src/configs/prisma/schema.prisma",
+    "seed": "node src/configs/prisma/seed.js"
   },
   "author": "vitofevrier",
   "license": "ISC",

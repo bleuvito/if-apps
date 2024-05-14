@@ -73,7 +73,7 @@ async function authenticate(args) {
         id: user.id,
         name: user.name,
         email: user.email,
-        role: user.role.name,
+        role: user.role,
       },
       clientType,
     };

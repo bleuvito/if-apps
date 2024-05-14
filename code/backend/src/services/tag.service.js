@@ -17,7 +17,7 @@ TagService.get('/', verify('all'), async (req, res, next) => {
 
 TagService.post(
   '/',
-  verify(['DOSEN', 'KALAB', 'ADMIN']),
+  verify(['DOSEN', 'KALAB', 'KAPRODI', 'KAJUR', 'ADMIN']),
   async (req, res, next) => {
     try {
       const result = await createTag(req);

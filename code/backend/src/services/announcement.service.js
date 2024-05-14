@@ -16,7 +16,7 @@ const AnnouncementService = express.Router();
 
 AnnouncementService.post(
   '/',
-  verify(['DOSEN', 'KALAB', 'KAPRODI', 'ADMIN']),
+  verify(['DOSEN', 'KALAB', 'KAPRODI', 'KAJUR', 'ADMIN']),
   upload.array('attachments'),
   async (req, res, next) => {
     try {
@@ -60,7 +60,7 @@ AnnouncementService.get('/', verify('all'), async (req, res, next) => {
 
 AnnouncementService.put(
   '/:id',
-  verify(['DOSEN', 'KALAB', 'KAPRODI', 'ADMIN']),
+  verify(['DOSEN', 'KALAB', 'KAPRODI', 'KAJUR', 'ADMIN']),
   upload.array('attachments'),
   async (req, res, next) => {
     try {
@@ -81,7 +81,7 @@ AnnouncementService.put(
 
 AnnouncementService.delete(
   '/:id',
-  verify(['DOSEN', 'KALAB', 'KAPRODI', 'ADMIN']),
+  verify(['DOSEN', 'KALAB', 'KAPRODI', 'KAJUR', 'ADMIN']),
   async (req, res, next) => {
     try {
       const result = await deleteAnnouncement(req);
