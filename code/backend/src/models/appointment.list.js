@@ -57,6 +57,9 @@ async function listAppointment(args) {
           },
         },
       },
+      orderBy: {
+        createDate: 'desc',
+      },
     });
 
     const payload = appointsments;
