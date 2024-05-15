@@ -1,0 +1,40 @@
+import { Chip, useTheme } from 'react-native-paper';
+
+export default function AppointmentStatusChip({ data }) {
+  const theme = useTheme();
+
+  console.log(data.toLowerCase());
+
+  let config;
+  switch (data) {
+    case 'PENDING':
+      config = { backgroundColor: '#E5E800', text: data };
+      break;
+    case 'REJECTED':
+      config = {
+        backgroundColor: theme.colors.error,
+        text: data,
+      };
+      break;
+    case 'ACCEPTED':
+      config = { backgroundColor: '#51AC83', text: data };
+      break;
+    case 'RESCHEDULE':
+      config = { backgroundColor: '#E5E800', text: data };
+      break;
+    default:
+      config = { backgroundColor: '#E5E800', text: data };
+      break;
+  }
+
+  return (
+    <Chip
+      style={{
+        backgroundColor: config.backgroundColor,
+        alignSelf: 'flex-start',
+      }}
+    >
+      {config.text}
+    </Chip>
+  );
+}

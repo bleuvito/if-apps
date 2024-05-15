@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
 import AppointmentDetailsText from '../../../components/appointment/AppointmentDetailsText';
+import AppointmentStatusChip from '../../../components/appointment/AppointmentStatusChip';
 import { getTimeDuration } from '../../../helpers/utils';
 import { useSession } from '../../../providers/SessionProvider';
 
@@ -12,6 +13,7 @@ export default function AppointmentDetailsScreen() {
   const { appointmentId } = useLocalSearchParams();
   const [appointment, setAppointment] = useState({
     date: '',
+    status: '',
     topic: '',
     organizer: {
       name: '',
@@ -21,6 +23,8 @@ export default function AppointmentDetailsScreen() {
     },
     startTime: new Date(),
     endTime: new Date(),
+    createDate: new Date(),
+    modifiedDate: new Date(),
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,7 +46,7 @@ export default function AppointmentDetailsScreen() {
   };
 
   useEffect(() => {
-    const appointment = getAppointDetails();
+    getAppointDetails();
   }, []);
 
   if (isLoading) {
@@ -53,16 +57,17 @@ export default function AppointmentDetailsScreen() {
     );
   }
 
-  const { date, topic, organizer, participant, startTime, endTime } =
+  const { date, status, topic, organizer, participant, startTime, endTime } =
     appointment;
   return (
-    <View style={[styles.screen, styles.debug]}>
+    <View style={[styles.screen]}>
       <Text
         variant='headlineLarge'
         style={styles.topic}
       >
         {topic}
       </Text>
+      <AppointmentStatusChip data={status} />
       <AppointmentDetailsText
         title='Organizer'
         body={organizer.name}

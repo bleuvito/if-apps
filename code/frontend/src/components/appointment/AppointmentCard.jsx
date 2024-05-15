@@ -1,13 +1,24 @@
 import { A } from '@expo/html-elements';
 import { router } from 'expo-router';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
-import { Button, Card, Text } from 'react-native-paper';
+import { Button, Card, Chip, Text } from 'react-native-paper';
 import { getTimeDuration } from '../../helpers/utils';
+import AppointmentStatusChip from './AppointmentStatusChip';
 import LeftCalendarComponent from './LeftCalendarIconComponent';
 
 export default function AppointmentCard({ appointment }) {
-  const { id, date, topic, startTime, endTime, organizer, participant } =
-    appointment;
+  const {
+    id,
+    status,
+    date,
+    topic,
+    startTime,
+    endTime,
+    organizer,
+    participant,
+    createDate,
+    modifiedDate,
+  } = appointment;
 
   return (
     <Card onPress={() => router.push(`appointment/${id}`)}>
@@ -15,6 +26,7 @@ export default function AppointmentCard({ appointment }) {
         <View style={styles.container}>
           <LeftCalendarComponent date={date} />
           <View style={styles.text}>
+            <AppointmentStatusChip data={status} />
             <Text variant='titleLarge'>{topic}</Text>
             <View>
               <Text>{getTimeDuration(startTime, endTime)}</Text>
