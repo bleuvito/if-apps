@@ -129,6 +129,10 @@ export const drawerItem = {
     label: 'Tag',
     route: 'tag',
   },
+  schedule: {
+    label: 'My ',
+    route: 'tag',
+  },
   signOut: {
     label: 'Sign out',
     route: '/',

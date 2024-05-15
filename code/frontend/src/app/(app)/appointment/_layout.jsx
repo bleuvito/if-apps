@@ -2,6 +2,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Stack } from 'expo-router';
 
 import AppHeader from '../../../components/AppHeader';
+import { AppointmentProvider } from '../../../providers/AppointmentProvider';
 
 export default function Layout() {
   return (
@@ -11,6 +12,7 @@ export default function Layout() {
           header: (props) => <AppHeader {...props} />,
         }}
       >
+        {/* <AppointmentProvider> */}
         <Stack.Screen
           name='index'
           options={{
@@ -18,6 +20,7 @@ export default function Layout() {
             headerTitle: 'Appointment',
           }}
         />
+        {/* </AppointmentProvider> */}
         <Stack.Screen
           name='create'
           options={{
