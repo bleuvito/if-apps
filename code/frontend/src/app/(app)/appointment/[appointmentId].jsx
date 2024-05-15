@@ -10,7 +10,18 @@ import { useSession } from '../../../providers/SessionProvider';
 export default function AppointmentDetailsScreen() {
   const { session } = useSession();
   const { appointmentId } = useLocalSearchParams();
-  const [appointment, setAppointment] = useState({});
+  const [appointment, setAppointment] = useState({
+    date: '',
+    topic: '',
+    organizer: {
+      name: '',
+    },
+    participant: {
+      name: '',
+    },
+    startTime: new Date(),
+    endTime: new Date(),
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   const getAppointDetails = async () => {
@@ -26,12 +37,12 @@ export default function AppointmentDetailsScreen() {
     } catch (error) {
       console.error('Error getting appointment details: ', error);
     }
+
     setIsLoading(false);
   };
 
   useEffect(() => {
     const appointment = getAppointDetails();
-    setAppointment(appointment);
   }, []);
 
   if (isLoading) {
@@ -44,7 +55,6 @@ export default function AppointmentDetailsScreen() {
 
   const { date, topic, organizer, participant, startTime, endTime } =
     appointment;
-
   return (
     <View style={[styles.screen, styles.debug]}>
       <Text
