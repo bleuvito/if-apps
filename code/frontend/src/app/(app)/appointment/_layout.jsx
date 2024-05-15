@@ -25,7 +25,7 @@ export default function Layout() {
         />
         <Stack.Screen
           name='[appointmentId]'
-          options={{ title: null }}
+          options={{ headerShown: false }}
         />
       </Stack>
     </BottomSheetModalProvider>

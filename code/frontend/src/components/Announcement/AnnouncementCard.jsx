@@ -13,7 +13,7 @@ export default function AnnouncementCard({ announcement, isRead }) {
     author: { name },
     isPinned,
     subject,
-    bodies: [{ createDate, snippet }],
+    bodies: [{ createdAt, snippet }],
     tags,
   } = announcement;
 
@@ -23,7 +23,7 @@ export default function AnnouncementCard({ announcement, isRead }) {
       <Card.Title
         title={subject}
         titleVariant='titleLarge'
-        subtitle={createDate}
+        subtitle={createdAt}
         subtitleVariant='bodySmall'
         right={(props) => {
           return isPinned ? (

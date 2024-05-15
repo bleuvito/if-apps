@@ -16,11 +16,11 @@ export default function AppointmentTimeField({ title, value, onChange }) {
   }, [setDialogVisible]);
 
   const handleConfirm = (hour, minute) => {
-    // const date = new Date();
-    // date.setHours(hour);
-    // date.setMinutes(minute);
-    // onChange(date);
-    onChange(`${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`);
+    const date = new Date();
+    date.setHours(hour);
+    date.setMinutes(minute);
+    onChange(date);
+    // onChange(`${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`);
     setDialogVisible(false);
   };
 
@@ -38,7 +38,7 @@ export default function AppointmentTimeField({ title, value, onChange }) {
       <TextInput
         editable={false}
         mode='outlined'
-        value={value}
+        value={value && formatTime(value)}
         right={
           <TextInput.Icon
             icon='clock-outline'

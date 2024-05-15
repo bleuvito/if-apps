@@ -61,9 +61,9 @@ const getTimeString = (date) => {
   return `${hour}:${minute}`;
 };
 
-const getTimeDuration = (startTime, endTime) => {
-  return `${getTimeString(new Date(startTime))}-${getTimeString(
-    new Date(endTime)
+const getTimeDuration = (startDateTime, endDateTime) => {
+  return `${getTimeString(new Date(startDateTime))}-${getTimeString(
+    new Date(endDateTime)
   )}`;
 };
 

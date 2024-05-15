@@ -8,12 +8,14 @@ const AuthContext = createContext<{
   session?: string | null;
   isLoading: boolean;
   getRole: () => string | null;
+  getUserId: () => string | null;
 }>({
   signIn: () => null,
   signOut: () => null,
   session: null,
   isLoading: false,
   getRole: () => null,
+  getUserId: () => null,
 });
 
 export function useSession() {
@@ -26,9 +28,9 @@ export function SessionProvider(props: PropsWithChildren) {
   return (
     <AuthContext.Provider
       value={{
-        signIn: (token: string) => {
+        signIn: async (token: string) => {
           try {
-            setSession(token);
+            await setSession(token);
           } catch (error: any) {
             console.error(error.message);
           }
@@ -50,6 +52,20 @@ export function SessionProvider(props: PropsWithChildren) {
             return role;
           } catch (error) {
             console.error('Error getting role:', error);
+          }
+        },
+        getUserId() {
+          try {
+            const {
+              user: { id },
+            } = JWT.decode(
+              session,
+              `LK20+/B?Ey-r%4:F9<-A+,!CHxp4zmVG_~$_Lih5A!r^,CXJ`
+            );
+
+            return id;
+          } catch (error) {
+            console.error('Error getting user id:', error);
           }
         },
       }}

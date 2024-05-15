@@ -29,15 +29,10 @@ export default function SignInWithGoogleButton({ handleError }) {
       flow: 'auth-code',
       scope: scopes.join(' '),
       onSuccess: async ({ code }) => {
-        const { success, errorCode, message, data } = await backendAuth(
-          code,
-          'web'
-        );
+        const data = await backendAuth(code, 'web');
 
-        if (success) {
-          signIn(data);
-          router.replace('/');
-        }
+        signIn(data);
+        router.replace('/');
       },
       onError: ({ error, error_description }) => {
         console.error('Error authenticating user: ', error);
@@ -66,15 +61,10 @@ export default function SignInWithGoogleButton({ handleError }) {
 
         const { serverAuthCode } = await GoogleSignin.signIn();
 
-        const { success, errorCode, message, data } = await backendAuth(
-          serverAuthCode,
-          'android'
-        );
+        const data = await backendAuth(serverAuthCode, 'android');
 
-        if (success) {
-          signIn(data);
-          router.replace('/');
-        }
+        signIn(data);
+        router.replace('/');
       } catch (error) {
         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
           handleError('Sign in is cancelled by the user');

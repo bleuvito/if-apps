@@ -2,14 +2,13 @@ import axios from 'axios';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 
-import { Text } from 'react-native-paper';
+import { ActivityIndicator, Text } from 'react-native-paper';
 import AnnouncementForm from '../../../../components/announcement/AnnouncementForm';
 import { createAnnouncementFormData } from '../../../../helpers/utils';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function AnnouncementEditScreen() {
   const { announcementId } = useLocalSearchParams();
-  console.log('announ', announcementId);
   const { session } = useSession();
   const [defaultValues, setDefaultValues] = useState({
     recipient: '',
@@ -26,7 +25,7 @@ export default function AnnouncementEditScreen() {
 
     const putUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
     try {
-      const { data } = await axios.put(putUri, form, {
+      const data = await axios.put(putUri, form, {
         headers: {
           Authorization: `Bearer ${session}`,
           'Content-Type': 'multipart/form-data',
@@ -42,22 +41,18 @@ export default function AnnouncementEditScreen() {
 
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
     try {
-      const {
-        data: {
-          data: { announcement },
-        },
-      } = await axios.get(getUri, {
+      const { data } = await axios.get(getUri, {
         headers: { Authorization: `Bearer ${session}` },
       });
 
       setDefaultValues({
         ...defaultValues,
-        recipient: announcement.recipient,
-        subject: announcement.subject,
-        pin: announcement.isPinned,
+        recipient: data.recipient,
+        subject: data.subject,
+        pin: data.isPinned,
       });
 
-      setDefaultTags(announcement.tags);
+      setDefaultTags(data.tags);
     } catch (error) {
       console.error('Error fetching data in announcement\\edit.jsx: ', error);
     }
@@ -70,7 +65,7 @@ export default function AnnouncementEditScreen() {
   }, []);
 
   if (isLoading) {
-    return <Text>Is Loading...</Text>;
+    return <ActivityIndicator size='large' />;
   }
 
   return (

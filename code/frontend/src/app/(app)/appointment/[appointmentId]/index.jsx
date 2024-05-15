@@ -1,15 +1,17 @@
 import axios from 'axios';
-import { useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
-import AppointmentDetailsText from '../../../components/appointment/AppointmentDetailsText';
-import AppointmentStatusChip from '../../../components/appointment/AppointmentStatusChip';
-import { getTimeDuration } from '../../../helpers/utils';
-import { useSession } from '../../../providers/SessionProvider';
+
+import AppointmentDetailsHeaderRight from '../../../../components/appointment/AppointmentDetailsHeaderRight';
+import AppointmentDetailsText from '../../../../components/appointment/AppointmentDetailsText';
+import AppointmentStatusChip from '../../../../components/appointment/AppointmentStatusChip';
+import { getTimeDuration } from '../../../../helpers/utils';
+import { useSession } from '../../../../providers/SessionProvider';
 
 export default function AppointmentDetailsScreen() {
-  const { session } = useSession();
+  const { session, getUserId } = useSession();
   const { appointmentId } = useLocalSearchParams();
   const [appointment, setAppointment] = useState({
     date: '',
@@ -21,10 +23,10 @@ export default function AppointmentDetailsScreen() {
     participant: {
       name: '',
     },
-    startTime: new Date(),
-    endTime: new Date(),
-    createDate: new Date(),
-    modifiedDate: new Date(),
+    startDateTime: new Date(),
+    endDateTime: new Date(),
+    createdAt: new Date(),
+    updateAt: new Date(),
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,6 +34,7 @@ export default function AppointmentDetailsScreen() {
     setIsLoading(true);
 
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
+
     try {
       const { data } = await axios.get(getUri, {
         headers: { Authorization: `Bearer ${session}` },
@@ -49,6 +52,19 @@ export default function AppointmentDetailsScreen() {
     getAppointDetails();
   }, []);
 
+  const navigation = useNavigation();
+  const userId = getUserId();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return organizer.id !== userId ? (
+          <AppointmentDetailsHeaderRight />
+        ) : null;
+      },
+    });
+  }, [navigation]);
+
   if (isLoading) {
     return (
       <View style={{ flex: 1, padding: 32 }}>
@@ -57,8 +73,15 @@ export default function AppointmentDetailsScreen() {
     );
   }
 
-  const { date, status, topic, organizer, participant, startTime, endTime } =
-    appointment;
+  const {
+    date,
+    status,
+    topic,
+    organizer,
+    participant,
+    startDateTime,
+    endDateTime,
+  } = appointment;
   return (
     <View style={[styles.screen]}>
       <Text
@@ -78,7 +101,7 @@ export default function AppointmentDetailsScreen() {
       />
       <AppointmentDetailsText
         title='Time'
-        body={getTimeDuration(startTime, endTime)}
+        body={getTimeDuration(startDateTime, endDateTime)}
       />
       <AppointmentDetailsText
         title='Place'

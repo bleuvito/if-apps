@@ -12,7 +12,14 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import { Button, Chip, Dialog, Portal, Text } from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Button,
+  Chip,
+  Dialog,
+  Portal,
+  Text,
+} from 'react-native-paper';
 import RenderHTML from 'react-native-render-html';
 
 import AnnouncementDetailsHeaderRight from '../../../../components/announcement/AnnouncementDetailsHeaderRight';
@@ -23,7 +30,7 @@ export default function AnnouncementDetailScreen() {
   const [visible, setVisible] = useState(false);
   const [announcement, setAnnouncement] = useState({
     author: '',
-    createDate: '',
+    createdAt: '',
     subject: '',
     body: '',
     attachments: [],
@@ -55,11 +62,7 @@ export default function AnnouncementDetailScreen() {
     setIsLoading(true);
 
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
-    const {
-      data: {
-        data: { announcement },
-      },
-    } = await axios.get(getUri, {
+    const { data } = await axios.get(getUri, {
       headers: {
         Authorization: `Bearer ${session}`,
       },
@@ -69,12 +72,12 @@ export default function AnnouncementDetailScreen() {
       author,
       isPinned,
       subject,
-      bodies: [{ createDate, body, attachments }],
+      bodies: [{ createdAt, body, attachments }],
       tags,
-    } = announcement;
+    } = data;
     setAnnouncement({
       author,
-      createDate,
+      createdAt,
       subject,
       body,
       attachments,
@@ -100,8 +103,6 @@ export default function AnnouncementDetailScreen() {
       const response = await axios.delete(deleteUri, {
         headers: { Authorization: `Bearer ${session}` },
       });
-
-      console.log(response);
     } catch (error) {
       console.error('Error deleting announcement: ', response);
     }
@@ -109,64 +110,62 @@ export default function AnnouncementDetailScreen() {
 
   const role = getRole();
 
+  if (isLoading) {
+    return <ActivityIndicator size='large' />;
+  }
+
   return (
     <ScrollView>
-      {isLoading ? (
-        <Text>Is Loading...</Text>
-      ) : (
-        <>
-          <View style={styles.container}>
-            <View>
-              <Text
-                variant='headlineLarge'
-                style={styles.title}
+      <View style={styles.container}>
+        <View>
+          <Text
+            variant='headlineLarge'
+            style={styles.title}
+          >
+            {announcement.subject}
+          </Text>
+          <Text>{announcement.createdAt}</Text>
+        </View>
+        <RenderHTML
+          contentWidth={width}
+          source={{ html: announcement.body }}
+        />
+        <View style={styles.attachmentContainer}>
+          <Text variant='titleMedium'>Lampiran</Text>
+          <View style={styles.chipContainer}>
+            {announcement.attachments.map((attachment, index) => (
+              <Chip
+                key={index}
+                icon='file'
               >
-                {announcement.subject}
-              </Text>
-              <Text>{announcement.createDate}</Text>
-            </View>
-            <RenderHTML
-              contentWidth={width}
-              source={{ html: announcement.body }}
-            />
-            <View style={styles.attachmentContainer}>
-              <Text variant='titleMedium'>Lampiran</Text>
-              <View style={styles.chipContainer}>
-                {announcement.attachments.map((attachment, index) => (
-                  <Chip
-                    key={index}
-                    icon='file'
-                  >
-                    <A href={attachment.webViewLink}>{attachment.name}</A>
-                  </Chip>
-                ))}
-              </View>
-            </View>
-            <View style={styles.attachmentContainer}>
-              <Text variant='titleMedium'>Tag</Text>
-              <View style={styles.chipContainer}>
-                {announcement.tags.map((tag, index) => (
-                  <Chip key={index}>{tag.name}</Chip>
-                ))}
-              </View>
-            </View>
+                <A href={attachment.webViewLink}>{attachment.name}</A>
+              </Chip>
+            ))}
           </View>
-          <Portal>
-            <Dialog
-              visible={visible}
-              onDismiss={hideDialog}
-            >
-              <Dialog.Title>Delete announcement?</Dialog.Title>
-              <Dialog.Actions>
-                <Button onPress={hideDialog}>Cancel</Button>
-              </Dialog.Actions>
-              <Dialog.Actions>
-                <Button onPress={handleDeleteAnnouncement}>Delete</Button>
-              </Dialog.Actions>
-            </Dialog>
-          </Portal>
-        </>
-      )}
+        </View>
+        <View style={styles.attachmentContainer}>
+          <Text variant='titleMedium'>Tag</Text>
+          <View style={styles.chipContainer}>
+            {announcement.tags.map((tag, index) => (
+              <Chip key={index}>{tag.name}</Chip>
+            ))}
+          </View>
+        </View>
+      </View>
+      <Portal>
+        <Dialog
+          visible={visible}
+          onDismiss={hideDialog}
+        >
+          <Dialog.Title>Delete announcement?</Dialog.Title>
+          <Dialog.Actions>
+            <Button onPress={hideDialog}>Cancel</Button>
+          </Dialog.Actions>
+          <Dialog.Actions>
+            <Button onPress={handleDeleteAnnouncement}>Delete</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </ScrollView>
   );
 }

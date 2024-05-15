@@ -8,7 +8,7 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import { Chip, Text } from 'react-native-paper';
+import { ActivityIndicator, Chip, Text } from 'react-native-paper';
 import RenderHTML from 'react-native-render-html';
 
 import { useSession } from '../../../../../providers/SessionProvider';
@@ -19,7 +19,7 @@ export default function AnnouncementDetailScreen() {
   const { width } = useWindowDimensions();
   const [announcementHistoryDetails, setAnnouncementHistoryDetails] = useState({
     author: '',
-    createDate: '',
+    createdAt: '',
     subject: '',
     body: '',
     attachments: [],
@@ -30,9 +30,7 @@ export default function AnnouncementDetailScreen() {
     setIsLoading(true);
 
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}/history/${historyId}`;
-    const {
-      data: { data: announcementHistoryDetails },
-    } = await axios.get(getUri, {
+    const { data: announcementHistoryDetails } = await axios.get(getUri, {
       headers: {
         Authorization: `Bearer ${session}`,
       },
@@ -41,11 +39,11 @@ export default function AnnouncementDetailScreen() {
     const {
       author,
       subject,
-      bodies: [{ createDate, body, attachments }],
+      bodies: [{ createdAt, body, attachments }],
     } = announcementHistoryDetails;
     setAnnouncementHistoryDetails({
       author: author.name,
-      createDate,
+      createdAt,
       subject,
       body,
       attachments,
@@ -59,7 +57,7 @@ export default function AnnouncementDetailScreen() {
   }, []);
 
   if (isLoading) {
-    return <Text>Is Loading...</Text>;
+    return <ActivityIndicator size='large' />;
   }
 
   return (
@@ -72,7 +70,7 @@ export default function AnnouncementDetailScreen() {
           >
             {announcementHistoryDetails.subject}
           </Text>
-          <Text>{announcementHistoryDetails.createDate}</Text>
+          <Text>{announcementHistoryDetails.createdAt}</Text>
         </View>
         <RenderHTML
           contentWidth={width}

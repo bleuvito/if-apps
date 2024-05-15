@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Redirect, router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { FAB, Text } from 'react-native-paper';
+import { ActivityIndicator, FAB, Text } from 'react-native-paper';
 
 import TagCard from '../../../components/TagCard';
 import { useSession } from '../../../providers/SessionProvider';
@@ -22,12 +22,10 @@ export default function TagScreen() {
   async function getTags() {
     setIsLoading(true);
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag`;
-    const {
-      data: { data },
-    } = await axios.get(getUri, {
+    const { data } = await axios.get(getUri, {
       headers: { Authorization: `Bearer ${session}` },
     });
-    setTags(data.tags);
+    setTags(data);
     setIsLoading(false);
   }
 
@@ -44,7 +42,7 @@ export default function TagScreen() {
   }
 
   if (isLoading) {
-    return <Text>Loading data...</Text>;
+    return <ActivityIndicator size='large' />;
   }
 
   return (

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Card, Icon, Text } from 'react-native-paper';
+import { ActivityIndicator, Card, Icon, Text } from 'react-native-paper';
 import { useSession } from '../../../../../providers/SessionProvider';
 
 export default function AnnouncementHistoryScreen() {
@@ -16,12 +16,10 @@ export default function AnnouncementHistoryScreen() {
     setIsLoading(true);
 
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}/history`;
-    const {
-      data: { data: response },
-    } = await axios.get(getUri, {
+    const { data } = await axios.get(getUri, {
       headers: { Authorization: `Bearer ${session}` },
     });
-    const [{ bodies: announcementHistory }] = response;
+    const [{ bodies: announcementHistory }] = data;
     setAnnouncementHistory(announcementHistory);
 
     setIsLoading(false);
@@ -34,7 +32,7 @@ export default function AnnouncementHistoryScreen() {
   );
 
   if (isLoading) {
-    return <Text>Is Loading...</Text>;
+    return <ActivityIndicator size='large' />;
   }
 
   return (
@@ -51,7 +49,7 @@ export default function AnnouncementHistoryScreen() {
               }
             >
               <Card.Title
-                subtitle={item.createDate}
+                subtitle={item.createdAt}
                 subtitleVariant='bodySmall'
               />
               <Card.Content>

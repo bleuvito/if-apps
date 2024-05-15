@@ -2,7 +2,7 @@ import axios from 'axios';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { FAB } from 'react-native-paper';
+import { ActivityIndicator, FAB } from 'react-native-paper';
 
 import AnnouncementCard from '../../../components/announcement/AnnouncementCard';
 import { useSession } from '../../../providers/SessionProvider';
@@ -15,15 +15,13 @@ export default function AnnouncementScreen() {
 
   async function getAnnouncements() {
     setIsLoading(true);
+
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement`;
-    const {
-      data: { data },
-    } = await axios.get(getUri, {
+    const { data } = await axios.get(getUri, {
       headers: { Authorization: `Bearer ${session}` },
     });
-    const announcements = JSON.parse(data).announcements;
+    setAnnouncements(data);
 
-    setAnnouncements(announcements);
     setIsLoading(false);
   }
 
@@ -34,6 +32,11 @@ export default function AnnouncementScreen() {
   );
 
   const role = getRole();
+
+  if (isLoading) {
+    return <ActivityIndicator size='large' />;
+  }
+
   return (
     <>
       <FlatList

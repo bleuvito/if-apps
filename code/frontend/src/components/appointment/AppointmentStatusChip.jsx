@@ -3,14 +3,12 @@ import { Chip, useTheme } from 'react-native-paper';
 export default function AppointmentStatusChip({ data }) {
   const theme = useTheme();
 
-  console.log(data.toLowerCase());
-
   let config;
   switch (data) {
     case 'PENDING':
       config = { backgroundColor: '#E5E800', text: data };
       break;
-    case 'REJECTED':
+    case 'DECLINED':
       config = {
         backgroundColor: theme.colors.error,
         text: data,
