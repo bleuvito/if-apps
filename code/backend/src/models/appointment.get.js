@@ -15,6 +15,7 @@ async function getAppointment(args) {
       },
       select: {
         topic: true,
+        status: true,
         organizer: {
           select: {
             id: true,

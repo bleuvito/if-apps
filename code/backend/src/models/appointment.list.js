@@ -42,6 +42,7 @@ async function listAppointment(args) {
       where: generateWhere(requestQuery.type, user),
       select: {
         id: true,
+        status: true,
         topic: true,
         date: true,
         startTime: true,
@@ -56,6 +57,8 @@ async function listAppointment(args) {
             name: true,
           },
         },
+        createDate: true,
+        modifiedDate: true,
       },
       orderBy: {
         createDate: 'desc',
