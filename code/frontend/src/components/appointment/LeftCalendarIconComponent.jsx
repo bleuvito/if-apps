@@ -15,9 +15,6 @@ export default function LeftCalendarComponent({ date }) {
     <View
       style={[
         {
-          width: 80,
-          height: 80,
-          borderRadius: 8,
           backgroundColor: theme.colors.onPrimary,
         },
         styles.container,
@@ -75,7 +72,9 @@ export default function LeftCalendarComponent({ date }) {
 
 const styles = StyleSheet.create({
   container: {
-    // justifyContent: 'center',
+    width: 80,
+    height: 80,
+    borderRadius: 8,
     alignItems: 'center',
   },
   text: {

@@ -50,4 +50,21 @@ function createAnnouncementFormData(data) {
   return form;
 }
 
-export { createAnnouncementFormData };
+const convertToString = (number) => {
+  return number.toString().padStart(2, '0');
+};
+
+const getTimeString = (date) => {
+  const hour = convertToString(date.getHours());
+  const minute = convertToString(date.getMinutes());
+
+  return `${hour}:${minute}`;
+};
+
+const getTimeDuration = (startTime, endTime) => {
+  return `${getTimeString(new Date(startTime))}-${getTimeString(
+    new Date(endTime)
+  )}`;
+};
+
+export { createAnnouncementFormData, getTimeDuration };
