@@ -35,7 +35,7 @@ enum LecturerScheduleType {
 enum AppointmentStatus {
   PENDING
   ACCEPTED
-  REJECTED
+  DECLINED
   RESCHEDULED
 }
 
@@ -66,8 +66,8 @@ model AnnouncementHeader {
   recipient     String
   subject       String
   isPinned      Boolean @default(false)
-  createDate    DateTime @default(now())
-  modifiedDate  DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
   bodies        AnnouncementBody[]
   tags          AnnouncementTag[]
   
@@ -80,7 +80,7 @@ model AnnouncementBody {
   gmailId       String
   body          String
   snippet       String
-  createDate    DateTime @default(now())
+  createdAt     DateTime @default(now())
   isLatest      Boolean @default(true)
   attachments   AnnoucementAttachment[]
 
@@ -113,15 +113,16 @@ model AnnoucementAttachment {
 
 model Appointment {
   id                      String @id @unique @default(uuid())
+  gCalendarId             String
   topic                   String
-  date                    DateTime
-  startTime               DateTime
-  endTime                 DateTime
+  // date                 DateTime
+  startDateTime           DateTime
+  endDateTime             DateTime
   isParticipantAttending  Boolean @default(false)
   type                    LecturerScheduleType @default(CONSULTATION)
   status                  AppointmentStatus @default(PENDING)
-  createDate              DateTime @default(now())
-  modifiedDate            DateTime @default(now())
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @default(now())
 
   organizerId             String
   organizer               User @relation("organizer", fields: [organizerId], references: [id])
@@ -132,11 +133,11 @@ model Appointment {
 model LecturerSchedule {
   id                String @id @unique @default(uuid())
   day               Day
-  startTime         DateTime
-  endTime           DateTime
+  startDateTime     DateTime
+  endDateTime       DateTime
   type              LecturerScheduleType
   createdDateTime   DateTime @default(now())
-  modifiedDateTime  DateTime @default(now())
+  updatedAtTime  DateTime @default(now())
   
   lecturerId        String
   lecturer          User @relation(fields: [lecturerId], references: [id], onDelete: Cascade)

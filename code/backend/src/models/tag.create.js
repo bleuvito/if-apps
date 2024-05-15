@@ -22,10 +22,7 @@ async function createTag(args) {
       },
     });
 
-    const payload = {
-      tag,
-    };
-
+    const payload = tag;
     return payload;
   } catch (error) {
     throw new Error('Tag already exist', { type: 'E_EXIST' });

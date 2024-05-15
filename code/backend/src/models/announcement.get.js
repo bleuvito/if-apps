@@ -15,7 +15,7 @@ async function getAnnouncement(args) {
         subject: true,
         bodies: {
           select: {
-            createDate: true,
+            createdAt: true,
             body: true,
             attachments: {
               select: {
@@ -47,10 +47,7 @@ async function getAnnouncement(args) {
       },
     });
 
-    const payload = {
-      announcement,
-    };
-
+    const payload = announcement;
     return payload;
   } catch (error) {
     throw new Error(error);

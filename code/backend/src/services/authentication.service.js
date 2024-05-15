@@ -7,9 +7,7 @@ const AuthenticationService = express.Router();
 AuthenticationService.post('/', async (req, res, next) => {
   try {
     const result = await authenticate(req.body);
-    res.json(
-      createResponse(undefined, 'User authentication successful', result)
-    );
+    res.json(result);
   } catch (error) {
     next(error);
   }

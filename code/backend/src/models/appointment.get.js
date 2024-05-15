@@ -29,14 +29,10 @@ async function getAppointment(args) {
           },
         },
         date: true,
-        startTime: true,
-        endTime: true,
+        startDateTime: true,
+        endDateTime: true,
       },
     });
-
-    console.log(appointment.organizer.id);
-    console.log(appointment.participant.id);
-    console.log(user.id);
 
     if (
       appointment.organizer.id !== user.id &&

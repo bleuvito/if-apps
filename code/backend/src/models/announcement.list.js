@@ -11,7 +11,7 @@ async function listAnnouncement() {
         subject: true,
         bodies: {
           select: {
-            createDate: true,
+            createdAt: true,
             snippet: true,
           },
           where: {
@@ -29,13 +29,10 @@ async function listAnnouncement() {
           },
         },
       },
-      orderBy: [{ isPinned: 'desc' }, { modifiedDate: 'desc' }],
+      orderBy: [{ isPinned: 'desc' }, { updatedAt: 'desc' }],
     });
 
-    const payload = {
-      announcements,
-    };
-
+    const payload = announcements;
     return payload;
   } catch (error) {
     throw new Error(error);

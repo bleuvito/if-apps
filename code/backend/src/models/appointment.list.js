@@ -44,9 +44,8 @@ async function listAppointment(args) {
         id: true,
         status: true,
         topic: true,
-        date: true,
-        startTime: true,
-        endTime: true,
+        startDateTime: true,
+        endDateTime: true,
         organizer: {
           select: {
             name: true,
@@ -57,11 +56,11 @@ async function listAppointment(args) {
             name: true,
           },
         },
-        createDate: true,
-        modifiedDate: true,
+        createdAt: true,
+        updatedAt: true,
       },
       orderBy: {
-        createDate: 'desc',
+        createdAt: 'desc',
       },
     });
 

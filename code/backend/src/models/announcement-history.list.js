@@ -13,14 +13,14 @@ async function listAnnouncementHistory(args) {
         bodies: {
           select: {
             id: true,
-            createDate: true,
+            createdAt: true,
             snippet: true,
           },
           where: {
             isLatest: false,
           },
           orderBy: {
-            createDate: 'desc',
+            createdAt: 'desc',
           },
         },
       },

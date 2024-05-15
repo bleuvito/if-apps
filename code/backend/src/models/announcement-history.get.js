@@ -17,7 +17,7 @@ async function getAnnouncementHistoryDetails(args) {
           subject: true,
           bodies: {
             select: {
-              createDate: true,
+              createdAt: true,
               body: true,
               attachments: true,
             },

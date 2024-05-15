@@ -106,14 +106,11 @@ async function putAnnouncement(args) {
             },
           },
         },
-        modifiedDate: Date.now(),
+        updatedAt: new Date(),
       },
     });
 
-    const payload = {
-      announcement,
-    };
-
+    const payload = announcement;
     return payload;
   } catch (error) {
     throw new Error(error);

@@ -33,4 +33,12 @@ AppointmentService.get('/:id', verify('all'), async (req, res, next) => {
   }
 });
 
+// AppointmentService.put('/:id', verify('all'), async (req, res, next) => {
+//   try {
+//     const result = await
+//   } catch (error) {
+
+//   }
+// })
+
 export default AppointmentService;

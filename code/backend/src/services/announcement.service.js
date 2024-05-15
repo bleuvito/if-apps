@@ -9,7 +9,6 @@ import { getAnnouncement } from '../models/announcement.get.js';
 import { listAnnouncement } from '../models/announcement.list.js';
 import { putAnnouncement } from '../models/announcement.put.js';
 import { verify } from '../models/authentication.js';
-import { createResponse } from '../utils/createResponse.js';
 import { upload } from '../utils/helpers.js';
 
 const AnnouncementService = express.Router();
@@ -21,13 +20,7 @@ AnnouncementService.post(
   async (req, res, next) => {
     try {
       const result = await createAnnouncement(req);
-      res.json(
-        createResponse(
-          undefined,
-          'Announcement created successfully',
-          JSON.stringify(result)
-        )
-      );
+      res.json(result);
     } catch (error) {
       next(error);
     }
@@ -37,7 +30,7 @@ AnnouncementService.post(
 AnnouncementService.get('/:id', verify('all'), async (req, res, next) => {
   try {
     const result = await getAnnouncement(req);
-    res.json(createResponse(undefined, 'Announcement get successful', result));
+    res.json(result);
   } catch (error) {
     next(error);
   }
@@ -46,13 +39,7 @@ AnnouncementService.get('/:id', verify('all'), async (req, res, next) => {
 AnnouncementService.get('/', verify('all'), async (req, res, next) => {
   try {
     const result = await listAnnouncement();
-    res.json(
-      createResponse(
-        undefined,
-        'Announcement listed successfully',
-        JSON.stringify(result)
-      )
-    );
+    res.json(result);
   } catch (error) {
     next(error);
   }
@@ -65,13 +52,7 @@ AnnouncementService.put(
   async (req, res, next) => {
     try {
       const result = await putAnnouncement(req);
-      res.json(
-        createResponse(
-          undefined,
-          'Announcement edited successfully',
-          JSON.stringify(result)
-        )
-      );
+      res.json(result);
     } catch (error) {
       next(error);
     }
@@ -84,9 +65,7 @@ AnnouncementService.delete(
   async (req, res, next) => {
     try {
       const result = await deleteAnnouncement(req);
-      res.json(
-        createResponse(undefined, 'Announcement deleted successfully', result)
-      );
+      res.json(result);
     } catch (error) {
       next(error);
     }
@@ -99,9 +78,7 @@ AnnouncementService.get(
   async (req, res, next) => {
     try {
       const result = await getAnnouncementHistoryDetails(req);
-      res.json(
-        createResponse(undefined, 'Announcement history get successful', result)
-      );
+      res.json(result);
     } catch (error) {
       next(error);
     }
@@ -114,13 +91,7 @@ AnnouncementService.get(
   async (req, res, next) => {
     try {
       const result = await listAnnouncementHistory(req);
-      res.json(
-        createResponse(
-          undefined,
-          'Announcement history listed successfully',
-          result
-        )
-      );
+      res.json(result);
     } catch (error) {
       next(error);
     }

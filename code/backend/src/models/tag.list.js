@@ -14,9 +14,7 @@ async function listTag() {
       },
     });
 
-    const payload = {
-      tags,
-    };
+    const payload = tags;
 
     return payload;
   } catch (error) {

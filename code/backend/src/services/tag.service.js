@@ -9,7 +9,7 @@ const TagService = express.Router();
 TagService.get('/', verify('all'), async (req, res, next) => {
   try {
     const result = await listTag(req.body);
-    res.json(createResponse(undefined, 'Listing tags successful', result));
+    res.json(result);
   } catch (error) {
     next(error);
   }
@@ -21,13 +21,7 @@ TagService.post(
   async (req, res, next) => {
     try {
       const result = await createTag(req);
-      res.json(
-        createResponse(
-          undefined,
-          'Tag created successfully',
-          JSON.stringify(result)
-        )
-      );
+      res.json(result);
     } catch (error) {
       next(error);
     }

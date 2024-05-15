@@ -79,10 +79,7 @@ async function createAnnouncement(args) {
       },
     });
 
-    const payload = {
-      announcement,
-    };
-
+    const payload = announcement;
     return payload;
   } catch (error) {
     throw new Error(error);
