@@ -37,7 +37,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
   };
 
   const updateAppointmentTime = (date, appointmentTime) => {
-    const day = date.getDay();
+    const day = date.getDate();
     const month = date.getMonth();
     const year = date.getFullYear();
 
@@ -52,11 +52,12 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
     const startDateTime = updateAppointmentTime(data.date, data.startDateTime);
     const endDateTime = updateAppointmentTime(data.date, data.endDateTime);
 
+    delete data.date;
     data = {
       ...data,
       startDateTime,
       endDateTime,
-      selectedParticipant,
+      participant: selectedParticipant,
     };
 
     onSubmit(data);
