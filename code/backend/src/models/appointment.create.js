@@ -31,21 +31,28 @@ async function createAppointment(args) {
     const event = {
       summary: requestBody.topic,
       start: {
-        dateTime: requestBody.startDateTime,
+        dateTime: new Date(requestBody.startDateTime),
         timeZone: 'Asia/Jakarta',
       },
       end: {
-        dateTime: requestBody.endDateTime,
+        dateTime: new Date(requestBody.endDateTime),
         timeZone: 'Asia/Jakarta',
       },
-      attendees: [{ email: participantEmail }],
+      attendees: [{ email: participantEmail, responseStatus: 'accepted' }],
+      sendUpdates: 'all',
     };
 
-    const googleEvent = await createEvent(clientType, refreshToken, event);
+    const { data: googleEvent } = await createEvent(
+      clientType,
+      refreshToken,
+      event
+    );
     console.log('googleEvent: ', googleEvent);
+    console.log('requestbody: ', requestBody);
 
     const result = await prisma.appointment.create({
       data: {
+        gCalendarId: googleEvent.id,
         topic: requestBody.topic,
         date: requestBody.date,
         startDateTime: requestBody.startDateTime,
@@ -57,7 +64,7 @@ async function createAppointment(args) {
         },
         participant: {
           connect: {
-            id: requestBody.selectedParticipant.id,
+            id: requestBody.participant.id,
           },
         },
       },
