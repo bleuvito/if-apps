@@ -26,7 +26,13 @@ export default function AppointmentCard({ appointment }) {
           <LeftCalendarComponent date={startDateTime} />
           <View style={styles.text}>
             <AppointmentStatusChip data={status} />
-            <Text variant='titleLarge'>{topic}</Text>
+            <Text
+              variant='titleLarge'
+              numberOfLines={1}
+              ellipsizeMode='tail'
+            >
+              {topic}
+            </Text>
             <View>
               <Text>{getTimeDuration(startDateTime, endDateTime)}</Text>
               <Text>{organizer.name}</Text>

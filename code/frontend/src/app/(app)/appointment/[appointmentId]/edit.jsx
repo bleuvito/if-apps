@@ -29,7 +29,7 @@ export default function AppointmentEdit() {
     });
     setDefaultValues({
       ...data,
-      date: new Date(data.date),
+      date: new Date(data.startDateTime),
       startDateTime: new Date(data.startDateTime),
       endDateTime: new Date(data.endDateTime),
     });
@@ -48,13 +48,11 @@ export default function AppointmentEdit() {
   const handleSubmit = async (data) => {
     const postUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
     try {
-      console.log(data);
       const { data: response } = await axios.put(postUri, data, {
         headers: {
           Authorization: `Bearer ${session}`,
         },
       });
-      console.log(response);
     } catch (error) {
       console.error('Error creating appointment', error);
     }

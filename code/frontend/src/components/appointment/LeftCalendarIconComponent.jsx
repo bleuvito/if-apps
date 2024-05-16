@@ -4,9 +4,8 @@ import { Text, useTheme } from 'react-native-paper';
 export default function LeftCalendarComponent({ date }) {
   const theme = useTheme();
 
-  console.log(date);
   const parsedDate = new Date(date);
-  const day = parsedDate.getDay();
+  const day = parsedDate.getDate();
   const month = Intl.DateTimeFormat('en-Us', { month: 'short' }).format(
     parsedDate
   );
