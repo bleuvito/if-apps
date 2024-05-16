@@ -19,7 +19,7 @@ async function createAppointment(args) {
       },
       where: {
         id: {
-          equals: user.id,
+          equals: requestBody.participant.id,
         },
       },
     });
@@ -27,6 +27,8 @@ async function createAppointment(args) {
     if (!participantEmail) {
       throw new Error('E_INVALID_VALUE');
     }
+
+    console.log(participantEmail);
 
     const event = {
       summary: requestBody.topic,
@@ -38,7 +40,7 @@ async function createAppointment(args) {
         dateTime: new Date(requestBody.endDateTime),
         timeZone: 'Asia/Jakarta',
       },
-      attendees: [{ email: participantEmail, responseStatus: 'accepted' }],
+      attendees: [{ email: participantEmail, responseStatus: 'needsAction' }],
       sendUpdates: 'all',
     };
 
