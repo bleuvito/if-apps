@@ -3,8 +3,8 @@ import { router } from 'expo-router';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { Button, Card, Chip, Text } from 'react-native-paper';
 import { getTimeDuration } from '../../helpers/utils';
-import AppointmentStatusChip from './AppointmentStatusChip';
 import LeftCalendarComponent from './LeftCalendarIconComponent';
+import AppointmentStatusChip from './StatusChip';
 
 export default function AppointmentCard({ appointment }) {
   const {

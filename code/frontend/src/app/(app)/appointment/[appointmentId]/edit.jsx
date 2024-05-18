@@ -3,7 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text } from 'react-native-paper';
 import { id } from 'react-native-paper-dates';
-import AppointmentForm from '../../../../components/appointment/AppointmentForm';
+import AppointmentForm from '../../../../components/appointment/Form';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function AppointmentEdit() {
@@ -46,9 +46,9 @@ export default function AppointmentEdit() {
   }
 
   const handleSubmit = async (data) => {
-    const postUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
+    const putUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
     try {
-      const { data: response } = await axios.put(postUri, data, {
+      const { data: response } = await axios.put(putUri, data, {
         headers: {
           Authorization: `Bearer ${session}`,
         },

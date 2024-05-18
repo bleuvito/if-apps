@@ -1,5 +1,5 @@
 import axios from 'axios';
-import AppointmentForm from '../../../components/appointment/AppointmentForm';
+import AppointmentForm from '../../../components/appointment/Form';
 import { useSession } from '../../../providers/SessionProvider';
 
 export default function AppointmentCreate() {

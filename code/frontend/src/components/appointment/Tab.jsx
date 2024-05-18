@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
-import AppointmentCard from './AppointmentCard';
+import AppointmentCard from './Card';
 
 export default function AppointmentTab({
   appointments,

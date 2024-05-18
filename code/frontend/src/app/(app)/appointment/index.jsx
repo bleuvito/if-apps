@@ -1,6 +1,11 @@
 import axios from 'axios';
-import { router, useLocalSearchParams, useNavigation } from 'expo-router';
-import { useEffect, useState } from 'react';
+import {
+  router,
+  useFocusEffect,
+  useLocalSearchParams,
+  useNavigation,
+} from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FAB } from 'react-native-paper';
 import {
@@ -9,7 +14,7 @@ import {
   TabsProvider,
   useTabIndex,
 } from 'react-native-paper-tabs';
-import AppointmentTab from '../../../components/appointment/AppointmentTab';
+import AppointmentTab from '../../../components/appointment/Tab';
 import { useSession } from '../../../providers/SessionProvider';
 
 export default function AppointmentScreen() {
@@ -43,9 +48,11 @@ export default function AppointmentScreen() {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    getAppointment();
-  }, [type, search, filter]);
+  useFocusEffect(
+    useCallback(() => {
+      getAppointment();
+    }, [type, search, filter])
+  );
 
   return (
     <TabsProvider

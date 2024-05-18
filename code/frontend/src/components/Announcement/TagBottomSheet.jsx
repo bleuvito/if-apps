@@ -24,12 +24,10 @@ export default function TagBottomSheet({
   async function getTags() {
     setIsLoading(true);
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag`;
-    const {
-      data: { data },
-    } = await axios.get(getUri, {
+    const { data } = await axios.get(getUri, {
       headers: { Authorization: `Bearer ${session}` },
     });
-    setTags(data.tags);
+    setTags(data);
     setIsLoading(false);
   }
 

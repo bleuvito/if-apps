@@ -8,10 +8,11 @@ import axios from 'axios';
 import { useFocusEffect } from 'expo-router';
 import { forwardRef, useCallback, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSession } from '../../providers/SessionProvider';
 import ParticipantCheckbox from './ParticipantCheckbox';
 
-const ParticipantBottomSheet = forwardRef(
+const BottomSheet = forwardRef(
   ({ selectedParticipant, setSelectedParticipant }, ref) => {
     const { session } = useSession();
     const snapPoints = useMemo(() => ['50%', '75%'], []);
@@ -92,4 +93,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ParticipantBottomSheet;
+export default BottomSheet;

@@ -6,10 +6,10 @@ import { Button, Text, TextInput } from 'react-native-paper';
 import { en, id, registerTranslation } from 'react-native-paper-dates';
 
 import { useSession } from '../../providers/SessionProvider';
-import AppointmentDateField from './AppointmentDateField';
-import AppointmentParticipantField from './AppointmentParticipantField';
-import AppointmentTimeField from './AppointmentTimeField';
-import ParticipantBottomSheet from './ParticipantBottomSheet';
+import ParticipantBottomSheet from './BottomSheet';
+import AppointmentDateField from './DateField';
+import AppointmentParticipantField from './ParticipantField';
+import AppointmentTimeField from './TimeField';
 
 export default function AppointmentForm({ defaultValues, onSubmit }) {
   registerTranslation('en', en);

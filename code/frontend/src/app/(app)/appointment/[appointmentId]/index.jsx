@@ -2,11 +2,18 @@ import axios from 'axios';
 import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Text } from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Button,
+  Dialog,
+  Portal,
+  Text,
+} from 'react-native-paper';
 
-import AppointmentDetailsHeaderRight from '../../../../components/appointment/AppointmentDetailsHeaderRight';
-import AppointmentDetailsText from '../../../../components/appointment/AppointmentDetailsText';
-import AppointmentStatusChip from '../../../../components/appointment/AppointmentStatusChip';
+import AppointmentResponseButton from '../../../../components/appointment/BottomButtons';
+import AppointmentDetailsHeaderRight from '../../../../components/appointment/HeaderRight';
+import AppointmentStatusChip from '../../../../components/appointment/StatusChip';
+import AppointmentDetailsText from '../../../../components/appointment/Text';
 import { getTimeDuration } from '../../../../helpers/utils';
 import { useSession } from '../../../../providers/SessionProvider';
 
@@ -29,6 +36,9 @@ export default function AppointmentDetailsScreen() {
     updateAt: new Date(),
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const navigation = useNavigation();
+  const userId = getUserId();
 
   const getAppointDetails = async () => {
     setIsLoading(true);
@@ -48,22 +58,46 @@ export default function AppointmentDetailsScreen() {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    getAppointDetails();
-  }, []);
+  function showDialog() {
+    setVisible(true);
+  }
 
-  const navigation = useNavigation();
-  const userId = getUserId();
+  function hideDialog() {
+    setVisible(false);
+  }
+
+  const handleDeleteAppointment = async () => {
+    const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
+
+    try {
+      const deletedAppointment = await axios.delete(deleteUri, {
+        headers: {
+          Authorization: `Bearer ${session}`,
+        },
+      });
+
+      console.log(deletedAppointment);
+    } catch (error) {
+      console.error('Error deleting appointment: ', error);
+    }
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return organizer.id !== userId ? (
-          <AppointmentDetailsHeaderRight />
+        return appointment?.organizer.id === userId ? (
+          <AppointmentDetailsHeaderRight
+            onPressDelete={showDialog}
+            status={appointment?.status}
+          />
         ) : null;
       },
     });
-  }, [navigation]);
+  }, [navigation, appointment]);
+
+  useEffect(() => {
+    getAppointDetails();
+  }, []);
 
   if (isLoading) {
     return (
@@ -73,40 +107,55 @@ export default function AppointmentDetailsScreen() {
     );
   }
 
-  const {
-    date,
-    status,
-    topic,
-    organizer,
-    participant,
-    startDateTime,
-    endDateTime,
-  } = appointment;
   return (
     <View style={[styles.screen]}>
       <Text
         variant='headlineLarge'
         style={styles.topic}
       >
-        {topic}
+        {appointment?.topic}
       </Text>
-      <AppointmentStatusChip data={status} />
+      <AppointmentStatusChip data={appointment?.status} />
       <AppointmentDetailsText
         title='Organizer'
-        body={organizer.name}
+        body={appointment?.organizer.name}
       />
       <AppointmentDetailsText
         title='Participant'
-        body={participant.name}
+        body={appointment?.participant.name}
       />
       <AppointmentDetailsText
         title='Time'
-        body={getTimeDuration(startDateTime, endDateTime)}
+        body={getTimeDuration(
+          appointment?.startDateTime,
+          appointment?.endDateTime
+        )}
       />
       <AppointmentDetailsText
         title='Place'
         body='John Dow'
       />
+      <View style={styles.actionButton}>
+        <AppointmentResponseButton
+          status={appointment?.status}
+          organizerId={appointment?.organizer.id}
+          userId={userId}
+        />
+      </View>
+      <Portal>
+        <Dialog
+          visible={visible}
+          onDismiss={hideDialog}
+        >
+          <Dialog.Title>Delete announcement?</Dialog.Title>
+          <Dialog.Actions>
+            <Button onPress={hideDialog}>Cancel</Button>
+          </Dialog.Actions>
+          <Dialog.Actions>
+            <Button onPress={handleDeleteAppointment}>Delete</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </View>
   );
 }
@@ -116,6 +165,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     rowGap: 32,
+  },
+  actionButton: {
+    flex: 1,
+    flexDirection: 'row',
   },
   debug: {
     borderWidth: 1,
