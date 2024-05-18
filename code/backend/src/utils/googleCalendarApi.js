@@ -34,4 +34,9 @@ async function putEvent(clientType, refreshToken, gCalendarId, eventData) {
   return updatedGCalendarEvent;
 }
 
+async function deleteEvent(clientType, refreshToken, gCalendarId, eventData) {
+  const oAuth2Client = getReadyOauth2Client(clientType, refreshToken);
+  const calendar = google.calendar({ version: 'v3', auth: oAuth2Client });
+}
+
 export { createEvent, putEvent };

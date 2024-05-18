@@ -29,20 +29,30 @@ async function putAnnouncement(args) {
     });
 
     const event = {
-      summary: requestBody.topic,
-      start: {
-        dateTime: new Date(requestBody.startDateTime),
-        timeZone: 'Asia/Jakarta',
-      },
-      end: {
-        dateTime: new Date(requestBody.endDateTime),
-        timeZone: 'Asia/Jakarta',
-      },
       attendees: [
-        { email: appointment.participant.email, responseStatus: 'needsAction' },
+        {
+          email: appointment.participant.email,
+          responseStatus: requestBody.status.toLowerCase() || 'needsAction',
+        },
       ],
       sendUpdates: 'all',
     };
+    if (requestBody.topic) {
+      event.summary = requestBody.topic;
+    }
+    if (requestBody.startDateTime) {
+      event.start = {
+        dateTime: new Date(requestBody.startDateTime),
+        timeZone: 'Asia/Jakarta',
+      };
+    }
+    if (requestBody.endDateTime) {
+      event.end = {
+        dateTime: new Date(requestBody.endDateTime),
+        timeZone: 'Asia/Jakarta',
+      };
+    }
+    console.log(event);
 
     const updatedGCalendarEvent = await putEvent(
       clientType,
@@ -57,16 +67,6 @@ async function putAnnouncement(args) {
       },
       data: {
         ...requestBody,
-        organizer: {
-          connect: {
-            id: requestBody.organizer.id,
-          },
-        },
-        participant: {
-          connect: {
-            id: requestBody.participant.id,
-          },
-        },
         updatedAt: new Date(),
       },
     });
