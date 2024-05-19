@@ -22,7 +22,7 @@ import {
 } from 'react-native-paper';
 import RenderHTML from 'react-native-render-html';
 
-import AnnouncementDetailsHeaderRight from '../../../../components/announcement/AnnouncementDetailsHeaderRight';
+import AnnouncementDetailsHeaderRight from '../../../../components/announcement/DetailsHeaderRight';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function AnnouncementDetailScreen() {

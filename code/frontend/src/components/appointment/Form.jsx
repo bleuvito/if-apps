@@ -6,15 +6,14 @@ import { Button, Text, TextInput } from 'react-native-paper';
 import { en, id, registerTranslation } from 'react-native-paper-dates';
 
 import { useSession } from '../../providers/SessionProvider';
+import TimeField from '../TimeField';
 import ParticipantBottomSheet from './BottomSheet';
 import AppointmentDateField from './DateField';
 import AppointmentParticipantField from './ParticipantField';
-import AppointmentTimeField from './TimeField';
 
 export default function AppointmentForm({ defaultValues, onSubmit }) {
   registerTranslation('en', en);
 
-  const { session } = useSession();
   const [selectedParticipant, setSelectedParticipant] = useState(
     defaultValues.participant
   );
@@ -31,11 +30,6 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
     bottomSheetModalRef.current?.present();
   }, []);
 
-  const dateToISOString = (date) => {
-    date = new Date(date);
-    return date.toISOString();
-  };
-
   const updateAppointmentTime = (date, appointmentTime) => {
     const day = date.getDate();
     const month = date.getMonth();
@@ -49,14 +43,14 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
   };
 
   async function handleFormSubmit(data) {
-    const startDateTime = updateAppointmentTime(data.date, data.startDateTime);
-    const endDateTime = updateAppointmentTime(data.date, data.endDateTime);
+    const start = updateAppointmentTime(data.date, data.start);
+    const end = updateAppointmentTime(data.date, data.end);
 
     delete data.date;
     data = {
       ...data,
-      startDateTime,
-      endDateTime,
+      start,
+      end,
       participant: selectedParticipant,
     };
 
@@ -75,7 +69,6 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
               <>
                 <Text>Topic</Text>
                 <TextInput
-                  // disabled={editMode}
                   mode='outlined'
                   value={value}
                   onBlur={onBlur}
@@ -89,7 +82,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           name='date'
           defaultValue=''
           control={control}
-          render={({ field: { onChange, onBlur, value } }) => {
+          render={({ field: { onChange, value } }) => {
             return (
               <AppointmentDateField
                 onChange={onChange}
@@ -105,12 +98,12 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           }}
         >
           <Controller
-            name='startDateTime'
-            defaultValue={defaultValues.startDateTime}
+            name='start'
+            defaultValue={defaultValues.start}
             control={control}
-            render={({ field: { onChange, onBlur, value } }) => {
+            render={({ field: { onChange, value } }) => {
               return (
-                <AppointmentTimeField
+                <TimeField
                   title='Time Start'
                   value={value}
                   onChange={onChange}
@@ -119,12 +112,12 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
             }}
           />
           <Controller
-            name='endDateTime'
-            defaultValue={defaultValues.endDateTime}
+            name='end'
+            defaultValue={defaultValues.end}
             control={control}
             render={({ field: { onChange, onBlur, value } }) => {
               return (
-                <AppointmentTimeField
+                <TimeField
                   title='Time End'
                   value={value}
                   onChange={onChange}

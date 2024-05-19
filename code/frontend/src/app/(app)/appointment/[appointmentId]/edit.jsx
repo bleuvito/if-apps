@@ -12,8 +12,8 @@ export default function AppointmentEdit() {
   const [defaultValues, setDefaultValues] = useState({
     topic: '',
     date: new Date(),
-    startDateTime: new Date(),
-    endDateTime: new Date(),
+    start: new Date(),
+    end: new Date(),
     participant: {},
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -29,9 +29,9 @@ export default function AppointmentEdit() {
     });
     setDefaultValues({
       ...data,
-      date: new Date(data.startDateTime),
-      startDateTime: new Date(data.startDateTime),
-      endDateTime: new Date(data.endDateTime),
+      date: new Date(data.start),
+      start: new Date(data.start),
+      end: new Date(data.end),
     });
 
     setIsLoading(false);

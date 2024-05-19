@@ -61,10 +61,8 @@ const getTimeString = (date) => {
   return `${hour}:${minute}`;
 };
 
-const getTimeDuration = (startDateTime, endDateTime) => {
-  return `${getTimeString(new Date(startDateTime))}-${getTimeString(
-    new Date(endDateTime)
-  )}`;
+const getTimeDuration = (start, end) => {
+  return `${getTimeString(new Date(start))}-${getTimeString(new Date(end))}`;
 };
 
 export { createAnnouncementFormData, getTimeDuration };

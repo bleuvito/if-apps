@@ -7,8 +7,8 @@ export default function AppointmentCreate() {
   const defaultValues = {
     topic: '',
     date: '',
-    startDateTime: '',
-    endDateTime: '',
+    start: '',
+    end: '',
     participant: {},
   };
 

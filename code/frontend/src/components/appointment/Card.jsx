@@ -11,8 +11,8 @@ export default function AppointmentCard({ appointment }) {
     id,
     status,
     topic,
-    startDateTime,
-    endDateTime,
+    start,
+    end,
     organizer,
     participant,
     createdAt,
@@ -23,7 +23,7 @@ export default function AppointmentCard({ appointment }) {
     <Card onPress={() => router.push(`appointment/${id}`)}>
       <Card.Content>
         <View style={styles.container}>
-          <LeftCalendarComponent date={startDateTime} />
+          <LeftCalendarComponent date={start} />
           <View style={styles.text}>
             <AppointmentStatusChip data={status} />
             <Text
@@ -34,7 +34,7 @@ export default function AppointmentCard({ appointment }) {
               {topic}
             </Text>
             <View>
-              <Text>{getTimeDuration(startDateTime, endDateTime)}</Text>
+              <Text>{getTimeDuration(start, end)}</Text>
               <Text>{organizer.name}</Text>
               <Text>{participant.name}</Text>
             </View>

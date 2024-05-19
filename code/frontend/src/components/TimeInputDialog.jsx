@@ -20,7 +20,6 @@ export default function TimeInputDialog({ visible, onHide, onConfirm }) {
     onHide(false);
   }, []);
   const handleConfirm = () => {
-    // onConfirm(`${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`);
     onConfirm(hour, minute);
   };
 

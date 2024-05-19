@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import AnnouncementForm from '../../../components/announcement/AnnouncementForm';
+import AnnouncementForm from '../../../components/announcement/Form';
 import { createAnnouncementFormData } from '../../../helpers/utils';
 import { useSession } from '../../../providers/SessionProvider';
 

@@ -1,10 +1,9 @@
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
-import { TimePickerModal } from 'react-native-paper-dates';
 import TimeInputDialog from './TimeInputDialog';
 
-export default function AppointmentTimeField({ title, value, onChange }) {
+export default function TimeField({ title, value, onChange }) {
   const [dialogVisible, setDialogVisible] = useState(false);
 
   const handleShow = useCallback(() => {
@@ -20,7 +19,6 @@ export default function AppointmentTimeField({ title, value, onChange }) {
     date.setHours(hour);
     date.setMinutes(minute);
     onChange(date);
-    // onChange(`${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`);
     setDialogVisible(false);
   };
 

@@ -5,7 +5,7 @@ import {
 } from '@react-navigation/native';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Slot } from 'expo-router';
-import { Platform, StyleSheet, useColorScheme } from 'react-native';
+import { Platform, useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   MD3DarkTheme,

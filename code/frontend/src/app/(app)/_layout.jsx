@@ -1,3 +1,4 @@
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Redirect } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { Text, useTheme } from 'react-native-paper';
@@ -18,44 +19,44 @@ export default function Layout() {
   }
 
   return (
-    <Drawer
-      drawerContent={DrawerContent}
-      screenOptions={{
-        drawerStyle: { backgroundColor: theme.colors.background },
-      }}
-    >
-      <Drawer.Screen
-        name='announcement'
-        options={{
-          headerShown: false,
-          drawerLabel: 'Announcement',
-          title: 'Announcement',
+    <BottomSheetModalProvider>
+      <Drawer
+        drawerContent={DrawerContent}
+        screenOptions={{
+          drawerStyle: { backgroundColor: theme.colors.background },
         }}
-      />
-      <Drawer.Screen
-        name='appointment'
-        options={{
-          headerShown: false,
-          drawerLabel: 'Appointment',
-          title: 'Appointment',
-        }}
-      />
-      <Drawer.Screen
-        name='room'
-        options={{
-          headerShown: false,
-          drawerLabel: 'Room',
-          title: 'Room',
-        }}
-      />
-      <Drawer.Screen
-        name='tag'
-        options={{
-          headerShown: false,
-          drawerLabel: 'Tag',
-          title: 'Tag',
-        }}
-      />
-    </Drawer>
+      >
+        <Drawer.Screen
+          name='announcement'
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name='appointment'
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name='room'
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name='tag'
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name='schedule'
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Drawer>
+    </BottomSheetModalProvider>
   );
 }

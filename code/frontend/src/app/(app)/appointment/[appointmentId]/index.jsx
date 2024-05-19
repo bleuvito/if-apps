@@ -30,8 +30,8 @@ export default function AppointmentDetailsScreen() {
     participant: {
       name: '',
     },
-    startDateTime: new Date(),
-    endDateTime: new Date(),
+    start: new Date(),
+    end: new Date(),
     createdAt: new Date(),
     updateAt: new Date(),
   });
@@ -70,7 +70,7 @@ export default function AppointmentDetailsScreen() {
     const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
 
     try {
-      const deletedAppointment = await axios.delete(deleteUri, {
+      const { data: deletedAppointment } = await axios.delete(deleteUri, {
         headers: {
           Authorization: `Bearer ${session}`,
         },
@@ -126,10 +126,7 @@ export default function AppointmentDetailsScreen() {
       />
       <AppointmentDetailsText
         title='Time'
-        body={getTimeDuration(
-          appointment?.startDateTime,
-          appointment?.endDateTime
-        )}
+        body={getTimeDuration(appointment?.start, appointment?.end)}
       />
       <AppointmentDetailsText
         title='Place'
@@ -147,7 +144,7 @@ export default function AppointmentDetailsScreen() {
           visible={visible}
           onDismiss={hideDialog}
         >
-          <Dialog.Title>Delete announcement?</Dialog.Title>
+          <Dialog.Title>Delete appointment?</Dialog.Title>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Cancel</Button>
           </Dialog.Actions>

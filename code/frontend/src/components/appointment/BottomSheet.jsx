@@ -8,7 +8,6 @@ import axios from 'axios';
 import { useFocusEffect } from 'expo-router';
 import { forwardRef, useCallback, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSession } from '../../providers/SessionProvider';
 import ParticipantCheckbox from './ParticipantCheckbox';
 
@@ -27,11 +26,13 @@ const BottomSheet = forwardRef(
         appearsOnIndex={0}
       />
     ));
+
     const handleRefresh = useCallback(async () => {
       setRefreshing(true);
       await getUsers();
       setRefreshing(false);
     }, []);
+
     const renderItem = useCallback(({ item }) => {
       return (
         <ParticipantCheckbox
@@ -41,6 +42,7 @@ const BottomSheet = forwardRef(
         />
       );
     });
+
     const getUsers = async () => {
       setIsLoading(true);
 

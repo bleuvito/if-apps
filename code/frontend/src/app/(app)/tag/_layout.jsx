@@ -12,14 +12,12 @@ export default function Layout() {
         name='index'
         options={{
           title: 'Tag',
-          headerTitle: 'Tag',
         }}
       />
       <Stack.Screen
         name='create'
         options={{
           title: 'Create Tag',
-          headerTitle: 'Create Tag',
         }}
       />
     </Stack>

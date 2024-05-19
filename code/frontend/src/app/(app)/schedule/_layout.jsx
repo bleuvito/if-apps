@@ -1,6 +1,4 @@
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Stack } from 'expo-router';
-
 import AppHeader from '../../../components/AppHeader';
 
 export default function Layout() {
@@ -13,18 +11,15 @@ export default function Layout() {
       <Stack.Screen
         name='index'
         options={{
-          title: 'Appointment',
+          title: 'Schedule',
         }}
       />
       <Stack.Screen
         name='create'
         options={{
-          title: 'Appointment Create',
+          // headerShown: false,
+          title: 'Create Schedule',
         }}
-      />
-      <Stack.Screen
-        name='[appointmentId]'
-        options={{ headerShown: false }}
       />
     </Stack>
   );

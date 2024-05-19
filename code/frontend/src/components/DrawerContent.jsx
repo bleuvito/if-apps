@@ -75,6 +75,12 @@ export default function DrawerContent(props) {
             active={active === drawerItem.appointment.route}
             onPress={() => handleDrawerItemPress(drawerItem.appointment.route)}
           />
+          <Drawer.Item
+            label={drawerItem.schedule.label}
+            icon='calendar'
+            active={active === drawerItem.schedule.route}
+            onPress={() => handleDrawerItemPress(drawerItem.schedule.route)}
+          />
         </Drawer.Section>
         <Drawer.Section title={drawerItem.room.label}>
           <Drawer.Item

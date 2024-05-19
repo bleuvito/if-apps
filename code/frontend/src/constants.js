@@ -130,11 +130,27 @@ export const drawerItem = {
     route: 'tag',
   },
   schedule: {
-    label: 'My ',
-    route: 'tag',
+    label: 'My Schedule',
+    route: 'schedule',
   },
   signOut: {
     label: 'Sign out',
     route: '/',
   },
+};
+
+export const dayInt = {
+  MINGGU: 0,
+  SENIN: 1,
+  SELASA: 2,
+  RABU: 3,
+  KAMIS: 4,
+  JUMAT: 5,
+  SABTU: 6,
+};
+
+export const typeColor = {
+  KELAS: '#4287f5',
+  PERTEMUAN: '#5E9141',
+  LAINNYA: '#A4496A',
 };
