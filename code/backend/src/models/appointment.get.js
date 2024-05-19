@@ -28,8 +28,8 @@ async function getAppointment(args) {
             name: true,
           },
         },
-        startDateTime: true,
-        endDateTime: true,
+        start: true,
+        end: true,
       },
     });
 

@@ -5,6 +5,7 @@ import express from 'express';
 import AnnouncementService from './services/announcement.service.js';
 import AppointmentService from './services/appointment.service.js';
 import AuthenticationService from './services/authentication.service.js';
+import ScheduleService from './services/schedule.service.js';
 import TagService from './services/tag.service.js';
 import UserService from './services/user.service.js';
 
@@ -21,6 +22,7 @@ app.use('/api/v1/user', UserService);
 app.use('/api/v1/announcement', AnnouncementService);
 app.use('/api/v1/tag', TagService);
 app.use('/api/v1/appointment', AppointmentService);
+app.use('/api/v1/schedule', ScheduleService);
 
 app.use((err, req, res, next) => {
   console.error(err);

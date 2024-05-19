@@ -8,6 +8,8 @@ async function deleteAppointment(args) {
     params: { id },
   } = args;
 
+  console.log(id);
+
   try {
     const appointment = await prisma.appointment.findFirst({
       where: {
@@ -19,7 +21,13 @@ async function deleteAppointment(args) {
       throw Error('E_UNAUTHORIZED');
     }
 
-    const payload = { foo: 'bar' };
+    const deletedAppointment = await prisma.appointment.delete({
+      where: {
+        id,
+      },
+    });
+
+    const payload = deletedAppointment;
 
     return payload;
   } catch (error) {

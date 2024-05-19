@@ -11,6 +11,8 @@ async function putAnnouncement(args) {
     body: requestBody,
   } = args;
 
+  console.log(requestBody);
+
   const refreshToken = await getRefreshToken(clientType, user.id);
 
   try {
@@ -32,7 +34,10 @@ async function putAnnouncement(args) {
       attendees: [
         {
           email: appointment.participant.email,
-          responseStatus: requestBody.status.toLowerCase() || 'needsAction',
+          responseStatus:
+            requestBody.status === 'PENDING'
+              ? 'needsAction'
+              : requestBody.status.toLowerCase(),
         },
       ],
       sendUpdates: 'all',
@@ -40,19 +45,18 @@ async function putAnnouncement(args) {
     if (requestBody.topic) {
       event.summary = requestBody.topic;
     }
-    if (requestBody.startDateTime) {
+    if (requestBody.start) {
       event.start = {
-        dateTime: new Date(requestBody.startDateTime),
+        dateTime: new Date(requestBody.start),
         timeZone: 'Asia/Jakarta',
       };
     }
-    if (requestBody.endDateTime) {
+    if (requestBody.end) {
       event.end = {
-        dateTime: new Date(requestBody.endDateTime),
+        dateTime: new Date(requestBody.end),
         timeZone: 'Asia/Jakarta',
       };
     }
-    console.log(event);
 
     const updatedGCalendarEvent = await putEvent(
       clientType,
@@ -67,6 +71,16 @@ async function putAnnouncement(args) {
       },
       data: {
         ...requestBody,
+        organizer: {
+          connect: {
+            id: requestBody.organizer?.id,
+          },
+        },
+        participant: {
+          connect: {
+            id: requestBody.participant?.id,
+          },
+        },
         updatedAt: new Date(),
       },
     });

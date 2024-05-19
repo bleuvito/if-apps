@@ -17,19 +17,19 @@ enum Role {
 }
 
 enum Day {
-  SUN
-  MON
-  TUE
-  WED
-  THU
-  FRI
-  SAT
+  SENIN
+  SELASA
+  RABU
+  KAMIS
+  JUMAT
+  SABTU
+  MINGGU
 }
 
 enum LecturerScheduleType {
-  CONSULTATION
-  CLASS
-  OTHER
+  PERTEMUAN
+  KELAS
+  LAINNYA
 }
 
 enum AppointmentStatus {
@@ -116,10 +116,9 @@ model Appointment {
   gCalendarId             String
   topic                   String
   // date                 DateTime
-  startDateTime           DateTime
-  endDateTime             DateTime
-  isParticipantAttending  Boolean @default(false)
-  type                    LecturerScheduleType @default(CONSULTATION)
+  start           DateTime
+  end             DateTime
+  type                    LecturerScheduleType @default(PERTEMUAN)
   status                  AppointmentStatus @default(PENDING)
   createdAt               DateTime @default(now())
   updatedAt               DateTime @default(now())
@@ -132,12 +131,14 @@ model Appointment {
 
 model LecturerSchedule {
   id                String @id @unique @default(uuid())
-  day               Day
-  startDateTime     DateTime
-  endDateTime       DateTime
+  title             String
   type              LecturerScheduleType
+  day               Day
+  start             DateTime
+  end               DateTime
+  isRecurring       Boolean
   createdDateTime   DateTime @default(now())
-  updatedAtTime  DateTime @default(now())
+  updatedAtTime     DateTime @default(now())
   
   lecturerId        String
   lecturer          User @relation(fields: [lecturerId], references: [id], onDelete: Cascade)

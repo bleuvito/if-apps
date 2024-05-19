@@ -28,16 +28,14 @@ async function createAppointment(args) {
       throw new Error('E_INVALID_VALUE');
     }
 
-    console.log(participantEmail);
-
     const event = {
       summary: requestBody.topic,
       start: {
-        dateTime: new Date(requestBody.startDateTime),
+        dateTime: new Date(requestBody.start),
         timeZone: 'Asia/Jakarta',
       },
       end: {
-        dateTime: new Date(requestBody.endDateTime),
+        dateTime: new Date(requestBody.end),
         timeZone: 'Asia/Jakarta',
       },
       attendees: [{ email: participantEmail, responseStatus: 'needsAction' }],
@@ -57,8 +55,8 @@ async function createAppointment(args) {
         gCalendarId: googleEvent.id,
         topic: requestBody.topic,
         date: requestBody.date,
-        startDateTime: requestBody.startDateTime,
-        endDateTime: requestBody.endDateTime,
+        start: requestBody.start,
+        end: requestBody.end,
         organizer: {
           connect: {
             id: user.id,

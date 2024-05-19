@@ -24,6 +24,7 @@ async function putEvent(clientType, refreshToken, gCalendarId, eventData) {
   });
 
   gCalendarEvent = { ...gCalendarEvent, ...eventData };
+  // console.log(gCalendarEvent);
 
   const { data: updatedGCalendarEvent } = await calendar.events.patch({
     calendarId: 'primary',

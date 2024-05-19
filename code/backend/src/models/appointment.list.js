@@ -44,8 +44,8 @@ async function listAppointment(args) {
         id: true,
         status: true,
         topic: true,
-        startDateTime: true,
-        endDateTime: true,
+        start: true,
+        end: true,
         organizer: {
           select: {
             name: true,
