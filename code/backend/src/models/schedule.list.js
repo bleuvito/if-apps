@@ -9,14 +9,12 @@ async function listSchedule(args) {
     body: requestBody,
   } = args;
 
-  // const refreshToken = await getRefreshToken(clientType, user.id);
-
   try {
     const schedules = await prisma.lecturerSchedule.findMany({
       where: {
+        lecturerId: user.id,
         OR: [
           {
-            lecturerId: user.id,
             AND: [
               {
                 start: {
@@ -29,6 +27,9 @@ async function listSchedule(args) {
                 },
               },
             ],
+          },
+          {
+            isRecurring: true,
           },
         ],
       },
