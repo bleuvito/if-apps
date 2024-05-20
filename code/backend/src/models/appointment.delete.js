@@ -8,7 +8,7 @@ async function deleteAppointment(args) {
     params: { id },
   } = args;
 
-  console.log(id);
+  // console.log(id);
 
   try {
     const appointment = await prisma.appointment.findFirst({

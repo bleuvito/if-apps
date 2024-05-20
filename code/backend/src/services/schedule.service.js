@@ -1,6 +1,8 @@
 import express from 'express';
 import { verify } from '../models/authentication.js';
 import { createSchedule } from '../models/schedule.create.js';
+import { patchSchedule } from '../models/schedule.edit.js';
+import { getSchedule } from '../models/schedule.get.js';
 import { listSchedule } from '../models/schedule.list.js';
 
 const ScheduleService = express.Router();
@@ -26,5 +28,27 @@ ScheduleService.get('/', verify('all'), async (req, res, next) => {
     next(error);
   }
 });
+
+ScheduleService.get('/:id', verify('all'), async (req, res, next) => {
+  try {
+    const result = await getSchedule(req);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
+ScheduleService.patch(
+  '/:id',
+  verify(['DOSEN', 'KALAB', 'KAPRODI', 'KAJUR', 'ADMIN']),
+  async (req, res, next) => {
+    try {
+      const result = await patchSchedule(req);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export default ScheduleService;

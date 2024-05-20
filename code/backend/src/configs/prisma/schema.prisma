@@ -131,14 +131,15 @@ model Appointment {
 
 model LecturerSchedule {
   id                String @id @unique @default(uuid())
+  gCalendarId       String
   title             String
   type              LecturerScheduleType
   day               Day
   start             DateTime
   end               DateTime
   isRecurring       Boolean
-  createdDateTime   DateTime @default(now())
-  updatedAtTime     DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now())
   
   lecturerId        String
   lecturer          User @relation(fields: [lecturerId], references: [id], onDelete: Cascade)

@@ -7,6 +7,7 @@ async function listSchedule(args) {
   const {
     locals: { user, clientType },
     body: requestBody,
+    query: requestQuery,
   } = args;
 
   try {
@@ -18,12 +19,12 @@ async function listSchedule(args) {
             AND: [
               {
                 start: {
-                  lte: requestBody.end,
+                  lte: new Date(requestQuery.end),
                 },
               },
               {
                 end: {
-                  gte: requestBody.start,
+                  gte: new Date(requestQuery.start),
                 },
               },
             ],

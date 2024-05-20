@@ -1,16 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { createEvent } from '../utils/googleCalendarApi.js';
-import { getRefreshToken } from '../utils/helpers.js';
+import { checkOverlap, getRefreshToken } from '../utils/helpers.js';
 
 const prisma = new PrismaClient();
-
-function convertToIntTime(inputDate) {
-  const date = new Date(inputDate);
-  const hour = date.getHours().toString().padStart(2, '0');
-  const minute = date.getMinutes().toString().padStart(2, '0');
-
-  return parseInt(`${hour}${minute}`);
-}
 
 async function createSchedule(args) {
   const {
@@ -21,86 +13,13 @@ async function createSchedule(args) {
   const refreshToken = await getRefreshToken(clientType, user.id);
 
   try {
-    const oneTimeSchedules = await prisma.lecturerSchedule.findMany({
-      where: {
-        lecturerId: user.id,
-        isRecurring: false,
-        start: {
-          lte: requestBody.end,
-        },
-        end: {
-          gte: requestBody.start,
-        },
-      },
-      select: {
-        id: true,
-        start: true,
-        end: true,
-      },
-    });
-
-    if (oneTimeSchedules.length > 0) {
-      throw Error('E_OVERLAP_SCHEDULE');
-    }
-
-    const recurringSchedules = await prisma.lecturerSchedule.findMany({
-      where: {
-        lecturerId: user.id,
-        isRecurring: true,
-        day: requestBody.day,
-      },
-      select: {
-        id: true,
-        start: true,
-        end: true,
-      },
-    });
-
-    const reqStart = convertToIntTime(requestBody.start);
-    const reqEnd = convertToIntTime(requestBody.end);
-    const overlapRecurringSchedules = recurringSchedules.filter((schedule) => {
-      const scheduleStartTime = convertToIntTime(schedule.start);
-      const scheduleEndTime = convertToIntTime(schedule.end);
-
-      return scheduleStartTime <= reqEnd && scheduleEndTime >= reqStart;
-    });
-
-    if (overlapRecurringSchedules.length > 0) {
-      throw Error('E_OVERLAP_SCHEDULE');
-    }
-
-    const appointments = await prisma.appointment.findMany({
-      where: {
-        OR: [
-          {
-            organizerId: user.id,
-          },
-          {
-            participantId: user.id,
-          },
-        ],
-        status: 'ACCEPTED',
-        AND: [
-          {
-            start: {
-              lte: requestBody.end,
-            },
-          },
-          {
-            end: {
-              gte: requestBody.start,
-            },
-          },
-        ],
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    if (appointments.length > 0) {
-      throw Error('E_OVERLAP_APPOINTMENT');
-    }
+    await checkOverlap(
+      user.Id,
+      null,
+      requestBody.start,
+      requestBody.end,
+      requestBody.day
+    );
 
     const event = {
       summary: requestBody.title,
@@ -123,6 +42,7 @@ async function createSchedule(args) {
     const schedule = await prisma.lecturerSchedule.create({
       data: {
         ...requestBody,
+        gCalendarId: gCalendarEvent.id,
         lecturer: {
           connect: {
             id: user.id,

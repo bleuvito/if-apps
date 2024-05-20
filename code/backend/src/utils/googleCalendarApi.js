@@ -5,7 +5,7 @@ async function createEvent(clientType, refreshToken, eventData) {
   const oAuth2Client = getReadyOauth2Client(clientType, refreshToken);
   const calendar = google.calendar({ version: 'v3', auth: oAuth2Client });
 
-  const googleEvent = await calendar.events.insert({
+  const { data: googleEvent } = await calendar.events.insert({
     calendarId: 'primary',
     sendUpdates: 'all',
     resource: eventData,
@@ -24,7 +24,6 @@ async function putEvent(clientType, refreshToken, gCalendarId, eventData) {
   });
 
   gCalendarEvent = { ...gCalendarEvent, ...eventData };
-  // console.log(gCalendarEvent);
 
   const { data: updatedGCalendarEvent } = await calendar.events.patch({
     calendarId: 'primary',
