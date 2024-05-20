@@ -27,7 +27,36 @@ async function main() {
     },
   });
 
-  console.log({ users, tags });
+  const rooms = await prisma.room.createMany({
+    data: [
+      {
+        name: '9018',
+        capacity: 40,
+        description:
+          'Tersedia proytektor, dua buah AC, dua buah whiteboard akrilik, dan AC.',
+      },
+      {
+        name: '9017',
+        capacity: 45,
+        description:
+          'Tersedia proyektor, dua buah AC, dua buah whiteboard akrilik, dan AC.',
+      },
+      {
+        name: '9016',
+        capacity: 35,
+        description:
+          'Tersedia proyektor, dua buah AC, dua buah whiteboard akrilik, dan AC.',
+      },
+      {
+        name: '9015',
+        capacity: 35,
+        description:
+          'Tersedia proyektor, dua buah AC, dua buah whiteboard akrilik, dan AC.',
+      },
+    ],
+  });
+
+  console.log({ users, tags, rooms });
 }
 main()
   .then(async () => {

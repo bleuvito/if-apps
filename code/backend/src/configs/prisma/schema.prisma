@@ -26,9 +26,10 @@ enum Day {
   MINGGU
 }
 
-enum LecturerScheduleType {
+enum ScheduleType {
   PERTEMUAN
   KELAS
+  PINJAMRUANG
   LAINNYA
 }
 
@@ -40,25 +41,20 @@ enum AppointmentStatus {
 }
 
 model User {
-  id                      String  @id @unique @default(uuid())
-  email                   String  @unique
-  name                    String
-  role                    Role
-  webRefreshToken         String? @db.VarChar(512)
-  androidRefreshToken     String? @db.VarChar(512)
-  announcements           AnnouncementHeader[]
-  announcementTags        AnnouncementTag[]
-  schedule                LecturerSchedule[]
-  appointmentOrganizer    Appointment[] @relation("organizer")
-  appointmentParticipant  Appointment[] @relation("participant")
+  id                        String  @id @unique @default(uuid())
+  email                     String  @unique
+  name                      String
+  role                      Role
+  webRefreshToken           String? @db.VarChar(512)
+  androidRefreshToken       String? @db.VarChar(512)
+
+  announcements             AnnouncementHeader[]
+  announcementTags          AnnouncementTag[]
+  schedules                 LecturerSchedule[]
+  reservations              RoomReservation[]
+  appointmentOrganizers     Appointment[] @relation("organizer")
+  appointmentParticipants   Appointment[] @relation("participant")
 }
-
-// model Role {
-//   id    String  @id @unique @default(uuid()) 
-//   name  String  @unique
-
-//   users User[]
-// }
 
 model AnnouncementHeader {
   id            String  @id @unique @default(uuid())
@@ -68,6 +64,7 @@ model AnnouncementHeader {
   isPinned      Boolean @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @default(now())
+  
   bodies        AnnouncementBody[]
   tags          AnnouncementTag[]
   
@@ -82,6 +79,7 @@ model AnnouncementBody {
   snippet       String
   createdAt     DateTime @default(now())
   isLatest      Boolean @default(true)
+  
   attachments   AnnoucementAttachment[]
 
   headerId      String
@@ -116,9 +114,9 @@ model Appointment {
   gCalendarId             String
   topic                   String
   // date                 DateTime
-  start           DateTime
-  end             DateTime
-  type                    LecturerScheduleType @default(PERTEMUAN)
+  start                   DateTime
+  end                     DateTime
+  type                    ScheduleType @default(PERTEMUAN)
   status                  AppointmentStatus @default(PENDING)
   createdAt               DateTime @default(now())
   updatedAt               DateTime @default(now())
@@ -133,7 +131,7 @@ model LecturerSchedule {
   id                String @id @unique @default(uuid())
   gCalendarId       String
   title             String
-  type              LecturerScheduleType
+  type              ScheduleType
   day               Day
   start             DateTime
   end               DateTime
@@ -143,4 +141,47 @@ model LecturerSchedule {
   
   lecturerId        String
   lecturer          User @relation(fields: [lecturerId], references: [id], onDelete: Cascade)
+}
+
+model Room {
+  id          String @id @unique @default(uuid())
+  name        String
+  capacity    Int
+  description String
+
+  schedules     RoomSchedule[]
+  reservations  RoomReservation[]
+}
+
+model RoomSchedule {
+  id                String @id @unique @default(uuid())
+  gCalendarId       String
+  title             String
+  type              ScheduleType
+  day               Day
+  start             DateTime
+  end               DateTime
+  isRecurring       Boolean
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now())
+  
+  roomId            String
+  room              Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+}
+
+model RoomReservation {
+  id                      String @id @unique @default(uuid())
+  gCalendarId             String
+  title                   String
+  // date                 DateTime
+  start                   DateTime
+  end                     DateTime
+  type                    ScheduleType @default(PERTEMUAN)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @default(now())
+
+  roomId                  String
+  room                    Room @relation(fields: [roomId], references: [id])
+  reserveeId              String
+  reservee                User @relation(fields: [reserveeId], references: [id])
 }
