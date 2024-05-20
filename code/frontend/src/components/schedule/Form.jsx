@@ -14,7 +14,7 @@ import BottomSheetField from './TypeBottomSheetField';
 export default function Form({ defaultValues, onSubmit }) {
   registerTranslation('en', en);
 
-  const [selectedType, setSelectedType] = useState('Kelas');
+  const [selectedType, setSelectedType] = useState(defaultValues.type);
   const {
     control,
     handleSubmit,

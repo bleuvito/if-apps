@@ -12,10 +12,11 @@ export default function ScheduleScreen() {
 
   const defaultValues = {
     title: '',
+    type: 'KELAS',
+    isRecurring: true,
+    day: selectedDate,
     start: '',
     end: '',
-    day: selectedDate,
-    isRecurring: true,
   };
 
   const handleSubmit = async (data) => {

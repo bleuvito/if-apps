@@ -1,7 +1,11 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { useLocalSearchParams, useNavigation } from 'expo-router';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import {
+  useFocusEffect,
+  useLocalSearchParams,
+  useNavigation,
+} from 'expo-router';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Checkbox, Dialog, Portal, Text } from 'react-native-paper';
 import ScheduleDetailsHeaderRight from '../../../../components/schedule/HeaderRight';
@@ -51,13 +55,24 @@ export default function ScheduleDetailsScreen() {
     setVisible(false);
   }
 
-  const handleDeleteSchedule = () => {
-    console.log('schedule delete');
+  const handleDeleteSchedule = async () => {
+    const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/schedule/${scheduleId}`;
+    try {
+      const { data } = await axios.delete(deleteUri, {
+        headers: {
+          Authorization: `Bearer ${session}`,
+        },
+      });
+    } catch (error) {
+      console.error('Error deleting shedule: ', error);
+    }
   };
 
-  useEffect(() => {
-    getSchedule();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getSchedule();
+    }, [])
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({

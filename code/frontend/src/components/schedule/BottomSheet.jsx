@@ -11,7 +11,7 @@ import DayCheckbox from './TypeCheckBox';
 const BottomSheet = forwardRef(({ selectedType, setSelectedType }, ref) => {
   const snapPoints = useMemo(() => ['25%'], []);
 
-  const type = useMemo(() => ['Kelas', 'Pertemuan', 'Lainnya'], []);
+  const type = useMemo(() => ['KELAS', 'PERTEMUAN', 'LAINNYA'], []);
   const renderBackdrop = useCallback((props) => (
     <BottomSheetBackdrop
       {...props}
