@@ -100,7 +100,7 @@ export default function ScheduleScreen() {
           setSelectedDate(dayjs(date));
         }}
         onPressEvent={(event) => {
-          console.log(event);
+          router.push(`schedule/${event.id}`);
         }}
       />
       <FAB

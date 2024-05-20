@@ -5,11 +5,15 @@ import { View } from 'react-native';
 import { Button, Checkbox, Text, TextInput } from 'react-native-paper';
 
 import dayjs from 'dayjs';
+import { en, id, registerTranslation } from 'react-native-paper-dates';
+import DateField from '../DateField';
 import TimeField from '../TimeField';
 import BottomSheet from './BottomSheet.jsx';
 import BottomSheetField from './TypeBottomSheetField';
 
 export default function Form({ defaultValues, onSubmit }) {
+  registerTranslation('en', en);
+
   const [selectedType, setSelectedType] = useState('Kelas');
   const {
     control,
@@ -47,28 +51,7 @@ export default function Form({ defaultValues, onSubmit }) {
   return (
     <View style={{ flex: 1 }}>
       <Controller
-        name='day'
-        defaultValue=''
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => {
-          return (
-            <>
-              <Text>Day</Text>
-              <TextInput
-                mode='outlined'
-                value={dayjs(value).format('dddd, DD MMMM YYYY')}
-                editable={false}
-                disabled={true}
-                onBlur={onBlur}
-                onChangeText={onChange}
-              />
-            </>
-          );
-        }}
-      />
-      <Controller
         name='title'
-        defaultValue=''
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
@@ -91,7 +74,6 @@ export default function Form({ defaultValues, onSubmit }) {
       />
       <Controller
         name='isRecurring'
-        defaultValue=''
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
@@ -105,6 +87,30 @@ export default function Form({ defaultValues, onSubmit }) {
           );
         }}
       />
+      <Controller
+        name='day'
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => {
+          return (
+            // <>
+            //   <Text>Day</Text>
+            //   <TextInput
+            //     mode='outlined'
+            //     value={dayjs(value).format('dddd, DD MMMM YYYY')}
+            //     editable={false}
+            //     disabled={true}
+            //     onBlur={onBlur}
+            //     onChangeText={onChange}
+            //   />
+            // </>
+            <DateField
+              title='Date'
+              onChange={onChange}
+              value={new Date(value)}
+            />
+          );
+        }}
+      />
       <View
         style={{
           flexDirection: 'row',
@@ -113,7 +119,6 @@ export default function Form({ defaultValues, onSubmit }) {
       >
         <Controller
           name='start'
-          defaultValue=''
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
             return (
@@ -127,7 +132,6 @@ export default function Form({ defaultValues, onSubmit }) {
         />
         <Controller
           name='end'
-          defaultValue=''
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
             return (

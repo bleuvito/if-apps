@@ -19,14 +19,13 @@ export default function ScheduleScreen() {
   };
 
   const handleSubmit = async (data) => {
-    // console.log(data);
     const postUri = `${process.env.EXPO_PUBLIC_BASE_URL}/schedule`;
     const { data: response } = await axios.post(postUri, data, {
       headers: {
         Authorization: `Bearer ${session}`,
       },
     });
-    console.log(response);
+    // console.log(response);
   };
 
   return (
