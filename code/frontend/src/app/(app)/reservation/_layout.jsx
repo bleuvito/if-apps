@@ -12,13 +12,13 @@ export default function Layout() {
       <Stack.Screen
         name='index'
         options={{
-          title: 'Room',
+          title: 'Reservation',
         }}
       />
       <Stack.Screen
         name='create'
         options={{
-          title: 'Create Room',
+          title: 'Create Reservation',
         }}
       />
     </Stack>

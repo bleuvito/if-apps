@@ -33,25 +33,31 @@ export default function Layout() {
           }}
         />
         <Drawer.Screen
-          name='appointment'
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name='room'
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
           name='tag'
           options={{
             headerShown: false,
           }}
         />
         <Drawer.Screen
+          name='appointment'
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
           name='schedule'
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name='reservation'
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name='room'
           options={{
             headerShown: false,
           }}

@@ -121,6 +121,10 @@ export const drawerItem = {
     label: 'Appointment',
     route: 'appointment',
   },
+  reservation: {
+    label: 'Reservation',
+    route: 'reservation',
+  },
   room: {
     label: 'Room',
     route: 'room',
@@ -152,5 +156,6 @@ export const dayInt = {
 export const typeColor = {
   KELAS: '#4287f5',
   PERTEMUAN: '#5E9141',
+  PINJAMRUANG: '#F542E1',
   LAINNYA: '#A4496A',
 };

@@ -82,7 +82,13 @@ export default function DrawerContent(props) {
             onPress={() => handleDrawerItemPress(drawerItem.schedule.route)}
           />
         </Drawer.Section>
-        <Drawer.Section title={drawerItem.room.label}>
+        <Drawer.Section title={drawerItem.reservation.label}>
+          <Drawer.Item
+            label={drawerItem.reservation.label}
+            icon='book-open'
+            active={active === drawerItem.reservation.route}
+            onPress={() => handleDrawerItemPress(drawerItem.reservation.route)}
+          />
           <Drawer.Item
             label={drawerItem.room.label}
             icon='greenhouse'

@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { FlatList, StyleSheet } from 'react-native';
 import { FAB, Text } from 'react-native-paper';
 
-export default function RoomScreen() {
+export default function ReservationScreen() {
   return (
     <>
       {/* <FlatList
@@ -21,7 +21,7 @@ export default function RoomScreen() {
       <FAB
         icon='plus'
         style={styles.fab}
-        onPress={() => router.push('room/create')}
+        onPress={() => router.push('reservation/create')}
       />
     </>
   );
