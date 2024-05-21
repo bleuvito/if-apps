@@ -64,6 +64,10 @@ export default function ScheduleScreen() {
     setEvents(fetchedEvents);
   };
 
+  useEffect(() => {
+    getEvents();
+  }, [selectedDate]);
+
   useFocusEffect(
     useCallback(() => {
       getEvents();
