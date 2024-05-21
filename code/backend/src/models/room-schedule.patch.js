@@ -34,7 +34,7 @@ async function patchRoomSchedule(args) {
       requestBody.day
     );
 
-    console.log(requestBody);
+    // console.log(requestBody);
 
     const updatedSchedule = await prisma.roomSchedule.update({
       where: {
