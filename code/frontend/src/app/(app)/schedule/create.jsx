@@ -1,8 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { useGlobalSearchParams, useLocalSearchParams } from 'expo-router';
-import { View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { useLocalSearchParams } from 'expo-router';
 import Form from '../../../components/schedule/Form';
 import { useSession } from '../../../providers/SessionProvider';
 
