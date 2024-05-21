@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 import { Chip, Text, TextInput } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
@@ -28,15 +29,7 @@ export default function ReservationDateField({ onChange, value }) {
       <TextInput
         mode='outlined'
         editable={false}
-        value={
-          value &&
-          `${value.toLocaleString('en-GB', {
-            weekday: 'long',
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric',
-          })}`
-        }
+        value={value && dayjs(value).format('dddd, DD MMMM YYYY')}
         right={
           <TextInput.Icon
             icon='calendar'

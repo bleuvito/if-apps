@@ -32,7 +32,7 @@ export default function LeftCalendarComponent({ date }) {
           style={[
             styles.text,
             {
-              fontSize: 64 / 5,
+              fontSize: 64 / 6,
               color: 'white',
             },
           ]}
@@ -45,7 +45,7 @@ export default function LeftCalendarComponent({ date }) {
         style={[
           styles.text,
           {
-            fontSize: 64 / 2,
+            fontSize: 64 / 3,
             fontWeight: 'bold',
             // lineHeight: 64 / fontScale,
           },
@@ -58,7 +58,7 @@ export default function LeftCalendarComponent({ date }) {
         style={[
           styles.text,
           {
-            fontSize: 64 / 5,
+            fontSize: 64 / 6,
             // lineHeight: 64 / fontScale,
           },
         ]}
@@ -72,8 +72,8 @@ export default function LeftCalendarComponent({ date }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: 80,
-    height: 80,
+    width: 64,
+    height: 64,
     borderRadius: 8,
     alignItems: 'center',
   },

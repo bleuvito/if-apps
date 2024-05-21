@@ -18,8 +18,6 @@ const RoomBottomSheet = forwardRef(({ selectedRoom, setSelectedRoom }, ref) => {
   const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log('test');
-
   const renderBackdrop = useCallback((props) => (
     <BottomSheetBackdrop
       {...props}

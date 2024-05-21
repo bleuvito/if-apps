@@ -1,9 +1,11 @@
+import 'dayjs/locale/id';
 import { useCallback, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { en, id, registerTranslation } from 'react-native-paper-dates';
 
+import dayjs from 'dayjs';
 import TimeField from '../TimeField';
 import AgendaBottomSheet from './AgendaBottomSheet';
 import DateField from './DateField';
@@ -33,13 +35,15 @@ export default function Form({ defaultValues, onSubmit }) {
   }, []);
 
   const updateAppointmentTime = (date, appointmentTime) => {
-    const day = date.getDate();
-    const month = date.getMonth();
-    const year = date.getFullYear();
+    let dateObj = dayjs(date).toDate();
+    const day = dateObj.getDate();
+    const month = dateObj.getMonth();
+    const year = dateObj.getFullYear();
 
-    appointmentTime.setDate(day);
-    appointmentTime.setMonth(month);
-    appointmentTime.setFullYear(year);
+    dateObj = dayjs(appointmentTime).toDate();
+    dateObj.setDate(day);
+    dateObj.setMonth(month);
+    dateObj.setFullYear(year);
 
     return appointmentTime;
   };
@@ -47,13 +51,15 @@ export default function Form({ defaultValues, onSubmit }) {
   async function handleFormSubmit(data) {
     const start = updateAppointmentTime(data.date, data.start);
     const end = updateAppointmentTime(data.date, data.end);
+    const day = dayjs(data.date).locale('id').format('dddd').toUpperCase();
 
     delete data.date;
     data = {
       ...data,
       start,
       end,
-      room: selectedRoom,
+      day,
+      room: { id: selectedRoom.id, name: selectedRoom.name },
     };
 
     onSubmit(data);

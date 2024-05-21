@@ -1,23 +1,53 @@
-import { router } from 'expo-router';
+import axios from 'axios';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { FAB, Text } from 'react-native-paper';
+import { ActivityIndicator, FAB, Text } from 'react-native-paper';
+import ReservationCard from '../../../components/reservation/Card';
+import { useSession } from '../../../providers/SessionProvider';
 
 export default function ReservationScreen() {
+  const { session } = useSession();
+
+  const [reservations, setReservations] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getReservations = async () => {
+    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/reservation`;
+
+    try {
+      setIsLoading(true);
+
+      const { data } = await axios.get(getUri, {
+        headers: {
+          Authorization: `Bearer ${session}`,
+        },
+      });
+      setReservations(data);
+
+      setIsLoading(false);
+    } catch (error) {}
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      getReservations();
+    }, [])
+  );
+
+  if (isLoading) {
+    return <ActivityIndicator size='large' />;
+  }
+
   return (
     <>
-      {/* <FlatList
-    data={announcements}
-    contentContainerStyle={styles.contentContainer}
-    renderItem={({ item }) => {
-      return (
-        <AnnouncementCard
-          key={item.id}
-          announcement={item}
-          isRead
-        />
-      );
-    }}
-  /> */}
+      <FlatList
+        data={reservations}
+        contentContainerStyle={styles.contentContainer}
+        renderItem={({ item }) => {
+          return <ReservationCard reservation={item} />;
+        }}
+      />
       <FAB
         icon='plus'
         style={styles.fab}
