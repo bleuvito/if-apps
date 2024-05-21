@@ -1,5 +1,6 @@
 import express from 'express';
 import { verify } from '../models/authentication.js';
+import { listRoomAgenda } from '../models/room-agenda.list.js';
 import { createRoom } from '../models/room.create.js';
 import { deleteRoom } from '../models/room.delete.js';
 import { getRoom } from '../models/room.get.js';
@@ -29,6 +30,15 @@ RoomService.get('/', verify('all'), async (req, res, next) => {
 RoomService.get('/:id', verify('all'), async (req, res, next) => {
   try {
     const result = await getRoom(req);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
+RoomService.get('/:id/agenda', verify('all'), async (req, res, next) => {
+  try {
+    const result = await listRoomAgenda(req);
     res.json(result);
   } catch (error) {
     next(error);

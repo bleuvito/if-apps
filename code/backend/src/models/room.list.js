@@ -10,9 +10,15 @@ async function listRoom(args) {
   } = args;
 
   try {
-    const rooms = await prisma.room.findMany();
+    const rooms = await prisma.room.findMany({
+      select: {
+        id: true,
+        name: true,
+        capacity: true,
+      },
+    });
 
-    console.log(rooms);
+    // console.log(rooms);
 
     const payload = rooms;
 
