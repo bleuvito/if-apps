@@ -105,7 +105,13 @@ function convertToIntTime(inputDate) {
   return parseInt(`${hour}${minute}`);
 }
 
-async function checkOverlap(userId, scheduleId, startTime, endTime, day) {
+async function checkLecturerOverlapAgenda(
+  userId,
+  scheduleId,
+  startTime,
+  endTime,
+  day
+) {
   const oneTimeScheduleWhere = {
     lecturerId: userId,
     isRecurring: false,
@@ -208,8 +214,120 @@ async function checkOverlap(userId, scheduleId, startTime, endTime, day) {
   }
 }
 
+async function checkRoomOverlapAgenda(
+  roomId,
+  reservationId,
+  startTime,
+  endTime,
+  day
+) {
+  const oneTimeScheduleWhere = {
+    roomId,
+    isRecurring: false,
+    start: {
+      lt: endTime,
+    },
+    end: {
+      gt: startTime,
+    },
+  };
+
+  if (reservationId !== null) {
+    oneTimeScheduleWhere.id = {
+      not: reservationId,
+    };
+  }
+
+  const oneTimeSchedules = await prisma.roomSchedule.findMany({
+    where: { ...oneTimeScheduleWhere },
+    select: {
+      id: true,
+      start: true,
+      end: true,
+    },
+  });
+
+  // console.log(oneTimeSchedules);
+
+  if (oneTimeSchedules.length > 0) {
+    throw Error('E_OVERLAP_SCHEDULE');
+  }
+
+  const recurringScheduleWhere = {
+    roomId,
+    isRecurring: true,
+    day,
+  };
+
+  if (reservationId !== null) {
+    recurringScheduleWhere.id = {
+      not: reservationId,
+    };
+  }
+
+  const recurringSchedules = await prisma.roomSchedule.findMany({
+    where: { ...recurringScheduleWhere },
+    select: {
+      id: true,
+      start: true,
+      end: true,
+    },
+  });
+
+  const reqStart = convertToIntTime(startTime);
+  const reqEnd = convertToIntTime(endTime);
+  const overlapRecurringSchedules = recurringSchedules.filter((schedule) => {
+    const scheduleStartTime = convertToIntTime(schedule.start);
+    const scheduleEndTime = convertToIntTime(schedule.end);
+
+    return scheduleStartTime < reqEnd && scheduleEndTime > reqStart;
+  });
+
+  // console.log(overlapRecurringSchedules);
+
+  if (overlapRecurringSchedules.length > 0) {
+    throw Error('E_OVERLAP_SCHEDULE');
+  }
+
+  const reservationWhere = {
+    roomId,
+  };
+
+  if (reservationId !== null) {
+    oneTimeScheduleWhere.id = {
+      not: reservationId,
+    };
+  }
+
+  const reservations = await prisma.roomReservation.findMany({
+    where: {
+      ...reservationWhere,
+      AND: [
+        {
+          start: {
+            lt: endTime,
+          },
+        },
+        {
+          end: {
+            gt: startTime,
+          },
+        },
+      ],
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (reservations.length > 0) {
+    throw Error('E_OVERLAP_APPOINTMENT');
+  }
+}
+
 export {
-  checkOverlap,
+  checkLecturerOverlapAgenda,
+  checkRoomOverlapAgenda,
   generateAttachmentUrls,
   getRefreshToken,
   upload,

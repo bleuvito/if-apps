@@ -155,7 +155,6 @@ model Room {
 
 model RoomSchedule {
   id                String @id @unique @default(uuid())
-  gCalendarId       String
   title             String
   type              ScheduleType
   day               Day
@@ -171,7 +170,6 @@ model RoomSchedule {
 
 model RoomReservation {
   id                      String @id @unique @default(uuid())
-  gCalendarId             String
   title                   String
   // date                 DateTime
   start                   DateTime

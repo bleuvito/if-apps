@@ -10,6 +10,7 @@ import ScheduleService from './services/schedule.service.js';
 import TagService from './services/tag.service.js';
 import UserService from './services/user.service.js';
 
+import RoomScheduleService from './services/room-schedule.service.js';
 import { createResponse } from './utils/createResponse.js';
 
 const app = express();
@@ -25,6 +26,7 @@ app.use('/api/v1/tag', TagService);
 app.use('/api/v1/appointment', AppointmentService);
 app.use('/api/v1/schedule', ScheduleService);
 app.use('/api/v1/room', RoomService);
+app.use('/api/v1/room-schedule', RoomScheduleService);
 
 app.use((err, req, res, next) => {
   console.error(err);

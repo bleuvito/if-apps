@@ -1,6 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { putEvent } from '../utils/googleCalendarApi.js';
-import { checkOverlap, getRefreshToken } from '../utils/helpers.js';
+import {
+  checkLecturerOverlapAgenda,
+  getRefreshToken,
+} from '../utils/helpers.js';
 
 const prisma = new PrismaClient();
 
@@ -26,7 +29,7 @@ async function patchSchedule(args) {
       throw Error('E_UNAUTHORIZED');
     }
 
-    await checkOverlap(
+    await checkLecturerOverlapAgenda(
       requestBody.lecturerId,
       schedule.id,
       requestBody.start,
