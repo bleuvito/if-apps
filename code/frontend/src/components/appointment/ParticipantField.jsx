@@ -1,9 +1,11 @@
-import { Text, TextInput } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { Button, Text, TextInput } from 'react-native-paper';
 
 export default function AppointmentParticipantField({
   selectedParticipant,
   setSelectedParticipant,
   onPresentModalPress,
+  onPresentAgendaModalPress,
 }) {
   const handleDeleteSelectedParticipant = () => {
     setSelectedParticipant({});
@@ -11,7 +13,12 @@ export default function AppointmentParticipantField({
 
   return (
     <>
-      <Text>Participant</Text>
+      <View style={styles.label}>
+        <Text>Participant</Text>
+        <Button onPress={() => onPresentAgendaModalPress()}>
+          Lihat jadwal
+        </Button>
+      </View>
       <TextInput
         mode='outlined'
         editable={false}
@@ -33,3 +40,12 @@ export default function AppointmentParticipantField({
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  label: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+});

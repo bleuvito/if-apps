@@ -1,6 +1,10 @@
 import axios from 'axios';
-import { useLocalSearchParams, useNavigation } from 'expo-router';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import {
+  useFocusEffect,
+  useLocalSearchParams,
+  useNavigation,
+} from 'expo-router';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
   ActivityIndicator,
@@ -95,9 +99,15 @@ export default function AppointmentDetailsScreen() {
     });
   }, [navigation, appointment]);
 
-  useEffect(() => {
-    getAppointDetails();
-  }, []);
+  // useEffect(() => {
+  //   getAppointDetails();
+  // }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      getAppointDetails();
+    }, [])
+  );
 
   if (isLoading) {
     return (

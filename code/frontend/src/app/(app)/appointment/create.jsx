@@ -6,7 +6,7 @@ export default function AppointmentCreate() {
   const { session } = useSession();
   const defaultValues = {
     topic: '',
-    date: '',
+    date: new Date(),
     start: '',
     end: '',
     participant: {},

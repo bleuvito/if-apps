@@ -7,6 +7,7 @@ import { en, id, registerTranslation } from 'react-native-paper-dates';
 
 import { useSession } from '../../providers/SessionProvider';
 import TimeField from '../TimeField';
+import AgendaBottomSheet from './AgendaBottomSheet';
 import ParticipantBottomSheet from './BottomSheet';
 import AppointmentDateField from './DateField';
 import AppointmentParticipantField from './ParticipantField';
@@ -18,6 +19,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
     defaultValues.participant
   );
   const bottomSheetModalRef = useRef(null);
+  const agendaBottomSheetModalRef = useRef(null);
   const {
     control,
     handleSubmit,
@@ -28,6 +30,10 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
+  }, []);
+
+  const handlePresentAgendaModalPress = useCallback(() => {
+    agendaBottomSheetModalRef.current?.present();
   }, []);
 
   const updateAppointmentTime = (date, appointmentTime) => {
@@ -62,7 +68,6 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
       <ScrollView style={{ flex: 1, padding: 16 }}>
         <Controller
           name='topic'
-          defaultValue=''
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
             return (
@@ -80,7 +85,6 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
         />
         <Controller
           name='date'
-          defaultValue=''
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
@@ -99,7 +103,6 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
         >
           <Controller
             name='start'
-            defaultValue={defaultValues.start}
             control={control}
             render={({ field: { onChange, value } }) => {
               return (
@@ -113,7 +116,6 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           />
           <Controller
             name='end'
-            defaultValue={defaultValues.end}
             control={control}
             render={({ field: { onChange, onBlur, value } }) => {
               return (
@@ -130,6 +132,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           selectedParticipant={selectedParticipant}
           setSelectedParticipant={setSelectedParticipant}
           onPresentModalPress={handlePresentModalPress}
+          onPresentAgendaModalPress={handlePresentAgendaModalPress}
         />
         <View
           style={{
@@ -149,6 +152,11 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
         ref={bottomSheetModalRef}
         selectedParticipant={selectedParticipant}
         setSelectedParticipant={setSelectedParticipant}
+      />
+      <AgendaBottomSheet
+        ref={agendaBottomSheetModalRef}
+        selectedParticipant={selectedParticipant}
+        control={control}
       />
     </View>
   );

@@ -53,6 +53,8 @@ export default function AppointmentEdit() {
           Authorization: `Bearer ${session}`,
         },
       });
+
+      console.log(response);
     } catch (error) {
       console.error('Error creating appointment', error);
     }

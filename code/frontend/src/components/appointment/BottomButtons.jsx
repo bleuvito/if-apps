@@ -29,7 +29,7 @@ export default function BottomButtons({ status, userId, organizerId }) {
         onPress={async () => {
           const putUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
           const data = { status: 'DECLINED' };
-          const { data: response } = await axios.put(putUri, data, {
+          const { data: response } = await axios.patch(putUri, data, {
             headers: {
               Authorization: `Bearer ${session}`,
             },
@@ -42,7 +42,7 @@ export default function BottomButtons({ status, userId, organizerId }) {
         onPress={async () => {
           const putUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
           const data = { status: 'ACCEPTED' };
-          const { data: response } = await axios.put(putUri, data, {
+          const { data: response } = await axios.patch(putUri, data, {
             headers: {
               Authorization: `Bearer ${session}`,
             },
