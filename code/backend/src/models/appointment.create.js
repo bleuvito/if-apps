@@ -10,6 +10,8 @@ async function createAppointment(args) {
     body: requestBody,
   } = args;
 
+  // console.log(requestBody.participant.id);
+
   const refreshToken = await getRefreshToken(clientType, user.id);
 
   try {
@@ -42,12 +44,8 @@ async function createAppointment(args) {
       sendUpdates: 'all',
     };
 
-    const { data: googleEvent } = await createEvent(
-      clientType,
-      refreshToken,
-      event
-    );
-    // console.log('googleEvent: ', googleEvent);
+    const googleEvent = await createEvent(clientType, refreshToken, event);
+    console.log('googleEvent: ', googleEvent.id);
     // console.log('requestbody: ', requestBody);
 
     const result = await prisma.appointment.create({

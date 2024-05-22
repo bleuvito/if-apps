@@ -5,6 +5,7 @@ import { deleteAppointment } from '../models/appointment.delete.js';
 import { getAppointment } from '../models/appointment.get.js';
 import { listAppointment } from '../models/appointment.list.js';
 import { putAnnouncement } from '../models/appointment.put.js';
+import { responseAppointment } from '../models/appointment.response.js';
 import { verify } from '../models/authentication.js';
 
 const AppointmentService = express.Router();
@@ -47,7 +48,7 @@ AppointmentService.put('/:id', verify('all'), async (req, res, next) => {
 
 AppointmentService.patch('/:id', verify('all'), async (req, res, next) => {
   try {
-    const result = await putAnnouncement(req);
+    const result = await responseAppointment(req);
     res.json(result);
   } catch (error) {
     next(error);
