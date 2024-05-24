@@ -62,6 +62,12 @@ export default function Layout() {
             headerShown: false,
           }}
         />
+        <Drawer.Screen
+          name='user'
+          options={{
+            headerShown: false,
+          }}
+        />
       </Drawer>
     </BottomSheetModalProvider>
   );

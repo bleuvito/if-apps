@@ -11,7 +11,7 @@ export default function DrawerContent(props) {
   const { signOut, getRole } = useSession();
   const [active, setActive] = useState('announcement');
 
-  const role = getRole();
+  const userRole = getRole();
 
   let handleSignout;
   if (Platform.OS === 'web') {
@@ -59,7 +59,9 @@ export default function DrawerContent(props) {
               handleDrawerItemPress(drawerItem.annnouncement.route)
             }
           />
-          {role !== 'MAHASISWA' && (
+          {['ADMIN', 'KAJUR', 'KAPRODI', 'KALAB', 'DOSEN'].includes(
+            userRole
+          ) && (
             <Drawer.Item
               label={drawerItem.tag.label}
               icon='tag'
@@ -71,16 +73,20 @@ export default function DrawerContent(props) {
         <Drawer.Section title={drawerItem.appointment.label}>
           <Drawer.Item
             label={drawerItem.appointment.label}
-            icon='account-group'
+            icon='calendar'
             active={active === drawerItem.appointment.route}
             onPress={() => handleDrawerItemPress(drawerItem.appointment.route)}
           />
-          <Drawer.Item
-            label={drawerItem.schedule.label}
-            icon='calendar'
-            active={active === drawerItem.schedule.route}
-            onPress={() => handleDrawerItemPress(drawerItem.schedule.route)}
-          />
+          {['ADMIN', 'KAJUR', 'KAPRODI', 'KALAB', 'DOSEN'].includes(
+            userRole
+          ) && (
+            <Drawer.Item
+              label={drawerItem.schedule.label}
+              icon='calendar-account'
+              active={active === drawerItem.schedule.route}
+              onPress={() => handleDrawerItemPress(drawerItem.schedule.route)}
+            />
+          )}
         </Drawer.Section>
         <Drawer.Section title={drawerItem.reservation.label}>
           <Drawer.Item
@@ -89,11 +95,29 @@ export default function DrawerContent(props) {
             active={active === drawerItem.reservation.route}
             onPress={() => handleDrawerItemPress(drawerItem.reservation.route)}
           />
+          {['ADMIN', 'KAJUR', 'KALAB'].includes(userRole) && (
+            <Drawer.Item
+              label={drawerItem.room.label}
+              icon='greenhouse'
+              active={active === drawerItem.room.route}
+              onPress={() => handleDrawerItemPress(drawerItem.room.route)}
+            />
+          )}
+        </Drawer.Section>
+        <Drawer.Section title={drawerItem.user.label}>
+          {['ADMIN', 'KAJUR'].includes(userRole) && (
+            <Drawer.Item
+              label={drawerItem.user.label}
+              icon='account-group'
+              active={active === drawerItem.user.route}
+              onPress={() => handleDrawerItemPress(drawerItem.user.route)}
+            />
+          )}
           <Drawer.Item
-            label={drawerItem.room.label}
-            icon='greenhouse'
-            active={active === drawerItem.room.route}
-            onPress={() => handleDrawerItemPress(drawerItem.room.route)}
+            label={drawerItem.profile.label}
+            icon='account-circle'
+            active={active === drawerItem.profile.route}
+            onPress={() => handleDrawerItemPress(drawerItem.profile.route)}
           />
         </Drawer.Section>
         <Drawer.Item

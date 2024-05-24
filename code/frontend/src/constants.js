@@ -137,6 +137,14 @@ export const drawerItem = {
     label: 'My Schedule',
     route: 'schedule',
   },
+  user: {
+    label: 'User',
+    route: 'user',
+  },
+  profile: {
+    label: 'Profile',
+    route: 'profile',
+  },
   signOut: {
     label: 'Sign out',
     route: '/',

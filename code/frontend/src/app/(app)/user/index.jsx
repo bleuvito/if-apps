@@ -4,40 +4,41 @@ import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { ActivityIndicator, FAB, Text } from 'react-native-paper';
 
-import TagCard from '../../../components/tag/Card';
+// import TagCard from '../../../components/TagCard';
+import UserCard from '../../../components/user/Card';
 import { useSession } from '../../../providers/SessionProvider';
 
-export default function TagScreen() {
+export default function UserScreen() {
   const { getRole, session } = useSession();
-  const [tags, setTags] = useState([]);
+  const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  const role = getRole();
+  const userRole = getRole();
 
-  if (role === 'MAHASISWA') {
+  if (!['ADMIN', 'KAJUR'].includes(userRole)) {
     return <Redirect href={'/'} />;
   }
 
-  async function getTags() {
+  async function getUsers() {
     setIsLoading(true);
-    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag`;
+    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/user`;
     const { data } = await axios.get(getUri, {
       headers: { Authorization: `Bearer ${session}` },
     });
-    setTags(data);
+    setUsers(data);
     setIsLoading(false);
   }
 
   useFocusEffect(
     useCallback(() => {
-      getTags();
+      getUsers();
     }, [])
   );
 
   async function handleRefresh() {
     setRefreshing(true);
-    await getTags();
+    await getUsers();
     setRefreshing(false);
   }
 
@@ -48,19 +49,19 @@ export default function TagScreen() {
   return (
     <>
       <FlatList
-        data={tags}
+        data={users}
         contentContainerStyle={styles.contentContainer}
         refreshing={refreshing}
         onRefresh={handleRefresh}
-        keyExtractor={(tag, index) => tag.id}
+        keyExtractor={(user, index) => user.id}
         renderItem={({ item }) => {
-          return <TagCard tag={item} />;
+          return <UserCard user={item} />;
         }}
       />
       <FAB
         icon='plus'
         style={styles.fab}
-        onPress={() => router.push('/tag/create')}
+        onPress={() => router.push('/user/create')}
       />
     </>
   );
