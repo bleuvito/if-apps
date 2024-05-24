@@ -10,7 +10,7 @@ async function createReservation(args) {
     body: requestBody,
   } = args;
 
-  console.log(requestBody);
+  // console.log(requestBody);
 
   try {
     await checkRoomOverlapAgenda(
@@ -39,7 +39,7 @@ async function createReservation(args) {
       },
     });
 
-    console.log(reservation);
+    // console.log(reservation);
 
     const payload = reservation;
 

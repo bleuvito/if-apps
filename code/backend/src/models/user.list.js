@@ -2,29 +2,14 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-async function listUser(args) {
-  const {
-    locals: { user },
-  } = args;
-
+async function listUser() {
   try {
     const users = await prisma.user.findMany({
       select: {
         id: true,
         name: true,
-      },
-      where: {
-        id: {
-          not: user.id,
-        },
-        role:
-          user.role === 'MAHASISWA'
-            ? {
-                not: 'MAHASISWA',
-              }
-            : {
-                equals: 'MAHASISWA',
-              },
+        email: true,
+        role: true,
       },
     });
 

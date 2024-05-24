@@ -19,10 +19,10 @@ async function deleteTag(args) {
       throw Error('E_NOT_EXIST');
     }
 
-    console.log(user.id);
-    console.log(tag.authorId);
-    console.log(!['ADMIN', 'KAJUR', 'KAPRODI'].includes(user.role));
-    console.log(user.id !== tag.authorId);
+    // console.log(user.id);
+    // console.log(tag.authorId);
+    // console.log(!['ADMIN', 'KAJUR', 'KAPRODI'].includes(user.role));
+    // console.log(user.id !== tag.authorId);
 
     if (
       user.id !== tag.authorId &&

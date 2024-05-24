@@ -8,7 +8,6 @@ async function createRoomSchedule(args) {
   const { body: requestBody, params: requestParams } = args;
 
   try {
-    console.log(requestBody);
     await checkRoomOverlapAgenda(
       requestParams.roomId,
       null,

@@ -45,7 +45,7 @@ async function createAppointment(args) {
     };
 
     const googleEvent = await createEvent(clientType, refreshToken, event);
-    console.log('googleEvent: ', googleEvent.id);
+    // console.log('googleEvent: ', googleEvent.id);
     // console.log('requestbody: ', requestBody);
 
     const result = await prisma.appointment.create({

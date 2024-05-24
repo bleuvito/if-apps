@@ -325,6 +325,100 @@ async function checkRoomOverlapAgenda(
   }
 }
 
+function validateName(name) {
+  const length = name.length;
+  if (length <= 0 && length > 256) {
+    return 'Jumlah karakter tidak sesuai';
+  }
+
+  return false;
+}
+
+function validateEmailFormat(email) {
+  return email.match(
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  );
+}
+
+async function validateEmail(email) {
+  if (!validateEmailFormat(email)) {
+    return 'Bagian email memiliki format salah';
+  }
+
+  const user = await prisma.user.findFirst({
+    where: {
+      email,
+    },
+  });
+  if (user) {
+    return 'Terdapat user dengan email yang sama';
+  }
+
+  return false;
+}
+
+function validateRole(role) {
+  if (
+    !['ADMIN', 'KAJUR', 'KAPRODI', 'KALAB', 'DOSEN', 'MAHASISWA'].includes(role)
+  ) {
+    return 'Role user tidak valid';
+  }
+  return false;
+}
+
+async function validateUsers(usersString) {
+  const list = usersString.split('\n');
+  const errorUsers = [];
+  const passedUsers = [];
+
+  const users = list.filter((item) => {
+    return item.length > 0;
+  });
+
+  for (const user of users) {
+    const args = user.split(',');
+
+    if (args.length !== 3) {
+      errorUsers.push({
+        line: user,
+        error: 'Kesalahan syntax',
+      });
+      continue;
+    }
+
+    const nameError = validateName(args[0]);
+    if (nameError) {
+      errorUsers.push({
+        line: user,
+        error: nameError,
+      });
+      continue;
+    }
+
+    const emailError = await validateEmail(args[1]);
+    if (emailError) {
+      errorUsers.push({
+        line: user,
+        error: emailError,
+      });
+      continue;
+    }
+
+    const roleError = validateRole(args[2]);
+    if (roleError) {
+      errorUsers.push({
+        line: user,
+        error: roleError,
+      });
+      continue;
+    }
+
+    passedUsers.push({ name: args[0], email: args[1], role: args[2] });
+  }
+
+  return [passedUsers, errorUsers];
+}
+
 export {
   checkLecturerOverlapAgenda,
   checkRoomOverlapAgenda,
@@ -332,4 +426,5 @@ export {
   getRefreshToken,
   upload,
   uploadAttachments,
+  validateUsers,
 };

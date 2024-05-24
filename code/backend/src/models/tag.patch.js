@@ -9,7 +9,7 @@ async function patchTag(args) {
     body: requestBody,
   } = args;
 
-  console.log(requestBody);
+  // console.log(requestBody);
 
   try {
     const tag = await prisma.announcementTag.findFirst({
@@ -32,7 +32,7 @@ async function patchTag(args) {
       where: {
         id: requestParams.id,
       },
-      data: { ...requestBody, authorId: user.id },
+      data: { ...requestBody, authorId: user.id, updatedAt: new Date() },
     });
 
     const payload = updatedTag;
