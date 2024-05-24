@@ -10,8 +10,8 @@ generator client {
 enum Role {
   MAHASISWA
   DOSEN
-  PENGURUS
   KALAB
+  KAPRODI
   KAJUR
   ADMIN
 }

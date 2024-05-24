@@ -9,11 +9,9 @@ async function createTag(args) {
       body: requestBody,
     } = args;
 
-    const { tag: name } = requestBody;
-
     const tag = await prisma.announcementTag.create({
       data: {
-        name,
+        ...requestBody,
         author: {
           connect: {
             id: user.id,
