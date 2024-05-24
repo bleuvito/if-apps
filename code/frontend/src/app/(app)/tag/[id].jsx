@@ -1,7 +1,0 @@
-import { Text } from "react-native-paper";
-
-
-export default function TagDetailsScreen() {
-  
-  return <Text></Text>;
-}

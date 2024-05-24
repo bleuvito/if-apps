@@ -96,7 +96,7 @@ export default function ReservationDetailsScreen() {
         ) : null;
       },
     });
-  }, [navigation]);
+  }, [navigation, reservation]);
 
   if (isLoading) {
     return <ActivityIndicator size='large' />;

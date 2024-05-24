@@ -62,7 +62,6 @@ export default function ParticipantCalendar({ participantId, control }) {
         return { ...event, start: dayjs(event.start), end: dayjs(event.end) };
       });
 
-      // console.log(fetchedEvents);
       setEvents(fetchedEvents);
     } catch (error) {
       console.error('Error catching agenda', error);

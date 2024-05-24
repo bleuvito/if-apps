@@ -1,15 +1,8 @@
-import axios from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { Button, HelperText, TextInput } from 'react-native-paper';
-import { useSession } from '../../../providers/SessionProvider';
 
-const defaultValues = {
-  tag: '',
-};
-
-export default function TagCreateScreen() {
-  const { session } = useSession();
+export default function Form({ defaultValues, onSubmit }) {
   const {
     control,
     handleSubmit,
@@ -18,22 +11,14 @@ export default function TagCreateScreen() {
     defaultValues,
   });
 
-  async function onSubmit(data) {
-    console.log(data);
-    // const createUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag`;
-    // try {
-    //   const { data: response } = await axios.post(createUri, data, {
-    //     headers: { Authorization: `Bearer ${session}` },
-    //   });
-    // } catch (error) {
-    //   console.error('Error creating tag', error);
-    // }
+  async function handleFormSubmit(data) {
+    onSubmit(data);
   }
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
       <Controller
-        name='tag'
+        name='name'
         defaultValue=''
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
@@ -66,7 +51,7 @@ export default function TagCreateScreen() {
         <Button mode='outlined'>Cancel</Button>
         <Button
           mode='contained'
-          onPress={handleSubmit(onSubmit)}
+          onPress={handleSubmit(handleFormSubmit)}
         >
           Submit
         </Button>
