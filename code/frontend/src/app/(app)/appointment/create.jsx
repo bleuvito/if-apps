@@ -9,6 +9,8 @@ export default function AppointmentCreate() {
     date: new Date(),
     start: '',
     end: '',
+    place: '',
+    link: '',
     participant: {},
   };
 

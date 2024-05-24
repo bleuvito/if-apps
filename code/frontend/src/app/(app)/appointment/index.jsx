@@ -48,10 +48,14 @@ export default function AppointmentScreen() {
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    getAppointment();
+  }, [type, search, filter]);
+
   useFocusEffect(
     useCallback(() => {
       getAppointment();
-    }, [type, search, filter])
+    }, [])
   );
 
   return (

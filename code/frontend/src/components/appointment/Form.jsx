@@ -128,6 +128,40 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
             }}
           />
         </View>
+        <Controller
+          name='place'
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => {
+            return (
+              <>
+                <Text>Place</Text>
+                <TextInput
+                  mode='outlined'
+                  value={value}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                />
+              </>
+            );
+          }}
+        />
+        <Controller
+          name='link'
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => {
+            return (
+              <>
+                <Text>Link</Text>
+                <TextInput
+                  mode='outlined'
+                  value={value}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                />
+              </>
+            );
+          }}
+        />
         <AppointmentParticipantField
           selectedParticipant={selectedParticipant}
           setSelectedParticipant={setSelectedParticipant}

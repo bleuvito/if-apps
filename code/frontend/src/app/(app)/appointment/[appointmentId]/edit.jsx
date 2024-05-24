@@ -14,6 +14,8 @@ export default function AppointmentEdit() {
     date: new Date(),
     start: new Date(),
     end: new Date(),
+    place: '',
+    link: '',
     participant: {},
   });
   const [isLoading, setIsLoading] = useState(false);

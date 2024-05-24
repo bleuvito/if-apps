@@ -36,6 +36,8 @@ export default function AppointmentDetailsScreen() {
     },
     start: new Date(),
     end: new Date(),
+    place: '',
+    link: '',
     createdAt: new Date(),
     updateAt: new Date(),
   });
@@ -99,10 +101,6 @@ export default function AppointmentDetailsScreen() {
     });
   }, [navigation, appointment]);
 
-  // useEffect(() => {
-  //   getAppointDetails();
-  // }, []);
-
   useFocusEffect(
     useCallback(() => {
       getAppointDetails();
@@ -140,7 +138,7 @@ export default function AppointmentDetailsScreen() {
       />
       <AppointmentDetailsText
         title='Place'
-        body='John Dow'
+        body={appointment?.place}
       />
       <View style={styles.actionButton}>
         <AppointmentResponseButton
