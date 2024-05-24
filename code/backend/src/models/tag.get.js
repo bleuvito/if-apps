@@ -2,17 +2,22 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-async function listTag() {
+async function getTag(args) {
+  const { params: requestParams } = args;
+
   try {
-    const tags = await prisma.announcementTag.findMany({
+    const tag = await prisma.announcementTag.findFirst({
       select: {
         id: true,
         name: true,
         authorId: true,
       },
+      where: {
+        id: requestParams.id,
+      },
     });
 
-    const payload = tags;
+    const payload = tag;
 
     return payload;
   } catch (error) {
@@ -20,4 +25,4 @@ async function listTag() {
   }
 }
 
-export { listTag };
+export { getTag };
