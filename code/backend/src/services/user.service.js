@@ -4,6 +4,7 @@ import { verify } from '../models/authentication.js';
 import { listUserAgenda } from '../models/user-agenda.list.js';
 import { listInvitee } from '../models/user-invitee.list.js';
 import { createUser } from '../models/user.create.js';
+import { deleteUser } from '../models/user.delete.js';
 import { getUser } from '../models/user.get.js';
 import { listUser } from '../models/user.list.js';
 import { patchUser } from '../models/user.patch.js';
@@ -61,6 +62,19 @@ UserService.patch(
   async (req, res, next) => {
     try {
       const result = await patchUser(req);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+UserService.delete(
+  '/:id',
+  verify(['ADMIN', 'KAJUR']),
+  async (req, res, next) => {
+    try {
+      const result = await deleteUser(req);
       res.json(result);
     } catch (error) {
       next(error);
