@@ -7,15 +7,13 @@ import {
 import { useCallback, useLayoutEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
-import TagDetailsHeaderRight from '../../../../components/tag/HeaderRight';
-import TagDetailsText from '../../../../components/tag/TagDetailsText';
-import UserDetailsHeaderRight from '../../../../components/user/HeaderRIght';
+import UserDetailsHeaderRight from '../../../../components/user/HeaderRight';
 import UserDetailsText from '../../../../components/user/UserDetailsText';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function UserDetailsScreen() {
   const { userId } = useLocalSearchParams();
-  const { session, getUserId, getRole } = useSession();
+  const { session, getRole } = useSession();
   const navigation = useNavigation();
 
   const userRole = getRole();
