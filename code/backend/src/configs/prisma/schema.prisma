@@ -114,11 +114,13 @@ model Appointment {
   id                      String @id @unique @default(uuid())
   gCalendarId             String
   topic                   String
-  // date                 DateTime
   start                   DateTime
   end                     DateTime
   type                    ScheduleType @default(PERTEMUAN)
   status                  AppointmentStatus @default(PENDING)
+  place                   String?
+  link                    String?
+  declineReason           String?
   createdAt               DateTime @default(now())
   updatedAt               DateTime @default(now())
 

@@ -61,6 +61,7 @@ async function listUserAgenda(args) {
             },
           },
         ],
+        status: 'ACCEPTED',
       },
       select: {
         id: true,

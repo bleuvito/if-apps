@@ -1,9 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { createEvent } from '../utils/googleCalendarApi.js';
-import {
-  checkLecturerOverlapAgenda,
-  getRefreshToken,
-} from '../utils/helpers.js';
+import { checkUserOverlapAgenda, getRefreshToken } from '../utils/helpers.js';
 
 const prisma = new PrismaClient();
 
@@ -16,7 +13,7 @@ async function createSchedule(args) {
   const refreshToken = await getRefreshToken(clientType, user.id);
 
   try {
-    await checkLecturerOverlapAgenda(
+    await checkUserOverlapAgenda(
       user.Id,
       null,
       requestBody.start,

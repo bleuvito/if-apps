@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { createEvent } from '../utils/googleCalendarApi.js';
-import { getRefreshToken } from '../utils/helpers.js';
+import { checkUserOverlapAgenda, getRefreshToken } from '../utils/helpers.js';
 
 const prisma = new PrismaClient();
 
@@ -10,11 +10,29 @@ async function createAppointment(args) {
     body: requestBody,
   } = args;
 
-  // console.log(requestBody.participant.id);
-
   const refreshToken = await getRefreshToken(clientType, user.id);
 
   try {
+    const appointmentDay = new Date(requestBody.start)
+      .toLocaleString('id-ID', { weekday: 'long' })
+      .toUpperCase();
+
+    await checkUserOverlapAgenda(
+      user.id,
+      null,
+      requestBody.start,
+      requestBody.end,
+      appointmentDay
+    );
+
+    await checkUserOverlapAgenda(
+      requestBody.participant.id,
+      null,
+      requestBody.start,
+      requestBody.end,
+      appointmentDay
+    );
+
     const { email: participantEmail } = await prisma.user.findFirst({
       select: {
         email: true,
@@ -42,11 +60,14 @@ async function createAppointment(args) {
       },
       attendees: [{ email: participantEmail, responseStatus: 'needsAction' }],
       sendUpdates: 'all',
+      location: requestBody.place,
     };
 
+    if (requestBody.link.length > 0) {
+      event.description = `<a href='${requestBody.link}'>${requestBody.link}</a>`;
+    }
+
     const googleEvent = await createEvent(clientType, refreshToken, event);
-    // console.log('googleEvent: ', googleEvent.id);
-    // console.log('requestbody: ', requestBody);
 
     const result = await prisma.appointment.create({
       data: {
@@ -55,6 +76,8 @@ async function createAppointment(args) {
         date: requestBody.date,
         start: requestBody.start,
         end: requestBody.end,
+        place: requestBody.place,
+        link: requestBody.link,
         organizer: {
           connect: {
             id: user.id,

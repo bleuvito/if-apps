@@ -1,10 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { putEvent } from '../utils/googleCalendarApi.js';
-import {
-  checkLecturerOverlapAgenda,
-  checkRoomOverlapAgenda,
-  getRefreshToken,
-} from '../utils/helpers.js';
+import { checkRoomOverlapAgenda, getRefreshToken } from '../utils/helpers.js';
 
 const prisma = new PrismaClient();
 

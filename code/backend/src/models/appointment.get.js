@@ -8,14 +8,23 @@ async function getAppointment(args) {
     locals: { user },
   } = args;
 
+  console.log(id);
+
   try {
     const appointment = await prisma.appointment.findFirst({
       where: {
         id,
       },
       select: {
+        id: true,
+        gCalendarId: true,
         topic: true,
+        start: true,
+        end: true,
+        place: true,
+        link: true,
         status: true,
+        type: true,
         organizer: {
           select: {
             id: true,
@@ -28,10 +37,10 @@ async function getAppointment(args) {
             name: true,
           },
         },
-        start: true,
-        end: true,
       },
     });
+
+    console.log(appointment);
 
     if (
       appointment.organizer.id !== user.id &&

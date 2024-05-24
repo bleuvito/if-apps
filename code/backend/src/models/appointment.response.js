@@ -11,7 +11,7 @@ async function responseAppointment(args) {
     body: requestBody,
   } = args;
 
-  // console.log(requestBody);
+  console.log(requestBody);
 
   const refreshToken = await getRefreshToken(clientType, user.id);
 
@@ -22,6 +22,12 @@ async function responseAppointment(args) {
       },
       select: {
         gCalendarId: true,
+        organizer: {
+          select: {
+            id: true,
+            email: true,
+          },
+        },
         participant: {
           select: {
             id: true,
@@ -74,7 +80,7 @@ async function responseAppointment(args) {
         ...requestBody,
         organizer: {
           connect: {
-            id: user.id,
+            id: appointment.organizer.id,
           },
         },
         participant: {

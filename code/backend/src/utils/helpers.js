@@ -105,7 +105,7 @@ function convertToIntTime(inputDate) {
   return parseInt(`${hour}${minute}`);
 }
 
-async function checkLecturerOverlapAgenda(
+async function checkUserOverlapAgenda(
   userId,
   scheduleId,
   startTime,
@@ -115,12 +115,18 @@ async function checkLecturerOverlapAgenda(
   const oneTimeScheduleWhere = {
     lecturerId: userId,
     isRecurring: false,
-    start: {
-      lt: endTime,
-    },
-    end: {
-      gt: startTime,
-    },
+    AND: [
+      {
+        start: {
+          lt: endTime,
+        },
+      },
+      {
+        end: {
+          gt: startTime,
+        },
+      },
+    ],
   };
 
   if (scheduleId !== null) {
@@ -135,8 +141,6 @@ async function checkLecturerOverlapAgenda(
     where: { ...oneTimeScheduleWhere },
     select: {
       id: true,
-      start: true,
-      end: true,
     },
   });
 
@@ -182,6 +186,7 @@ async function checkLecturerOverlapAgenda(
 
   const appointments = await prisma.appointment.findMany({
     where: {
+      status: 'ACCEPTED',
       OR: [
         {
           organizerId: userId,
@@ -190,7 +195,6 @@ async function checkLecturerOverlapAgenda(
           participantId: userId,
         },
       ],
-      status: 'ACCEPTED',
       AND: [
         {
           start: {
@@ -420,8 +424,8 @@ async function validateUsers(usersString) {
 }
 
 export {
-  checkLecturerOverlapAgenda,
   checkRoomOverlapAgenda,
+  checkUserOverlapAgenda,
   generateAttachmentUrls,
   getRefreshToken,
   upload,

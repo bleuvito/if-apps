@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { putEvent } from '../utils/googleCalendarApi.js';
-import { getRefreshToken } from '../utils/helpers.js';
+import { checkUserOverlapAgenda, getRefreshToken } from '../utils/helpers.js';
 
 const prisma = new PrismaClient();
 
@@ -29,6 +29,16 @@ async function putAnnouncement(args) {
         },
       },
     });
+
+    checkUserOverlapAgenda(
+      user.id,
+      appointment.id,
+      requestBody.start,
+      requestBody.end,
+      new Date(requestBody.start)
+        .toLocaleString('id-ID', { weekday: 'long' })
+        .toUpperCase()
+    );
 
     const event = {
       attendees: [

@@ -29,18 +29,20 @@ UserService.get('/', verify(['ADMIN', 'KAJUR']), async (req, res, next) => {
   }
 });
 
-UserService.get('/:id', verify(['ADMIN', 'KAJUR']), async (req, res, next) => {
+UserService.get('/invitee', verify('all'), async (req, res, next) => {
   try {
-    const result = await getUser(req);
+    console.log('invitee');
+    const result = await listInvitee(req);
     res.json(result);
   } catch (error) {
     next(error);
   }
 });
 
-UserService.get('/invitee', verify('all'), async (req, res, next) => {
+UserService.get('/:id', verify(['ADMIN', 'KAJUR']), async (req, res, next) => {
   try {
-    const result = await listInvitee(req);
+    console.log('geta');
+    const result = await getUser(req);
     res.json(result);
   } catch (error) {
     next(error);
