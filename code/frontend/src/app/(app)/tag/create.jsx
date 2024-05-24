@@ -5,7 +5,7 @@ import { Button, HelperText, TextInput } from 'react-native-paper';
 import { useSession } from '../../../providers/SessionProvider';
 
 const defaultValues = {
-  tag: '',
+  name: '',
 };
 
 export default function TagCreateScreen() {
@@ -19,22 +19,20 @@ export default function TagCreateScreen() {
   });
 
   async function onSubmit(data) {
-    console.log(data);
-    // const createUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag`;
-    // try {
-    //   const { data: response } = await axios.post(createUri, data, {
-    //     headers: { Authorization: `Bearer ${session}` },
-    //   });
-    // } catch (error) {
-    //   console.error('Error creating tag', error);
-    // }
+    const createUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag`;
+    try {
+      const { data: response } = await axios.post(createUri, data, {
+        headers: { Authorization: `Bearer ${session}` },
+      });
+    } catch (error) {
+      console.error('Error creating tag', error);
+    }
   }
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
       <Controller
-        name='tag'
-        defaultValue=''
+        name='name'
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (

@@ -57,8 +57,7 @@ export default function RoomCreateScreen() {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 style={{
-                  flex: 1 / 2,
-                  marginTop: 30,
+                  maxHeight: 500,
                 }}
               />
             </>

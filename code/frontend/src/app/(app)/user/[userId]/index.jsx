@@ -9,26 +9,28 @@ import { View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import TagDetailsHeaderRight from '../../../../components/tag/HeaderRight';
 import TagDetailsText from '../../../../components/tag/TagDetailsText';
+import UserDetailsHeaderRight from '../../../../components/user/HeaderRIght';
+import UserDetailsText from '../../../../components/user/UserDetailsText';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function UserDetailsScreen() {
-  const { tagId } = useLocalSearchParams();
+  const { userId } = useLocalSearchParams();
   const { session, getUserId, getRole } = useSession();
   const navigation = useNavigation();
 
-  const userId = getUserId();
   const userRole = getRole();
 
-  const [tag, setTag] = useState({
+  const [user, setUser] = useState({
     id: '',
     name: '',
-    authorId: '',
+    email: '',
+    role: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  const getTagDetails = async () => {
-    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag/${tagId}`;
+  const getUserDetails = async () => {
+    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/user/${userId}`;
 
     setIsLoading(true);
     try {
@@ -38,9 +40,9 @@ export default function UserDetailsScreen() {
         },
       });
 
-      setTag(data);
+      setUser(data);
     } catch (error) {
-      console.log('Error getting tag details: ', error);
+      console.log('Error getting user details: ', error);
     }
     setIsLoading(false);
   };
@@ -53,8 +55,8 @@ export default function UserDetailsScreen() {
     setVisible(false);
   }
 
-  const handleDeleteTag = async () => {
-    const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag/${tagId}`;
+  const handleDeleteUser = async () => {
+    const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/user/${userId}`;
 
     try {
       const { data } = await axios.delete(deleteUri, {
@@ -63,45 +65,48 @@ export default function UserDetailsScreen() {
         },
       });
     } catch (error) {
-      console.error('Error deleting reservation: ', error);
+      console.error('Error deleting user: ', error);
     }
   };
 
   useFocusEffect(
     useCallback(() => {
-      getTagDetails();
+      getUserDetails();
     }, [])
   );
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return tag?.authorId !== userId &&
-          !['ADMIN', 'KAJUR', 'KAPRODI'].includes(userRole) ? null : (
-          <TagDetailsHeaderRight onPressDelete={showDialog} />
+        return !['ADMIN', 'KAJUR'].includes(userRole) ? null : (
+          <UserDetailsHeaderRight onPressDelete={showDialog} />
         );
       },
     });
-  }, [navigation, tag]);
+  }, [navigation, user]);
 
   return (
     <View>
-      <TagDetailsText
-        title={'Name'}
-        body={tag.name}
+      <Text variant='headlineLarge'>{user.name}</Text>
+      <UserDetailsText
+        title={'Email'}
+        body={user.email}
       />
-
+      <UserDetailsText
+        title={'Role'}
+        body={user.role}
+      />
       <Portal>
         <Dialog
           visible={visible}
           onDismiss={hideDialog}
         >
-          <Dialog.Title>Delete tag?</Dialog.Title>
+          <Dialog.Title>Delete user?</Dialog.Title>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Cancel</Button>
           </Dialog.Actions>
           <Dialog.Actions>
-            <Button onPress={handleDeleteTag}>Delete</Button>
+            <Button onPress={handleDeleteUser}>Delete</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

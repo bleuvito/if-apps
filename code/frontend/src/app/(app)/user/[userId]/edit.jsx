@@ -2,22 +2,23 @@ import axios from 'axios';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ActivityIndicator, Text } from 'react-native-paper';
-import Form from '../../../../components/tag/Form';
+import Form from '../../../../components/user/Form';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function EditUserDetailsScreen() {
-  const { tagId } = useLocalSearchParams();
+  const { userId } = useLocalSearchParams();
   const { session } = useSession();
 
   const [defaultValues, setDefaultValues] = useState({
     id: '',
-    authorId: '',
     name: '',
+    email: '',
+    role: '',
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const getTagDetails = async () => {
-    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag/${tagId}`;
+  const getUserDetails = async () => {
+    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/user/${userId}`;
 
     setIsLoading(true);
     try {
@@ -35,7 +36,7 @@ export default function EditUserDetailsScreen() {
   };
 
   const handleSubmit = async (data) => {
-    const patchUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag/${tagId}`;
+    const patchUri = `${process.env.EXPO_PUBLIC_BASE_URL}/user/${userId}`;
     try {
       const { data: response } = await axios.patch(patchUri, data, {
         headers: { Authorization: `Bearer ${session}` },
@@ -47,7 +48,7 @@ export default function EditUserDetailsScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      getTagDetails();
+      getUserDetails();
     }, [])
   );
 
