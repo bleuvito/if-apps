@@ -30,8 +30,6 @@ export default function ParticipantCalendar({ participantId, control }) {
   const getEvents = async () => {
     if (participantId === null) return;
 
-    console.log('getcalendar');
-
     const [start, end] = getDateRange();
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/user/${participantId}/agenda`;
     try {

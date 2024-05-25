@@ -6,8 +6,6 @@ import { getTimeDuration } from '../../helpers/utils';
 import LeftCalendarComponent from '../LeftCalendarIconComponent';
 
 export default function ReservationCard({ reservation }) {
-  console.log(reservation.id);
-
   return (
     <Card
       onPress={() => {

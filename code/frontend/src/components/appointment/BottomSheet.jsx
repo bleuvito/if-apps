@@ -46,16 +46,11 @@ const BottomSheet = forwardRef(
     const getUsers = async () => {
       setIsLoading(true);
 
-      console.log('invitee');
-
       const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/user/invitee`;
-      console.log(getUri);
       try {
         const { data } = await axios.get(getUri, {
           headers: { Authorization: `Bearer ${session}` },
         });
-
-        console.log(data);
 
         setParticipants(data);
       } catch (error) {
