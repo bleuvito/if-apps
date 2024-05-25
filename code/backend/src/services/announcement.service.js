@@ -38,7 +38,7 @@ AnnouncementService.get('/:id', verify('all'), async (req, res, next) => {
 
 AnnouncementService.get('/', verify('all'), async (req, res, next) => {
   try {
-    const result = await listAnnouncement();
+    const result = await listAnnouncement(req);
     res.json(result);
   } catch (error) {
     next(error);

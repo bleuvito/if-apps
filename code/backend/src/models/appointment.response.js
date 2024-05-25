@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { putEvent } from '../utils/googleCalendarApi.js';
-import { getRefreshToken } from '../utils/helpers.js';
+import { checkUserOverlapAgenda, getRefreshToken } from '../utils/helpers.js';
 
 const prisma = new PrismaClient();
 
@@ -11,8 +11,6 @@ async function responseAppointment(args) {
     body: requestBody,
   } = args;
 
-  console.log(requestBody);
-
   const refreshToken = await getRefreshToken(clientType, user.id);
 
   try {
@@ -21,6 +19,8 @@ async function responseAppointment(args) {
         id,
       },
       select: {
+        start: true,
+        end: true,
         gCalendarId: true,
         organizer: {
           select: {
@@ -36,6 +36,27 @@ async function responseAppointment(args) {
         },
       },
     });
+
+    if (requestBody.status === 'ACCEPTED') {
+      const appointmentDay = new Date(requestBody.start)
+        .toLocaleString('id-ID', { weekday: 'long' })
+        .toUpperCase();
+
+      await checkUserOverlapAgenda(
+        appointment.organizer.id,
+        null,
+        appointment.start,
+        appointment.end,
+        appointmentDay
+      );
+      await checkUserOverlapAgenda(
+        appointment.participant.id,
+        null,
+        appointment.start,
+        appointment.end,
+        appointmentDay
+      );
+    }
 
     const event = {
       attendees: [

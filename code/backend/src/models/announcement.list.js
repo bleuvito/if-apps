@@ -2,8 +2,26 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-async function listAnnouncement() {
+async function listAnnouncement(args) {
+  const { query: requestQuery, params: requestParams } = args;
+
   try {
+    const tagIds = requestQuery.tags?.map((tag) => tag.id);
+    const where = {
+      subject: {
+        contains: requestQuery.subject,
+      },
+    };
+    if (tagIds) {
+      where.tags = {
+        some: {
+          id: {
+            in: tagIds,
+          },
+        },
+      };
+    }
+
     const announcements = await prisma.announcementHeader.findMany({
       select: {
         id: true,
@@ -11,7 +29,6 @@ async function listAnnouncement() {
         subject: true,
         bodies: {
           select: {
-            createdAt: true,
             snippet: true,
           },
           where: {
@@ -29,8 +46,11 @@ async function listAnnouncement() {
           },
         },
       },
+      where,
       orderBy: [{ isPinned: 'desc' }, { updatedAt: 'desc' }],
     });
+
+    console.log(announcements);
 
     const payload = announcements;
     return payload;

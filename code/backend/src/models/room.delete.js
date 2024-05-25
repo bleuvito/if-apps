@@ -1,6 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { deleteEvent } from '../utils/googleCalendarApi.js';
-import { getRefreshToken } from '../utils/helpers.js';
 
 const prisma = new PrismaClient();
 

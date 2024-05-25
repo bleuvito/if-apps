@@ -30,14 +30,24 @@ async function putAnnouncement(args) {
       },
     });
 
-    checkUserOverlapAgenda(
+    const appointmentDay = new Date(requestBody.start)
+      .toLocaleString('id-ID', { weekday: 'long' })
+      .toUpperCase();
+
+    await checkUserOverlapAgenda(
       user.id,
       appointment.id,
       requestBody.start,
       requestBody.end,
-      new Date(requestBody.start)
-        .toLocaleString('id-ID', { weekday: 'long' })
-        .toUpperCase()
+      appointmentDay
+    );
+
+    await checkUserOverlapAgenda(
+      requestBody.participant.id,
+      null,
+      requestBody.start,
+      requestBody.end,
+      appointmentDay
     );
 
     const event = {

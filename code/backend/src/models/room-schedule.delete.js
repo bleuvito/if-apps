@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 async function deleteRoomSchedule(args) {
   const { params: requestParams } = args;
 
-  console.log(requestParams.sheduleId);
+  // console.log(requestParams.sheduleId);
 
   try {
     const roomSchedule = await prisma.roomSchedule.findFirst({
@@ -14,7 +14,7 @@ async function deleteRoomSchedule(args) {
       },
     });
 
-    console.log(roomSchedule);
+    // console.log(roomSchedule);
 
     if (!roomSchedule) {
       throw Error('E_NOT_EXIST');
