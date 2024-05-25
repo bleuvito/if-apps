@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useAnnouncementList } from '../../hooks/useAnnouncementList';
 import { useSession } from '../../providers/SessionProvider';
-import SearchInput from './SearchInput';
+import SearchInput from '../SearchInput';
 import TagFilter from './TagFilter';
 
 export default function FilterBar({ setAnnouncements }) {

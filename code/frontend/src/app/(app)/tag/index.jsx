@@ -5,6 +5,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import { ActivityIndicator, FAB, Text } from 'react-native-paper';
 
 import TagCard from '../../../components/tag/Card';
+import TagSearchInput from '../../../components/tag/TagSearchInput';
 import { useSession } from '../../../providers/SessionProvider';
 
 export default function TagScreen() {
@@ -47,6 +48,7 @@ export default function TagScreen() {
 
   return (
     <>
+      <TagSearchInput setTags={setTags} />
       <FlatList
         data={tags}
         contentContainerStyle={styles.contentContainer}
