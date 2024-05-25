@@ -24,7 +24,7 @@ TagService.post(
 
 TagService.get('/', verify('all'), async (req, res, next) => {
   try {
-    const result = await listTag(req.body);
+    const result = await listTag(req);
     res.json(result);
   } catch (error) {
     next(error);

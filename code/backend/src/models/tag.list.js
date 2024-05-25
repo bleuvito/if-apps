@@ -2,13 +2,23 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-async function listTag() {
+async function listTag(args) {
+  const { query: requestParams } = args;
+
   try {
     const tags = await prisma.announcementTag.findMany({
       select: {
         id: true,
         name: true,
         authorId: true,
+      },
+      where: {
+        name: {
+          contains: requestParams.name,
+        },
+      },
+      orderBy: {
+        name: 'asc',
       },
     });
 
