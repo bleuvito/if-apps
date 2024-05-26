@@ -14,6 +14,9 @@ async function listReservation(args) {
       where: {
         roomId: requestParams.roomId,
         reserveeId: user.id,
+        title: {
+          contains: requestQuery.title,
+        },
       },
       select: {
         id: true,

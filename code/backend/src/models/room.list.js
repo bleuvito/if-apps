@@ -16,7 +16,15 @@ async function listRoom(args) {
         name: true,
         capacity: true,
       },
+      where: {
+        name: {
+          contains: requestQuery.name,
+        },
+      },
     });
+
+    console.log(requestQuery);
+    console.log(rooms);
 
     // console.log(rooms);
 
