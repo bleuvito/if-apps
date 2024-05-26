@@ -1,28 +1,31 @@
 import { A } from '@expo/html-elements';
 import axios from 'axios';
 import { useLocalSearchParams } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
   View,
   useWindowDimensions,
 } from 'react-native';
-import { ActivityIndicator, Chip, Text } from 'react-native-paper';
+import { Chip, Icon, Text } from 'react-native-paper';
 import RenderHTML from 'react-native-render-html';
 
+import dayjs from 'dayjs';
+import LoadingIndicator from '../../../../../components/LoadingIndicator';
 import { useSession } from '../../../../../providers/SessionProvider';
 
-export default function AnnouncementDetailScreen() {
+export default function AnnouncementHistoryDetailsScreen() {
   const { announcementId, historyId } = useLocalSearchParams();
   const { session } = useSession();
   const { width } = useWindowDimensions();
-  const [announcementHistoryDetails, setAnnouncementHistoryDetails] = useState({
-    author: '',
-    createdAt: '',
+
+  const [announcementHistory, setAnnouncementHistory] = useState({
+    author: {
+      name: '',
+    },
     subject: '',
-    body: '',
-    attachments: [],
+    bodies: [{ createdAt: '', body: '', attachments: [] }],
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,24 +33,12 @@ export default function AnnouncementDetailScreen() {
     setIsLoading(true);
 
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}/history/${historyId}`;
-    const { data: announcementHistoryDetails } = await axios.get(getUri, {
+    const { data } = await axios.get(getUri, {
       headers: {
         Authorization: `Bearer ${session}`,
       },
     });
-
-    const {
-      author,
-      subject,
-      bodies: [{ createdAt, body, attachments }],
-    } = announcementHistoryDetails;
-    setAnnouncementHistoryDetails({
-      author: author.name,
-      createdAt,
-      subject,
-      body,
-      attachments,
-    });
+    setAnnouncementHistory(data);
 
     setIsLoading(false);
   }
@@ -57,37 +48,64 @@ export default function AnnouncementDetailScreen() {
   }, []);
 
   if (isLoading) {
-    return <ActivityIndicator size='large' />;
+    return <LoadingIndicator />;
   }
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View>
-          <Text
-            variant='headlineLarge'
-            style={styles.title}
+    <ScrollView style={{ padding: 16 }}>
+      <View style={{ marginBottom: 32 }}>
+        <Text variant='headlineLarge'>{announcementHistory?.subject}</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginRight: 8,
+            }}
           >
-            {announcementHistoryDetails.subject}
-          </Text>
-          <Text>{announcementHistoryDetails.createdAt}</Text>
+            <Icon source='clock-outline' />
+            <Text
+              variant='bodyMedium'
+              style={{ marginLeft: 4 }}
+            >
+              {dayjs(announcementHistory?.bodies[0].createdAt)
+                .locale('id')
+                .format('DD MMM YYYY')}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Icon source='account-outline' />
+            <Text
+              variant='bodyMedium'
+              style={{ marginLeft: 4 }}
+            >
+              {announcementHistory?.author?.name}
+            </Text>
+          </View>
         </View>
-        <RenderHTML
-          contentWidth={width}
-          source={{ html: announcementHistoryDetails.body }}
-        />
-        <View style={styles.attachmentContainer}>
-          <Text variant='titleMedium'>Lampiran</Text>
-          <View style={styles.chipContainer}>
-            {announcementHistoryDetails.attachments.map((attachment, index) => (
+      </View>
+      <RenderHTML
+        contentWidth={width}
+        source={{ html: announcementHistory?.bodies[0].body }}
+      />
+      <View style={{ marginTop: 64 }}>
+        <Text
+          variant='titleSmall'
+          style={{ marginBottom: 4 }}
+        >
+          Lampiran
+        </Text>
+        <View style={styles.chipContainer}>
+          {announcementHistory?.bodies[0]?.attachments.map(
+            (attachment, index) => (
               <Chip
                 key={index}
                 icon='file'
               >
                 <A href={attachment.webViewLink}>{attachment.name}</A>
               </Chip>
-            ))}
-          </View>
+            )
+          )}
         </View>
       </View>
     </ScrollView>

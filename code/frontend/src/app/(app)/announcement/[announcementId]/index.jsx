@@ -17,11 +17,14 @@ import {
   Button,
   Chip,
   Dialog,
+  Icon,
   Portal,
   Text,
 } from 'react-native-paper';
 import RenderHTML from 'react-native-render-html';
 
+import dayjs from 'dayjs';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 import AnnouncementDetailsHeaderRight from '../../../../components/announcement/DetailsHeaderRight';
 import { useSession } from '../../../../providers/SessionProvider';
 
@@ -111,27 +114,52 @@ export default function AnnouncementDetailScreen() {
   const role = getRole();
 
   if (isLoading) {
-    return <ActivityIndicator size='large' />;
+    return <LoadingIndicator />;
   }
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View>
-          <Text
-            variant='headlineLarge'
-            style={styles.title}
+    <ScrollView style={{ padding: 16 }}>
+      <View style={{ marginBottom: 32 }}>
+        <Text variant='headlineLarge'>{announcement.subject}</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginRight: 8,
+            }}
           >
-            {announcement.subject}
-          </Text>
-          <Text>{announcement.createdAt}</Text>
+            <Icon source='clock-outline' />
+            <Text
+              variant='bodyMedium'
+              style={{ marginLeft: 4 }}
+            >
+              {dayjs(announcement.createdAt).locale('id').format('DD MMM YYYY')}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Icon source='account-outline' />
+            <Text
+              variant='bodyMedium'
+              style={{ marginLeft: 4 }}
+            >
+              {announcement.author.name}
+            </Text>
+          </View>
         </View>
-        <RenderHTML
-          contentWidth={width}
-          source={{ html: announcement.body }}
-        />
-        <View style={styles.attachmentContainer}>
-          <Text variant='titleMedium'>Lampiran</Text>
+      </View>
+      <RenderHTML
+        contentWidth={width}
+        source={{ html: announcement.body }}
+      />
+      {announcement.attachments.length > 0 && (
+        <View style={{ marginTop: 64 }}>
+          <Text
+            variant='titleSmall'
+            style={{ marginBottom: 4 }}
+          >
+            Lampiran
+          </Text>
           <View style={styles.chipContainer}>
             {announcement.attachments.map((attachment, index) => (
               <Chip
@@ -143,26 +171,36 @@ export default function AnnouncementDetailScreen() {
             ))}
           </View>
         </View>
-        <View style={styles.attachmentContainer}>
-          <Text variant='titleMedium'>Tag</Text>
+      )}
+      {announcement.tags.length > 0 && (
+        <View style={{ marginTop: 16 }}>
+          <Text
+            variant='titleSmall'
+            style={{ marginBottom: 4 }}
+          >
+            Tag
+          </Text>
           <View style={styles.chipContainer}>
             {announcement.tags.map((tag, index) => (
-              <Chip key={index}>{tag.name}</Chip>
+              <Chip
+                key={index}
+                icon='tag'
+              >
+                {tag.name}
+              </Chip>
             ))}
           </View>
         </View>
-      </View>
+      )}
       <Portal>
         <Dialog
           visible={visible}
           onDismiss={hideDialog}
         >
-          <Dialog.Title>Delete announcement?</Dialog.Title>
+          <Dialog.Title>Hapus pengumuman?</Dialog.Title>
           <Dialog.Actions>
-            <Button onPress={hideDialog}>Cancel</Button>
-          </Dialog.Actions>
-          <Dialog.Actions>
-            <Button onPress={handleDeleteAnnouncement}>Delete</Button>
+            <Button onPress={hideDialog}>Batal</Button>
+            <Button onPress={handleDeleteAnnouncement}>Hapus</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -171,7 +209,7 @@ export default function AnnouncementDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 16, rowGap: 32 },
+  container: { padding: 16 },
   title: { marginBottom: 4 },
   attachmentContainer: { rowGap: 4 },
   chipContainer: {

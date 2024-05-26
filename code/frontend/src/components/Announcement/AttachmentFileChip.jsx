@@ -18,6 +18,7 @@ export default function AttachmentFileChip({ idx, name, files, setFiles }) {
       icon='file'
       closeIcon='close'
       ellipsizeMode='middle'
+      // style={{ alignSelf: 'center' }}
       onClose={() => handleDeletePickedFile()}
     >
       <Text>{name}</Text>

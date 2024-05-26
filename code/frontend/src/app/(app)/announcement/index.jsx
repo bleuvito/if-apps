@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, FAB } from 'react-native-paper';
 
 import SearchInput from '../../../components/SearchInput';
@@ -36,26 +36,29 @@ export default function AnnouncementScreen() {
 
   const role = getRole();
 
-  if (isLoading) {
-    return <ActivityIndicator size='large' />;
-  }
-
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <FilterBar setAnnouncements={setAnnouncements} />
-      <FlatList
-        data={announcements}
-        contentContainerStyle={styles.contentContainer}
-        renderItem={({ item }) => {
-          return (
-            <AnnouncementCard
-              key={item.id}
-              announcement={item}
-              isRead
-            />
-          );
-        }}
-      />
+      {isLoading ? (
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
+          <ActivityIndicator size='large' />
+        </View>
+      ) : (
+        <FlatList
+          data={announcements}
+          contentContainerStyle={styles.contentContainer}
+          renderItem={({ item }) => {
+            return (
+              <AnnouncementCard
+                key={item.id}
+                announcement={item}
+              />
+            );
+          }}
+        />
+      )}
       {role !== 'MAHASISWA' && (
         <FAB
           icon='plus'
@@ -63,7 +66,7 @@ export default function AnnouncementScreen() {
           onPress={() => router.push('/announcement/create')}
         />
       )}
-    </>
+    </View>
   );
 }
 

@@ -1,8 +1,8 @@
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import { useTagList } from '../../hooks/useTagList';
-import { SelectedTagsProvider } from '../../providers/SelectedTagsProvider';
 import { useSession } from '../../providers/SessionProvider';
 import NewTagBottomSheetListItem from './NewTagBottomSheetListItem';
 
@@ -45,6 +45,7 @@ export default function NewTagBottomSheetList({
       data={tags}
       keyExtractor={(tag) => tag.id}
       renderItem={renderItem}
+      style={{ width: '100%' }}
     />
   );
 }

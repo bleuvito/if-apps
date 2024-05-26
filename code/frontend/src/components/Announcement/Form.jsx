@@ -1,7 +1,13 @@
 import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
-import { Button, Checkbox, TextInput } from 'react-native-paper';
+import {
+  Button,
+  Checkbox,
+  HelperText,
+  Text,
+  TextInput,
+} from 'react-native-paper';
 
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import AttachmentField from './AttachmentField.jsx';
@@ -30,7 +36,7 @@ export default function AnnouncementForm({
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <>
       <ScrollView style={{ flex: 1, padding: 16 }}>
         <Controller
           name='recipient'
@@ -38,14 +44,23 @@ export default function AnnouncementForm({
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
             return (
-              <TextInput
-                disabled={editMode}
-                label='To'
-                mode='outlined'
-                value={value}
-                onBlur={onBlur}
-                onChangeText={onChange}
-              />
+              <View style={{ marginBottom: 16 }}>
+                <Text
+                  variant='bodyMedium'
+                  style={{ marginBottom: 4 }}
+                >
+                  To
+                </Text>
+                <TextInput
+                  disabled={editMode}
+                  // label='To'
+                  mode='outlined'
+                  value={value}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  placeholder='if20@unpar.ac.id,if21@unpar.ac.id'
+                />
+              </View>
             );
           }}
         />
@@ -55,14 +70,21 @@ export default function AnnouncementForm({
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
             return (
-              <TextInput
-                disabled={editMode}
-                label='Subject'
-                mode='outlined'
-                value={value}
-                onBlur={onBlur}
-                onChangeText={onChange}
-              />
+              <View style={{ marginBottom: 16 }}>
+                <Text
+                  variant='bodyMedium'
+                  style={{ marginBottom: 4 }}
+                >
+                  Subjek
+                </Text>
+                <TextInput
+                  disabled={editMode}
+                  mode='outlined'
+                  value={value}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                />
+              </View>
             );
           }}
         />
@@ -72,10 +94,18 @@ export default function AnnouncementForm({
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
-              <RichTextEditor
-                onChange={onChange}
-                defaultValue={value}
-              />
+              <View style={{ marginBottom: 16 }}>
+                <Text
+                  variant='bodyMedium'
+                  style={{ marginBottom: 4 }}
+                >
+                  Isi
+                </Text>
+                <RichTextEditor
+                  onChange={onChange}
+                  defaultValue={value}
+                />
+              </View>
             );
           }}
         />
@@ -85,40 +115,65 @@ export default function AnnouncementForm({
           defaultValue={[]}
           render={({ field: { onChange, value } }) => {
             return (
-              <AttachmentField
-                files={value}
-                setFiles={onChange}
-              />
+              <View style={{ marginBottom: 16 }}>
+                <AttachmentField
+                  files={value}
+                  setFiles={onChange}
+                />
+              </View>
             );
           }}
         />
-        <TagField
-          selectedTags={selectedTags}
-          setSelectedTags={setSelectedTags}
-          bottomSheetRef={bottomSheetRef}
-        />
+        <View style={{ marginBottom: 16 }}>
+          <TagField
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
+            bottomSheetRef={bottomSheetRef}
+          />
+        </View>
         <Controller
           name='pin'
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
-              <Checkbox.Item
-                label='Pin'
-                status={value ? 'checked' : 'unchecked'}
-                onPress={() => onChange(!value)}
-              />
+              <View
+                style={{
+                  marginBottom: 32,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <Text
+                  variant='bodyMedium'
+                  style={{ flex: 1 }}
+                >
+                  Pin
+                </Text>
+                <Checkbox
+                  // label='Pin
+                  status={value ? 'checked' : 'unchecked'}
+                  onPress={() => onChange(!value)}
+                />
+              </View>
             );
           }}
         />
         <View
           style={{
             flexDirection: 'row',
+            paddingBottom: 96,
           }}
         >
-          <Button mode='outlined'>Cancel</Button>
+          <Button
+            mode='outlined'
+            style={{ flex: 1 }}
+          >
+            Cancel
+          </Button>
           <Button
             mode='contained'
             onPress={handleSubmit(handleFormSubmit)}
+            style={{ flex: 1 }}
           >
             Submit
           </Button>
@@ -129,6 +184,6 @@ export default function AnnouncementForm({
         setSelectedTags={setSelectedTags}
         bottomSheetRef={bottomSheetRef}
       />
-    </View>
+    </>
   );
 }

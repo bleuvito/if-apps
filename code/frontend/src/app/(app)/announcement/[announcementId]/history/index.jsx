@@ -1,8 +1,10 @@
 import axios from 'axios';
+import dayjs from 'dayjs';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Card, Icon, Text } from 'react-native-paper';
+import LoadingIndicator from '../../../../../components/LoadingIndicator';
 import { useSession } from '../../../../../providers/SessionProvider';
 
 export default function AnnouncementHistoryScreen() {
@@ -32,7 +34,7 @@ export default function AnnouncementHistoryScreen() {
   );
 
   if (isLoading) {
-    return <ActivityIndicator size='large' />;
+    <LoadingIndicator />;
   }
 
   return (
@@ -48,17 +50,21 @@ export default function AnnouncementHistoryScreen() {
                 router.push(`announcement/${announcementId}/history/${item.id}`)
               }
             >
-              <Card.Title
-                subtitle={item.createdAt}
-                subtitleVariant='bodySmall'
-              />
               <Card.Content>
                 <Text
                   variant='bodyMedium'
                   numberOfLines={2}
-                  style={styles.snippet}
+                  style={{ marginBottom: 8 }}
+                  // style={styles.snippet}
                 >
                   {item.snippet}
+                </Text>
+                <Text
+                  variant='bodySmall'
+                  style={{ fontStyle: 'italic', color: 'grey' }}
+                >
+                  Dibuat tanggal{' '}
+                  {dayjs(item.createdAt).locale('id').format('DD MMMM YYYY')}
                 </Text>
               </Card.Content>
             </Card>

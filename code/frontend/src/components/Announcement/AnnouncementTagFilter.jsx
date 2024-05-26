@@ -25,6 +25,7 @@ export default function TagFilter({ setTags }) {
         mode='outlined'
         closeIcon='menu-down'
         onPress={handlePresentModalPress}
+        onClose={handlePresentModalPress}
         style={{ alignSelf: 'flex-start' }}
       >
         Tag

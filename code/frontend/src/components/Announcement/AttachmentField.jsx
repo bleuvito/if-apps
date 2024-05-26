@@ -31,12 +31,12 @@ export default function AttachmentField({ files, setFiles }) {
           justifyContent: 'space-between',
         }}
       >
-        <Text variant='titleMedium'>Attachment</Text>
+        <Text variant='bodyMedium'>Lampiran</Text>
         <Button
           icon='plus'
           onPress={handlePickFile}
         >
-          Add
+          Tambah
         </Button>
       </View>
       <AttachmentFileList

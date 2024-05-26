@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import {
   RichEditor,
@@ -16,8 +17,8 @@ export default function RichTextEditor({ onChange, defaultValue }) {
       {editorAttached && (
         <RichToolbar
           editor={richText}
-          iconTint='white'
-          selectedIconTint={theme.colors.surfaceDisabled}
+          iconTint={theme.colors.onSurfaceDisabled}
+          selectedIconTint={theme.colors.primary}
           actions={[
             actions.setBold,
             actions.setItalic,
@@ -30,12 +31,16 @@ export default function RichTextEditor({ onChange, defaultValue }) {
           ]}
         />
       )}
-      <RichEditor
-        ref={richText}
-        onChange={onChange}
-        initialContentHTML={defaultValue}
-        editorInitializedCallback={() => setIsEditorAttached(true)}
-      />
+      <View style={{ maxHeight: 350 }}>
+        <RichEditor
+          ref={richText}
+          onChange={onChange}
+          initialContentHTML={defaultValue}
+          initialHeight={350}
+          style={{ height: 350, maxHeight: 350 }}
+          editorInitializedCallback={() => setIsEditorAttached(true)}
+        />
+      </View>
     </>
   );
 }

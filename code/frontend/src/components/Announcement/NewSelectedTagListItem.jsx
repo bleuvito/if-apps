@@ -16,6 +16,7 @@ export default function NewSelectedTagListItem({
 
   return (
     <Chip
+      icon='tag'
       closeIcon='close'
       onClose={() => handlePressClose()}
     >

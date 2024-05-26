@@ -1,11 +1,12 @@
-import BottomSheet, {
+import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
-import React, { useCallback, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useCallback, useMemo } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { TextInput } from 'react-native-paper';
+import { SearchBar } from 'react-native-screens';
 import NewTagBottomSheetList from './NewTagBottomSheetList';
 
 export default function NewTagBottomSheet({
@@ -40,6 +41,13 @@ export default function NewTagBottomSheet({
       topInset={topInset}
     >
       <BottomSheetView style={styles.contentContainer}>
+        <View style={{ width: '100%', padding: 16 }}>
+          <TextInput
+            mode='outlined'
+            placeholder='Cari tag'
+            style={{ width: '100%' }}
+          />
+        </View>
         <NewTagBottomSheetList
           selectedTags={selectedTags}
           setSelectedTags={setSelectedTags}

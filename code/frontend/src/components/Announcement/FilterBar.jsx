@@ -20,10 +20,14 @@ export default function FilterBar({ setAnnouncements }) {
   }, [search, tags]);
 
   return (
-    <View>
-      <SearchInput setSearch={setSearch} />
-      <AnnouncementTagFilter setTags={setTags} />
-    </View>
+    <>
+      <View style={{ paddingHorizontal: 16, marginBottom: 8 }}>
+        <SearchInput setSearch={setSearch} />
+      </View>
+      <View style={{ paddingLeft: 16, paddingBottom: 8 }}>
+        <AnnouncementTagFilter setTags={setTags} />
+      </View>
+    </>
   );
 }
 

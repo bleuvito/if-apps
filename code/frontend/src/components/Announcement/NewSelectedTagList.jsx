@@ -3,7 +3,6 @@ import { FlatList } from 'react-native';
 import NewSelectedTagListItem from './NewSelectedTagListItem';
 
 export default function NewSelectedTagList({ selectedTags, setSelectedTags }) {
-  // const renderItem = ({ item }) => <NewSelectedTagListItem tag={item} />;
   const renderItem = useCallback(
     ({ item }) => {
       return (
@@ -23,7 +22,7 @@ export default function NewSelectedTagList({ selectedTags, setSelectedTags }) {
       keyExtractor={(tag) => tag.id}
       renderItem={renderItem}
       horizontal={true}
-      style={{ borderWidth: 1, borderColor: 'red' }}
+      contentContainerStyle={{ marginLeft: 8, paddingRight: 48, gap: 8 }}
     />
   );
 }

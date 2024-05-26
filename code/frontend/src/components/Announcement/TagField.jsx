@@ -20,12 +20,12 @@ export default function TagField({
           justifyContent: 'space-between',
         }}
       >
-        <Text variant='titleMedium'>Tag</Text>
+        <Text variant='bodyMedium'>Tag</Text>
         <Button
           icon='plus'
           onPress={() => handleOpenTagBottomSheet()}
         >
-          Add
+          Tambah
         </Button>
       </View>
       <TagList
