@@ -12,7 +12,7 @@ import BottomSheet from './BottomSheet.jsx';
 import BottomSheetField from './TypeBottomSheetField';
 
 export default function Form({ defaultValues, onSubmit }) {
-  registerTranslation('en', en);
+  registerTranslation('id', id);
 
   const [selectedType, setSelectedType] = useState(defaultValues.type);
   const {
@@ -49,21 +49,21 @@ export default function Form({ defaultValues, onSubmit }) {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, rowGap: 16, paddingHorizontal: 16 }}>
       <Controller
         name='title'
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <>
-              <Text>Title</Text>
+            <View>
+              <Text style={{ marginBottom: 4 }}>Title</Text>
               <TextInput
                 mode='outlined'
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
               />
-            </>
+            </View>
           );
         }}
       />
@@ -73,38 +73,12 @@ export default function Form({ defaultValues, onSubmit }) {
         onPressBottomSheetPresent={handlePresentModalPress}
       />
       <Controller
-        name='isRecurring'
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => {
-          return (
-            <>
-              <Checkbox.Item
-                label='Mingguan'
-                status={value ? 'checked' : 'unchecked'}
-                onPress={() => onChange(!value)}
-              />
-            </>
-          );
-        }}
-      />
-      <Controller
         name='day'
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
-            // <>
-            //   <Text>Day</Text>
-            //   <TextInput
-            //     mode='outlined'
-            //     value={dayjs(value).format('dddd, DD MMMM YYYY')}
-            //     editable={false}
-            //     disabled={true}
-            //     onBlur={onBlur}
-            //     onChangeText={onChange}
-            //   />
-            // </>
             <DateField
-              title='Date'
+              title='Hari, Tanggal'
               onChange={onChange}
               value={new Date(value)}
             />
@@ -114,7 +88,7 @@ export default function Form({ defaultValues, onSubmit }) {
       <View
         style={{
           flexDirection: 'row',
-          columnGap: 8,
+          columnGap: 16,
         }}
       >
         <Controller
@@ -123,7 +97,7 @@ export default function Form({ defaultValues, onSubmit }) {
           render={({ field: { onChange, onBlur, value } }) => {
             return (
               <TimeField
-                title='Time Start'
+                title='Waktu Mulai'
                 value={value}
                 onChange={onChange}
               />
@@ -136,7 +110,7 @@ export default function Form({ defaultValues, onSubmit }) {
           render={({ field: { onChange, onBlur, value } }) => {
             return (
               <TimeField
-                title='Time End'
+                title='Waktu Selesai'
                 value={value}
                 onChange={onChange}
               />
@@ -144,15 +118,48 @@ export default function Form({ defaultValues, onSubmit }) {
           }}
         />
       </View>
+      <Controller
+        name='isRecurring'
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => {
+          return (
+            <View
+              style={{
+                marginBottom: 32,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <Text
+                variant='bodyMedium'
+                style={{ flex: 1 }}
+              >
+                Mingguan
+              </Text>
+              <Checkbox
+                // label='Pin
+                status={value ? 'checked' : 'unchecked'}
+                onPress={() => onChange(!value)}
+              />
+            </View>
+          );
+        }}
+      />
       <View
         style={{
           flexDirection: 'row',
         }}
       >
-        <Button mode='outlined'>Cancel</Button>
+        <Button
+          mode='outlined'
+          style={{ flex: 1 }}
+        >
+          Cancel
+        </Button>
         <Button
           mode='contained'
           onPress={handleSubmit(handleFormSubmit)}
+          style={{ flex: 1 }}
         >
           Submit
         </Button>

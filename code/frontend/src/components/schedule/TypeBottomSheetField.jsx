@@ -1,3 +1,4 @@
+import { View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 
 export default function BottomSheetField({
@@ -10,8 +11,8 @@ export default function BottomSheetField({
   };
 
   return (
-    <>
-      <Text>Type</Text>
+    <View>
+      <Text style={{ marginBottom: 4 }}>Type</Text>
       <TextInput
         mode='outlined'
         editable={false}
@@ -30,6 +31,6 @@ export default function BottomSheetField({
         }
         value={selectedType}
       />
-    </>
+    </View>
   );
 }

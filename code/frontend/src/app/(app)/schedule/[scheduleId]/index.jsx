@@ -87,38 +87,36 @@ export default function ScheduleDetailsScreen() {
   return (
     <View style={[styles.screen]}>
       <ScheduleDetailsText
-        title='Title'
+        title='Judul'
         body={schedule.title}
       />
       <ScheduleDetailsText
-        title='Type'
+        title='Tipe'
         body={schedule.type}
       />
-      <Checkbox.Item
-        label='Mingguan'
-        status={schedule.isRecurring ? 'checked' : 'unchecked'}
+      <ScheduleDetailsText
+        title='Hari, Tanggal'
+        body={dayjs(schedule.day).locale('id').format('dddd, DD MMMM YYYY')}
       />
       <ScheduleDetailsText
-        title='Date'
-        body={dayjs(schedule.day).format('dddd, DD MMMM YYYY')}
-      />
-      <ScheduleDetailsText
-        title='Time'
+        title='Waktu'
         body={`${dayjs(schedule.start).format('HH:mm')}-${dayjs(
           schedule.end
         ).format('HH:mm')}`}
+      />
+      <ScheduleDetailsText
+        title='Mingguan'
+        body={schedule.isRecurring ? 'Ya' : 'Tidak'}
       />
       <Portal>
         <Dialog
           visible={visible}
           onDismiss={hideDialog}
         >
-          <Dialog.Title>Delete schedule?</Dialog.Title>
+          <Dialog.Title>Hapus jadwal?</Dialog.Title>
           <Dialog.Actions>
-            <Button onPress={hideDialog}>Cancel</Button>
-          </Dialog.Actions>
-          <Dialog.Actions>
-            <Button onPress={handleDeleteSchedule}>Delete</Button>
+            <Button onPress={hideDialog}>Batal</Button>
+            <Button onPress={handleDeleteSchedule}>Hapus</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
