@@ -25,6 +25,7 @@ async function getAppointment(args) {
         link: true,
         status: true,
         type: true,
+        declineReason: true,
         organizer: {
           select: {
             id: true,

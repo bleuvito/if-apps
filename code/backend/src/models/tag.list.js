@@ -10,7 +10,12 @@ async function listTag(args) {
       select: {
         id: true,
         name: true,
-        authorId: true,
+        author: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
       },
       where: {
         name: {

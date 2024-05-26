@@ -10,7 +10,14 @@ async function getTag(args) {
       select: {
         id: true,
         name: true,
-        authorId: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        createdAt: true,
+        updatedAt: true,
       },
       where: {
         id: requestParams.id,

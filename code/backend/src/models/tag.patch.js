@@ -32,7 +32,13 @@ async function patchTag(args) {
       where: {
         id: requestParams.id,
       },
-      data: { ...requestBody, authorId: user.id, updatedAt: new Date() },
+      data: {
+        ...requestBody,
+        author: {
+          connect: { id: user.id },
+        },
+        updatedAt: new Date(),
+      },
     });
 
     const payload = updatedTag;

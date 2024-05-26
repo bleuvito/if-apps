@@ -11,7 +11,7 @@ async function putAnnouncement(args) {
     body: requestBody,
   } = args;
 
-  // console.log(requestBody);
+  console.log(requestBody);
 
   const refreshToken = await getRefreshToken(clientType, user.id);
 
@@ -29,6 +29,11 @@ async function putAnnouncement(args) {
         },
       },
     });
+
+    let status = requestBody.status;
+    if (status === 'DECLINED') {
+      status = 'RESCHEDULE';
+    }
 
     const appointmentDay = new Date(requestBody.start)
       .toLocaleString('id-ID', { weekday: 'long' })
@@ -55,7 +60,7 @@ async function putAnnouncement(args) {
         {
           email: appointment.participant.email,
           responseStatus:
-            requestBody.status === 'PENDING'
+            status === 'PENDING' || status === 'RESCHEDULE'
               ? 'needsAction'
               : requestBody.status.toLowerCase(),
         },
@@ -91,6 +96,7 @@ async function putAnnouncement(args) {
       },
       data: {
         ...requestBody,
+        status,
         organizer: {
           connect: {
             id: requestBody.organizer?.id,

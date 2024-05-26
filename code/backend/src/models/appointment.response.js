@@ -37,8 +37,10 @@ async function responseAppointment(args) {
       },
     });
 
+    console.log(requestBody);
+
     if (requestBody.status === 'ACCEPTED') {
-      const appointmentDay = new Date(requestBody.start)
+      const appointmentDay = new Date(appointment.start)
         .toLocaleString('id-ID', { weekday: 'long' })
         .toUpperCase();
 
@@ -70,18 +72,18 @@ async function responseAppointment(args) {
       ],
       sendUpdates: 'all',
     };
-    if (requestBody.topic) {
-      event.summary = requestBody.topic;
+    if (appointment.topic) {
+      event.summary = appointment.topic;
     }
-    if (requestBody.start) {
+    if (appointment.start) {
       event.start = {
-        dateTime: new Date(requestBody.start),
+        dateTime: new Date(appointment.start),
         timeZone: 'Asia/Jakarta',
       };
     }
-    if (requestBody.end) {
+    if (appointment.end) {
       event.end = {
-        dateTime: new Date(requestBody.end),
+        dateTime: new Date(appointment.end),
         timeZone: 'Asia/Jakarta',
       };
     }

@@ -56,7 +56,6 @@ async function listAppointment(args) {
   } = args;
 
   try {
-    console.log(requestQuery.status);
     const where = generateWhere(
       requestQuery.search,
       requestQuery.type,
@@ -72,13 +71,16 @@ async function listAppointment(args) {
         topic: true,
         start: true,
         end: true,
+        place: true,
         organizer: {
           select: {
+            id: true,
             name: true,
           },
         },
         participant: {
           select: {
+            id: true,
             name: true,
           },
         },
