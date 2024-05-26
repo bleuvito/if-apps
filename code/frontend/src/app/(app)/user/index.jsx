@@ -6,6 +6,7 @@ import { ActivityIndicator, FAB, Text } from 'react-native-paper';
 
 // import TagCard from '../../../components/TagCard';
 import UserCard from '../../../components/user/Card';
+import UserSearchInput from '../../../components/user/UserSearchInput';
 import { useSession } from '../../../providers/SessionProvider';
 
 export default function UserScreen() {
@@ -48,6 +49,7 @@ export default function UserScreen() {
 
   return (
     <>
+      <UserSearchInput setUsers={setUsers} />
       <FlatList
         data={users}
         contentContainerStyle={styles.contentContainer}
