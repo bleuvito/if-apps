@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { ActivityIndicator, FAB, Text } from 'react-native-paper';
 import ReservationCard from '../../../components/reservation/Card';
+import ReservationSearchInput from '../../../components/reservation/ReservationSearchInput';
 import { useSession } from '../../../providers/SessionProvider';
 
 export default function ReservationScreen() {
@@ -41,6 +42,7 @@ export default function ReservationScreen() {
 
   return (
     <>
+      <ReservationSearchInput setReservations={setReservations} />
       <FlatList
         data={reservations}
         contentContainerStyle={styles.contentContainer}

@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, FAB, List, Text } from 'react-native-paper';
 import RoomCard from '../../../components/room/Card';
+import RoomSearchInput from '../../../components/room/RoomSearchInput';
 import { useSession } from '../../../providers/SessionProvider';
 
 export default function RoomScreen() {
@@ -43,6 +44,7 @@ export default function RoomScreen() {
 
   return (
     <>
+      <RoomSearchInput setRooms={setRooms} />
       <FlatList
         data={rooms}
         contentContainerStyle={styles.contentContainer}
