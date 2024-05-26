@@ -11,13 +11,12 @@ async function listUser(args) {
       mode: 'insensitive',
     },
   };
+
   if (requestQuery.role?.length > 0) {
     where.OR = requestQuery.role.map((role) => {
-      role;
+      return { role };
     });
   }
-
-  console.log(where);
 
   try {
     const users = await prisma.user.findMany({
@@ -29,8 +28,6 @@ async function listUser(args) {
       },
       where,
     });
-
-    console.log(users);
 
     const payload = users;
 
