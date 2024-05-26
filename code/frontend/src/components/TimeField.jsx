@@ -32,7 +32,7 @@ export default function TimeField({ title, value, onChange }) {
 
   return (
     <View style={{ flexDirection: 'column', flex: 1 }}>
-      <Text>{title}</Text>
+      <Text style={{ marginBottom: 4 }}>{title}</Text>
       <TextInput
         editable={false}
         mode='outlined'

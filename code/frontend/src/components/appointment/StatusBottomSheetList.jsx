@@ -35,6 +35,7 @@ export default function StatusBottomSheetList({
       data={statuses}
       keyExtractor={(status, index) => index}
       renderItem={renderItem}
+      style={{ width: '100%' }}
     />
   );
 }

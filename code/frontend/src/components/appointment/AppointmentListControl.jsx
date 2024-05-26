@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { useAppointmentList } from '../../hooks/useAppointmentList';
 import { useSession } from '../../providers/SessionProvider';
 import SearchInput from '../SearchInput';
@@ -25,8 +26,12 @@ export default function AppointmentListControl({
 
   return (
     <>
-      <SearchInput setSearch={setSearch} />
-      <AppointmentStatusFilter setStatuses={setStatuses} />
+      <View style={{ paddingHorizontal: 16, paddingBottom: 8 }}>
+        <SearchInput setSearch={setSearch} />
+      </View>
+      <View style={{ paddingLeft: 16, paddingBottom: 8 }}>
+        <AppointmentStatusFilter setStatuses={setStatuses} />
+      </View>
       <AppointmentTabs
         appointments={appointments}
         setType={setType}

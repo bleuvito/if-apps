@@ -14,6 +14,7 @@ import {
   Text,
 } from 'react-native-paper';
 
+import { A } from '@expo/html-elements';
 import AppointmentResponseButton from '../../../../components/appointment/BottomButtons';
 import AppointmentDetailsHeaderRight from '../../../../components/appointment/HeaderRight';
 import AppointmentStatusChip from '../../../../components/appointment/StatusChip';
@@ -117,47 +118,71 @@ export default function AppointmentDetailsScreen() {
 
   return (
     <View style={[styles.screen]}>
-      <Text
-        variant='headlineLarge'
-        style={styles.topic}
-      >
-        {appointment?.topic}
-      </Text>
-      <AppointmentStatusChip data={appointment?.status} />
+      <View>
+        <View style={{ flexDirection: 'row-reverse', paddingLeft: 16 }}>
+          <AppointmentStatusChip data={appointment?.status} />
+        </View>
+        <Text
+          variant='headlineLarge'
+          style={styles.topic}
+        >
+          {appointment?.topic}
+        </Text>
+      </View>
       <AppointmentDetailsText
-        title='Organizer'
+        title='Penyelenggara'
         body={appointment?.organizer.name}
       />
       <AppointmentDetailsText
-        title='Participant'
+        title='Partisipan'
         body={appointment?.participant.name}
       />
       <AppointmentDetailsText
-        title='Time'
+        title='Waktu'
         body={getTimeDuration(appointment?.start, appointment?.end)}
       />
       <AppointmentDetailsText
-        title='Place'
+        title='Tempat'
         body={appointment?.place}
       />
-      <View style={styles.actionButton}>
-        <AppointmentResponseButton
-          status={appointment?.status}
-          organizerId={appointment?.organizer.id}
-          userId={userId}
-        />
-      </View>
+      {appointment?.link.length > 0 && (
+        <View>
+          <Text variant='bodyLarge'>Tautan</Text>
+          <A
+            href='http://google.com'
+            target='_blank'
+            style={{ fontSize: 24, textDecorationLine: 'underline' }}
+          >
+            google.com
+          </A>
+        </View>
+      )}
+      {(appointment?.status === 'DECLINED' ||
+        appointment?.status === 'RESCHEDULE') && (
+        <View>
+          <Text
+            variant='bodyLarge'
+            style={{ color: 'red', fontWeight: 'bold' }}
+          >
+            Alasan Penolakan
+          </Text>
+          <Text variant='titleLarge'>{appointment?.declineReason}</Text>
+        </View>
+      )}
+      <AppointmentResponseButton
+        status={appointment?.status}
+        organizerId={appointment?.organizer.id}
+        userId={userId}
+      />
       <Portal>
         <Dialog
           visible={visible}
           onDismiss={hideDialog}
         >
-          <Dialog.Title>Delete appointment?</Dialog.Title>
+          <Dialog.Title>Hapus janji temu?</Dialog.Title>
           <Dialog.Actions>
-            <Button onPress={hideDialog}>Cancel</Button>
-          </Dialog.Actions>
-          <Dialog.Actions>
-            <Button onPress={handleDeleteAppointment}>Delete</Button>
+            <Button onPress={hideDialog}>Batal</Button>
+            <Button onPress={handleDeleteAppointment}>Hapus</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -168,8 +193,8 @@ export default function AppointmentDetailsScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    padding: 16,
-    rowGap: 32,
+    paddingHorizontal: 16,
+    rowGap: 16,
   },
   actionButton: {
     flex: 1,

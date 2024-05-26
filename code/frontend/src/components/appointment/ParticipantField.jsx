@@ -12,7 +12,7 @@ export default function AppointmentParticipantField({
   };
 
   return (
-    <>
+    <View style={{ marginBottom: 32 }}>
       <View style={styles.label}>
         <Text>Participant</Text>
         <Button onPress={() => onPresentAgendaModalPress()}>
@@ -37,7 +37,7 @@ export default function AppointmentParticipantField({
         }
         value={selectedParticipant.name || ''}
       />
-    </>
+    </View>
   );
 }
 

@@ -6,7 +6,7 @@ export default function LeftCalendarComponent({ date }) {
 
   const parsedDate = new Date(date);
   const day = parsedDate.getDate();
-  const month = Intl.DateTimeFormat('en-Us', { month: 'short' }).format(
+  const month = Intl.DateTimeFormat('id-ID', { month: 'short' }).format(
     parsedDate
   );
   const year = parsedDate.getFullYear();
@@ -41,31 +41,33 @@ export default function LeftCalendarComponent({ date }) {
           {year}
         </Text>
       </View>
-      <Text
-        style={[
-          styles.text,
-          {
-            fontSize: 64 / 3,
-            fontWeight: 'bold',
-            // lineHeight: 64 / fontScale,
-          },
-        ]}
-        numberOfLines={1}
-      >
-        {day}
-      </Text>
-      <Text
-        style={[
-          styles.text,
-          {
-            fontSize: 64 / 6,
-            // lineHeight: 64 / fontScale,
-          },
-        ]}
-        numberOfLines={1}
-      >
-        {month}
-      </Text>
+      <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+        <Text
+          style={[
+            styles.text,
+            {
+              fontSize: 64 / 3,
+              fontWeight: 'bold',
+              // lineHeight: 64 / fontScale,
+            },
+          ]}
+          numberOfLines={1}
+        >
+          {day}
+        </Text>
+        <Text
+          style={[
+            styles.text,
+            {
+              fontSize: 64 / 6,
+              // lineHeight: 64 / fontScale,
+            },
+          ]}
+          numberOfLines={1}
+        >
+          {month}
+        </Text>
+      </View>
     </View>
   );
 }

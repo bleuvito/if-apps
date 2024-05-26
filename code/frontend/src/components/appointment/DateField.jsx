@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { View } from 'react-native';
 import { Chip, Text, TextInput } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 
@@ -23,14 +24,19 @@ export default function AppointmentDateField({ onChange, value }) {
   );
 
   return (
-    <>
-      <Text>Date</Text>
+    <View style={{ marginBottom: 16 }}>
+      <Text
+        variant='bodyMedium'
+        style={{ marginBottom: 4 }}
+      >
+        Hari, Tanggal
+      </Text>
       <TextInput
         mode='outlined'
         editable={false}
         value={
           value &&
-          `${value.toLocaleString('en-GB', {
+          `${value.toLocaleString('id-ID', {
             weekday: 'long',
             day: '2-digit',
             month: 'long',
@@ -66,6 +72,6 @@ export default function AppointmentDateField({ onChange, value }) {
         // endYear={2100} // optional, default is 2200
         //
       />
-    </>
+    </View>
   );
 }

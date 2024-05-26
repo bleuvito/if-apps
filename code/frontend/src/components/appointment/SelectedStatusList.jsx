@@ -25,7 +25,7 @@ export default function SelectedStatusList({
       keyExtractor={(status, index) => index}
       renderItem={renderItem}
       horizontal={true}
-      style={{ borderWidth: 1, borderColor: 'red' }}
+      contentContainerStyle={{ marginLeft: 8, paddingRight: 48, gap: 8 }}
     />
   );
 }

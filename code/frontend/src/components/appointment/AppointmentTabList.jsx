@@ -1,27 +1,15 @@
 import { FlatList, View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
-import { useAppointment } from '../../providers/AppointmentProvider';
+import { useSession } from '../../providers/SessionProvider';
 import AppointmentCard from './Card';
 
 export default function AppointmentTabList({ appointments }) {
-  // const { appointments, isLoading } = useAppointment();
-
-  // if (isLoading) {
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: 'center' }}>
-  //       <ActivityIndicator
-  //         animating={true}
-  //         size='large'
-  //       />
-  //     </View>
-  //   );
-  // }
+  const { getUserId } = useSession();
 
   return (
     <FlatList
       data={appointments}
-      // contentContainerStyle={styles.contentContainer}
       keyExtractor={(appointment, index) => appointment.id}
+      contentContainerStyle={{ gap: 16, padding: 16, paddingBottom: 48 }}
       renderItem={({ item }) => {
         return <AppointmentCard appointment={item} />;
       }}

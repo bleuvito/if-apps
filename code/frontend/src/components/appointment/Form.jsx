@@ -71,15 +71,20 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
             return (
-              <>
-                <Text>Topic</Text>
+              <View style={{ marginBottom: 16 }}>
+                <Text
+                  variant='bodyMedium'
+                  style={{ marginBottom: 4 }}
+                >
+                  Topik
+                </Text>
                 <TextInput
                   mode='outlined'
                   value={value}
                   onBlur={onBlur}
                   onChangeText={onChange}
                 />
-              </>
+              </View>
             );
           }}
         />
@@ -98,7 +103,8 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
         <View
           style={{
             flexDirection: 'row',
-            columnGap: 8,
+            columnGap: 16,
+            marginBottom: 16,
           }}
         >
           <Controller
@@ -107,7 +113,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
             render={({ field: { onChange, value } }) => {
               return (
                 <TimeField
-                  title='Time Start'
+                  title='Waktu Mulai'
                   value={value}
                   onChange={onChange}
                 />
@@ -120,7 +126,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
             render={({ field: { onChange, onBlur, value } }) => {
               return (
                 <TimeField
-                  title='Time End'
+                  title='Waktu Selesai'
                   value={value}
                   onChange={onChange}
                 />
@@ -133,15 +139,15 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
             return (
-              <>
-                <Text>Place</Text>
+              <View style={{ marginBottom: 16 }}>
+                <Text style={{ marginBottom: 4 }}>Place</Text>
                 <TextInput
                   mode='outlined'
                   value={value}
                   onBlur={onBlur}
                   onChangeText={onChange}
                 />
-              </>
+              </View>
             );
           }}
         />
@@ -150,15 +156,15 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
             return (
-              <>
-                <Text>Link</Text>
+              <View style={{ marginBottom: 16 }}>
+                <Text style={{ marginBottom: 8 }}>Link</Text>
                 <TextInput
                   mode='outlined'
                   value={value}
                   onBlur={onBlur}
                   onChangeText={onChange}
                 />
-              </>
+              </View>
             );
           }}
         />
@@ -170,13 +176,20 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
         />
         <View
           style={{
+            flex: 1,
             flexDirection: 'row',
           }}
         >
-          <Button mode='outlined'>Cancel</Button>
+          <Button
+            mode='outlined'
+            style={{ flex: 1 }}
+          >
+            Cancel
+          </Button>
           <Button
             mode='contained'
             onPress={handleSubmit(handleFormSubmit)}
+            style={{ flex: 1 }}
           >
             Submit
           </Button>

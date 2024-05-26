@@ -25,6 +25,7 @@ export default function AppointmentStatusFilter({ setStatuses }) {
         mode='outlined'
         closeIcon='menu-down'
         onPress={handlePresentModalPress}
+        onClose={handlePresentModalPress}
         style={{ alignSelf: 'flex-start' }}
       >
         Status

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
+import { View } from 'react-native';
 import { Button, Dialog, Portal, TextInput } from 'react-native-paper';
 import { useSession } from '../../providers/SessionProvider';
 
@@ -23,6 +24,7 @@ export default function BottomButtons({ status, userId, organizerId }) {
       return (
         <Button
           onPress={() => router.push(`appointment/${appointmentId}/edit`)}
+          mode='contained'
         >
           Reschedule
         </Button>
@@ -51,8 +53,22 @@ export default function BottomButtons({ status, userId, organizerId }) {
 
   return (
     <>
-      <Button onPress={() => showDialog()}>Decline</Button>
-      <Button onPress={() => responseToInvite('ACCEPTED')}>Accept</Button>
+      <View style={{ flexDirection: 'row' }}>
+        <Button
+          onPress={() => showDialog()}
+          mode='outlined'
+          style={{ flex: 1 }}
+        >
+          Tolak
+        </Button>
+        <Button
+          onPress={() => responseToInvite('ACCEPTED')}
+          mode='outlined'
+          style={{ flex: 1 }}
+        >
+          Terima
+        </Button>
+      </View>
       <Portal>
         <Dialog
           visible={visible}
@@ -67,9 +83,9 @@ export default function BottomButtons({ status, userId, organizerId }) {
             />
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={hideDialog}>Cancel</Button>
+            <Button onPress={hideDialog}>Batal</Button>
             <Button onPress={() => responseToInvite('DECLINED', declineReason)}>
-              Decline
+              Tolak
             </Button>
           </Dialog.Actions>
         </Dialog>

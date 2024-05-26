@@ -1,4 +1,4 @@
-import { Chip, useTheme } from 'react-native-paper';
+import { Chip, Text, useTheme } from 'react-native-paper';
 
 export default function AppointmentStatusChip({ data }) {
   const theme = useTheme();
@@ -27,12 +27,19 @@ export default function AppointmentStatusChip({ data }) {
 
   return (
     <Chip
+      compact={true}
       style={{
         backgroundColor: config.backgroundColor,
         alignSelf: 'flex-start',
+        // borderRadius: 200,
       }}
     >
-      {config.text}
+      <Text
+        variant='labelSmall'
+        style={{ color: theme.colors.onError }}
+      >
+        {config.text}
+      </Text>
     </Chip>
   );
 }
