@@ -6,7 +6,7 @@ const initialValue = {
   isTagSelected: (tag) => {},
 };
 
-export const SelectedTagsContext = createContext(initialValue);
+export const SelectedTagsContext = createContext();
 
 export function SelectedTagsProvider({ children }) {
   const [selectedTags, setSelectedTags] = useState([]);

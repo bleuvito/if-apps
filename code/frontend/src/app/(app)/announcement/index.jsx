@@ -5,9 +5,9 @@ import { FlatList, StyleSheet } from 'react-native';
 import { ActivityIndicator, FAB } from 'react-native-paper';
 
 import SearchInput from '../../../components/SearchInput';
+import TagFilter from '../../../components/announcement/AnnouncementTagFilter';
 import AnnouncementCard from '../../../components/announcement/Card';
 import FilterBar from '../../../components/announcement/FilterBar';
-import TagFilter from '../../../components/announcement/TagFilter';
 import { useSession } from '../../../providers/SessionProvider';
 
 export default function AnnouncementScreen() {

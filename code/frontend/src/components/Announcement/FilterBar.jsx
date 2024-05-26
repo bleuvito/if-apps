@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useAnnouncementList } from '../../hooks/useAnnouncementList';
 import { useSession } from '../../providers/SessionProvider';
 import SearchInput from '../SearchInput';
-import TagFilter from './TagFilter';
+import AnnouncementTagFilter from './AnnouncementTagFilter';
 
 export default function FilterBar({ setAnnouncements }) {
   const { session } = useSession();
@@ -22,7 +22,7 @@ export default function FilterBar({ setAnnouncements }) {
   return (
     <View>
       <SearchInput setSearch={setSearch} />
-      <TagFilter setTags={setTags} />
+      <AnnouncementTagFilter setTags={setTags} />
     </View>
   );
 }

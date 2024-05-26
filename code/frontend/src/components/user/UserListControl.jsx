@@ -3,7 +3,7 @@ import { useUserList } from '../../hooks/useUserList';
 // import SearchInput from '../SearchInput';
 import { useSession } from '../../providers/SessionProvider';
 import SearchInput from '../SearchInput';
-import UserRoleFilter from './UserRoleFIlter';
+import UserRoleFilter from './UserRoleFilter';
 
 export default function UserListControl({ setUsers }) {
   const { session } = useSession();
