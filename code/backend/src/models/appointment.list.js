@@ -2,33 +2,51 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-function generateWhere(type, user) {
-  if (type === '') {
-    return {
-      OR: [
-        {
-          organizerId: {
-            equals: user.id,
-          },
+function generateWhere(topic, type, filter, user) {
+  const where = {
+    topic: {
+      contains: topic,
+    },
+  };
+
+  let typeCondition = {
+    OR: [
+      {
+        organizerId: {
+          equals: user.id,
         },
-        {
-          participantId: {
-            equals: user.id,
-          },
+      },
+      {
+        participantId: {
+          equals: user.id,
         },
-      ],
-    };
-  }
+      },
+    ],
+  };
 
   if (type === 'participant') {
-    return {
+    typeCondition = {
       participantId: user.id,
+    };
+  } else if (type === 'organizer') {
+    typeCondition = {
+      organizerId: user.id,
     };
   }
 
-  return {
-    organizerId: user.id,
-  };
+  where.AND = [typeCondition];
+  if (filter?.length > 0) {
+    where.AND = [
+      ...where.AND,
+      {
+        OR: filter.map((status) => {
+          return { status };
+        }),
+      },
+    ];
+  }
+
+  return where;
 }
 
 async function listAppointment(args) {
@@ -38,8 +56,16 @@ async function listAppointment(args) {
   } = args;
 
   try {
-    const appointsments = await prisma.appointment.findMany({
-      where: generateWhere(requestQuery.type, user),
+    console.log(requestQuery.status);
+    const where = generateWhere(
+      requestQuery.search,
+      requestQuery.type,
+      requestQuery.status,
+      user
+    );
+
+    const appointments = await prisma.appointment.findMany({
+      where,
       select: {
         id: true,
         status: true,
@@ -64,7 +90,7 @@ async function listAppointment(args) {
       },
     });
 
-    const payload = appointsments;
+    const payload = appointments;
 
     return payload;
   } catch (error) {
