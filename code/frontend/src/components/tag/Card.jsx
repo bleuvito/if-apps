@@ -1,25 +1,35 @@
 import { router } from 'expo-router';
-import { Button, Card, useTheme } from 'react-native-paper';
+import { View } from 'react-native';
+import { Button, Card, Icon, Text, useTheme } from 'react-native-paper';
 
 export default function TagCard({ tag }) {
   const theme = useTheme();
-  const { id, name } = tag;
 
   return (
-    <Card onPress={() => router.push(`/tag/${id}`)}>
-      <Card.Title
-        title={name}
-        titleVariant='titleLarge'
-      />
-      <Card.Actions>
-        <Button
-          mode='text'
-          compact
-          textColor={theme.colors.error}
+    <Card onPress={() => router.push(`/tag/${tag.id}`)}>
+      <Card.Content>
+        <Text
+          variant='titleLarge'
+          style={{ marginBottom: 4 }}
         >
-          Delete
-        </Button>
-      </Card.Actions>
+          {tag.name}
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Icon source='account-outline' />
+          <Text
+            variant='bodySmall'
+            numberOfLines={1}
+            style={{ marginLeft: 4 }}
+          >
+            {tag.author.name}
+          </Text>
+        </View>
+      </Card.Content>
     </Card>
   );
 }

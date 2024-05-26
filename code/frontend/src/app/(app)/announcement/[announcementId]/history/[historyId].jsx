@@ -52,7 +52,7 @@ export default function AnnouncementHistoryDetailsScreen() {
   }
 
   return (
-    <ScrollView style={{ padding: 16 }}>
+    <ScrollView style={{ paddingHorizontal: 16, paddingBottom: 48 }}>
       <View style={{ marginBottom: 32 }}>
         <Text variant='headlineLarge'>{announcementHistory?.subject}</Text>
         <View style={{ flexDirection: 'row' }}>

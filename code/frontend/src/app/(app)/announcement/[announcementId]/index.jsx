@@ -118,7 +118,7 @@ export default function AnnouncementDetailScreen() {
   }
 
   return (
-    <ScrollView style={{ padding: 16 }}>
+    <ScrollView style={{ paddingHorizontal: 16, paddingBottom: 48 }}>
       <View style={{ marginBottom: 32 }}>
         <Text variant='headlineLarge'>{announcement.subject}</Text>
         <View style={{ flexDirection: 'row' }}>

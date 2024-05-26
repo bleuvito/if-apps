@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
-import { Button, HelperText, TextInput } from 'react-native-paper';
+import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 import { useSession } from '../../../providers/SessionProvider';
 
 const defaultValues = {
@@ -36,22 +36,19 @@ export default function TagCreateScreen() {
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <View>
+            <View style={{ marginBottom: 16 }}>
+              <Text
+                variant='bodyMedium'
+                style={{ marginBottom: 4 }}
+              >
+                Nama
+              </Text>
               <TextInput
-                label='Tag Name'
                 mode='outlined'
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
               />
-              {errors.tag && (
-                <HelperText
-                  type='error'
-                  visible={errors.tag}
-                >
-                  {errors.tag.message}
-                </HelperText>
-              )}
             </View>
           );
         }}
@@ -61,10 +58,16 @@ export default function TagCreateScreen() {
           flexDirection: 'row',
         }}
       >
-        <Button mode='outlined'>Cancel</Button>
+        <Button
+          mode='outlined'
+          style={{ flex: 1 }}
+        >
+          Cancel
+        </Button>
         <Button
           mode='contained'
           onPress={handleSubmit(onSubmit)}
+          style={{ flex: 1 }}
         >
           Submit
         </Button>

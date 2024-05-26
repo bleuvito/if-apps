@@ -3,7 +3,7 @@ import { Text } from 'react-native-paper';
 
 export default function TagDetailsText({ title, body }) {
   return (
-    <View>
+    <View style={{ marginBottom: 16 }}>
       <Text variant='bodyLarge'>{title}</Text>
       <Text variant='titleLarge'>{body}</Text>
     </View>

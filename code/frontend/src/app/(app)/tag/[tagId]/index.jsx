@@ -1,4 +1,5 @@
 import axios from 'axios';
+import dayjs from 'dayjs';
 import {
   useFocusEffect,
   useLocalSearchParams,
@@ -22,7 +23,12 @@ export default function TagDetailsScreen() {
   const [tag, setTag] = useState({
     id: '',
     name: '',
-    authorId: '',
+    author: {
+      id: '',
+      name: '',
+    },
+    createdAt: '',
+    updatedAt: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -76,7 +82,7 @@ export default function TagDetailsScreen() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return tag?.authorId !== userId &&
+        return tag?.author.id !== userId &&
           !['ADMIN', 'KAJUR', 'KAPRODI'].includes(userRole) ? null : (
           <TagDetailsHeaderRight onPressDelete={showDialog} />
         );
@@ -85,10 +91,22 @@ export default function TagDetailsScreen() {
   }, [navigation, tag]);
 
   return (
-    <View>
+    <View style={{ paddingHorizontal: 16 }}>
       <TagDetailsText
-        title={'Name'}
+        title='Nama'
         body={tag.name}
+      />
+      <TagDetailsText
+        title='Pembuat'
+        body={tag.author.name}
+      />
+      <TagDetailsText
+        title='Tanggal Pembuatan'
+        body={dayjs(tag.createdAt).locale('id').format('DD MMMM YYYY')}
+      />
+      <TagDetailsText
+        title='Tanggal Diperbarui'
+        body={dayjs(tag.updatedAt).locale('id').format('DD MMMM YYYY')}
       />
 
       <Portal>
@@ -96,12 +114,10 @@ export default function TagDetailsScreen() {
           visible={visible}
           onDismiss={hideDialog}
         >
-          <Dialog.Title>Delete tag?</Dialog.Title>
+          <Dialog.Title>Hapus tag?</Dialog.Title>
           <Dialog.Actions>
-            <Button onPress={hideDialog}>Cancel</Button>
-          </Dialog.Actions>
-          <Dialog.Actions>
-            <Button onPress={handleDeleteTag}>Delete</Button>
+            <Button onPress={hideDialog}>Batal</Button>
+            <Button onPress={handleDeleteTag}>Hapus</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

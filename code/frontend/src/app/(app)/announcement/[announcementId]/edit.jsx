@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 
 import { ActivityIndicator, Text } from 'react-native-paper';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 import AnnouncementForm from '../../../../components/announcement/Form';
 import { createAnnouncementFormData } from '../../../../helpers/utils';
 import { useSession } from '../../../../providers/SessionProvider';
@@ -65,7 +66,7 @@ export default function AnnouncementEditScreen() {
   }, []);
 
   if (isLoading) {
-    return <ActivityIndicator size='large' />;
+    return <LoadingIndicator />;
   }
 
   return (

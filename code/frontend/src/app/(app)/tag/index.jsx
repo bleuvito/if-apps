@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { Redirect, router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, FAB, Text } from 'react-native-paper';
 
+import LoadingIndicator from '../../../components/LoadingIndicator';
 import TagCard from '../../../components/tag/Card';
 import TagSearchInput from '../../../components/tag/TagSearchInput';
 import { useSession } from '../../../providers/SessionProvider';
@@ -42,23 +43,25 @@ export default function TagScreen() {
     setRefreshing(false);
   }
 
-  if (isLoading) {
-    return <ActivityIndicator size='large' />;
-  }
-
   return (
     <>
-      <TagSearchInput setTags={setTags} />
-      <FlatList
-        data={tags}
-        contentContainerStyle={styles.contentContainer}
-        refreshing={refreshing}
-        onRefresh={handleRefresh}
-        keyExtractor={(tag, index) => tag.id}
-        renderItem={({ item }) => {
-          return <TagCard tag={item} />;
-        }}
-      />
+      <View style={{ paddingHorizontal: 16, paddingBottom: 16 }}>
+        <TagSearchInput setTags={setTags} />
+      </View>
+      {isLoading ? (
+        <LoadingIndicator />
+      ) : (
+        <FlatList
+          data={tags}
+          contentContainerStyle={styles.contentContainer}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          keyExtractor={(tag, index) => tag.id}
+          renderItem={({ item }) => {
+            return <TagCard tag={item} />;
+          }}
+        />
+      )}
       <FAB
         icon='plus'
         style={styles.fab}
@@ -78,6 +81,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     gap: 16,
     padding: 16,
+    paddingTop: 8,
     paddingBottom: 48,
   },
 });

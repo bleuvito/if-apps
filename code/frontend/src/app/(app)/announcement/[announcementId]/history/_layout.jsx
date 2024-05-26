@@ -12,13 +12,13 @@ export default function Layout() {
       <Stack.Screen
         name='index'
         options={{
-          title: 'Announcement History',
+          title: 'Histori Pengumuman',
         }}
       />
       <Stack.Screen
         name='[historyId]'
         options={{
-          title: 'Announcement History Details',
+          title: 'Detail Histori Pengumuman',
         }}
       />
     </Stack>

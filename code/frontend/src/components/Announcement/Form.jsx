@@ -37,7 +37,7 @@ export default function AnnouncementForm({
 
   return (
     <>
-      <ScrollView style={{ flex: 1, padding: 16 }}>
+      <ScrollView style={{ flex: 1, paddingHorizontal: 16 }}>
         <Controller
           name='recipient'
           defaultValue=''

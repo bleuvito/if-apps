@@ -18,7 +18,7 @@ export default function Layout() {
       <Stack.Screen
         name='edit'
         options={{
-          title: 'Announcement Edit',
+          title: 'Edit Pengumuman',
         }}
       />
       <Stack.Screen
