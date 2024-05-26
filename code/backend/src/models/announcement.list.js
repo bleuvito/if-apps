@@ -10,6 +10,7 @@ async function listAnnouncement(args) {
     const where = {
       subject: {
         contains: requestQuery.subject,
+        mode: 'insensitive',
       },
     };
     if (tagIds) {
@@ -27,6 +28,7 @@ async function listAnnouncement(args) {
         id: true,
         isPinned: true,
         subject: true,
+        updatedAt: true,
         bodies: {
           select: {
             snippet: true,
