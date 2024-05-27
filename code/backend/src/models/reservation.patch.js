@@ -1,4 +1,8 @@
 import { PrismaClient } from '@prisma/client';
+import {
+  checkRoomOverlapReservations,
+  checkRoomOverlapSchedules,
+} from '../utils/checkRoomOverlap.js';
 import { putEvent } from '../utils/googleCalendarApi.js';
 import { checkRoomOverlapAgenda, getRefreshToken } from '../utils/helpers.js';
 
@@ -24,12 +28,23 @@ async function patchReservation(args) {
       throw Error('E_NOT_EXIST');
     }
 
-    await checkRoomOverlapAgenda(
+    await checkRoomOverlapReservations(
       requestBody.room.id,
       requestParams.id,
       requestBody.start,
+      requestBody.end
+    );
+
+    const reservationDay = new Date(requestBody.start)
+      .toLocaleString('id-ID', { weekday: 'long' })
+      .toUpperCase();
+
+    await checkRoomOverlapSchedules(
+      requestBody.room.id,
+      null,
+      requestBody.start,
       requestBody.end,
-      requestBody.day
+      reservationDay
     );
 
     // console.log(requestBody);

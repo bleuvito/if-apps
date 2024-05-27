@@ -97,7 +97,7 @@ async function generateAttachmentUrls(attachments) {
   return attachmentString;
 }
 
-function convertToIntTime(inputDate) {
+export function convertToIntTime(inputDate) {
   const date = new Date(inputDate);
   const hour = date.getHours().toString().padStart(2, '0');
   const minute = date.getMinutes().toString().padStart(2, '0');
