@@ -103,8 +103,13 @@ export default function ReservationDetailsScreen() {
   }
 
   return (
-    <View>
-      <Text variant='headlineLarge'>{reservation.title}</Text>
+    <View style={{ paddingHorizontal: 16 }}>
+      <Text
+        variant='headlineLarge'
+        style={{ marginBottom: 24 }}
+      >
+        {reservation.title}
+      </Text>
       <ReservationDetailsText
         title={'Date'}
         body={dayjs(reservation.start).format('dddd, DD MMMM YYYY')}

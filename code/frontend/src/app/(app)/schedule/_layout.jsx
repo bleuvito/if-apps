@@ -11,14 +11,14 @@ export default function Layout() {
       <Stack.Screen
         name='index'
         options={{
-          title: 'Schedule',
+          title: 'Jadwal',
         }}
       />
       <Stack.Screen
         name='create'
         options={{
           // headerShown: false,
-          title: 'Create Schedule',
+          title: 'Buat Jadwal',
         }}
       />
       <Stack.Screen

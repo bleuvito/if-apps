@@ -13,7 +13,7 @@ import RoomBottomSheet from './RoomBottomSheet';
 import RoomField from './RoomField';
 
 export default function Form({ defaultValues, onSubmit }) {
-  registerTranslation('en', en);
+  registerTranslation('id', id);
 
   const [selectedRoom, setSelectedRoom] = useState(defaultValues.room);
   const bottomSheetModalRef = useRef(null);
@@ -66,94 +66,95 @@ export default function Form({ defaultValues, onSubmit }) {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <ScrollView style={{ flex: 1, padding: 16 }}>
+    <View style={{ flex: 1, paddingHorizontal: 16, rowGap: 16 }}>
+      <Controller
+        name='title'
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => {
+          return (
+            <View>
+              <Text>Judul</Text>
+              <TextInput
+                mode='outlined'
+                value={value}
+                onBlur={onBlur}
+                onChangeText={onChange}
+              />
+            </View>
+          );
+        }}
+      />
+      <Controller
+        name='date'
+        control={control}
+        render={({ field: { onChange, value } }) => {
+          return (
+            <DateField
+              onChange={onChange}
+              value={value}
+            />
+          );
+        }}
+      />
+      <View
+        style={{
+          flexDirection: 'row',
+          columnGap: 16,
+        }}
+      >
         <Controller
-          name='title'
-          defaultValue=''
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => {
-            return (
-              <>
-                <Text>Title</Text>
-                <TextInput
-                  mode='outlined'
-                  value={value}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                />
-              </>
-            );
-          }}
-        />
-        <Controller
-          name='date'
-          defaultValue=''
+          name='start'
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
-              <DateField
-                onChange={onChange}
+              <TimeField
+                title='Waktu Mulai'
                 value={value}
+                onChange={onChange}
               />
             );
           }}
         />
-        <View
-          style={{
-            flexDirection: 'row',
-            columnGap: 8,
+        <Controller
+          name='end'
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => {
+            return (
+              <TimeField
+                title='Waktu Selesai'
+                value={value}
+                onChange={onChange}
+              />
+            );
           }}
-        >
-          <Controller
-            name='start'
-            defaultValue={defaultValues.start}
-            control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <TimeField
-                  title='Time Start'
-                  value={value}
-                  onChange={onChange}
-                />
-              );
-            }}
-          />
-          <Controller
-            name='end'
-            defaultValue={defaultValues.end}
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => {
-              return (
-                <TimeField
-                  title='Time End'
-                  value={value}
-                  onChange={onChange}
-                />
-              );
-            }}
-          />
-        </View>
-        <RoomField
-          selectedRoom={selectedRoom}
-          setSelectedRoom={setSelectedRoom}
-          onPresentModalPress={handlePresentModalPress}
-          onPresentAgendaModalPress={handlePresentAgendaModalPress}
         />
-        <View
-          style={{
-            flexDirection: 'row',
-          }}
+      </View>
+      <RoomField
+        selectedRoom={selectedRoom}
+        setSelectedRoom={setSelectedRoom}
+        onPresentModalPress={handlePresentModalPress}
+        onPresentAgendaModalPress={handlePresentAgendaModalPress}
+      />
+      <View
+        style={{
+          flexDirection: 'row',
+          paddingTop: 32,
+        }}
+      >
+        <Button
+          mode='outlined'
+          style={{ flex: 1 }}
         >
-          <Button mode='outlined'>Cancel</Button>
-          <Button
-            mode='contained'
-            onPress={handleSubmit(handleFormSubmit)}
-          >
-            Submit
-          </Button>
-        </View>
-      </ScrollView>
+          Batal
+        </Button>
+        <Button
+          mode='contained'
+          onPress={handleSubmit(handleFormSubmit)}
+          style={{ flex: 1 }}
+        >
+          Simpan
+        </Button>
+      </View>
       <RoomBottomSheet
         ref={bottomSheetModalRef}
         selectedRoom={selectedRoom}

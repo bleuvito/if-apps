@@ -12,7 +12,7 @@ export default function RoomField({
   };
 
   return (
-    <>
+    <View>
       <View style={styles.label}>
         <Text>Room</Text>
         <Button onPress={() => onPresentAgendaModalPress()}>
@@ -37,13 +37,13 @@ export default function RoomField({
         }
         value={selectedRoom.name || ''}
       />
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   label: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

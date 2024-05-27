@@ -17,7 +17,7 @@ export default function Layout() {
       <Stack.Screen
         name='edit'
         options={{
-          title: 'Appointment Edit',
+          title: 'Reservation Edit',
         }}
       />
     </Stack>

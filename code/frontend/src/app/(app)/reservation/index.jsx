@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, FAB, Text } from 'react-native-paper';
 import ReservationCard from '../../../components/reservation/Card';
 import ReservationSearchInput from '../../../components/reservation/ReservationSearchInput';
@@ -42,7 +42,9 @@ export default function ReservationScreen() {
 
   return (
     <>
-      <ReservationSearchInput setReservations={setReservations} />
+      <View style={{ paddingHorizontal: 16 }}>
+        <ReservationSearchInput setReservations={setReservations} />
+      </View>
       <FlatList
         data={reservations}
         contentContainerStyle={styles.contentContainer}
