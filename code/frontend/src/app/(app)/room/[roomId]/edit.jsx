@@ -2,6 +2,10 @@ import axios from 'axios';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text } from 'react-native-paper';
+import {
+  FormLoading,
+  useFormLoading,
+} from '../../../../components/FormLoading';
 import Form from '../../../../components/room/Form';
 import { useSession } from '../../../../providers/SessionProvider';
 
@@ -15,6 +19,7 @@ export default function RoomEditScreen() {
     description: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const { visible, hideDialog, showDialog, goBack } = useFormLoading();
 
   const getRoomDetails = async () => {
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/room/${roomId}`;
@@ -37,6 +42,8 @@ export default function RoomEditScreen() {
 
   const handleSubmit = async (data) => {
     const patchUri = `${process.env.EXPO_PUBLIC_BASE_URL}/room/${roomId}`;
+
+    showDialog();
     try {
       const { data: response } = await axios.patch(patchUri, data, {
         headers: {
@@ -45,6 +52,9 @@ export default function RoomEditScreen() {
       });
     } catch (error) {
       console.error('Error patching room: ', error);
+    } finally {
+      hideDialog();
+      goBack();
     }
   };
 
@@ -57,9 +67,12 @@ export default function RoomEditScreen() {
   }
 
   return (
-    <Form
-      defaultValues={defaultValues}
-      onSubmit={handleSubmit}
-    />
+    <>
+      <Form
+        defaultValues={defaultValues}
+        onSubmit={handleSubmit}
+      />
+      <FormLoading visible={visible} />
+    </>
   );
 }

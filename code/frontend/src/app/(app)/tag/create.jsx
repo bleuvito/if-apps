@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 import z from 'zod';
+import { FormLoading, useFormLoading } from '../../../components/FormLoading';
 import InputHelper from '../../../components/InputHelper';
 import InputLabel from '../../../components/InputLabel';
 import { useSession } from '../../../providers/SessionProvider';
@@ -26,15 +27,21 @@ export default function TagCreateScreen() {
     defaultValues,
     resolver: zodResolver(schema),
   });
+  const { visible, goBack, hideDialog, showDialog } = useFormLoading();
 
   async function onSubmit(data) {
     const createUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag`;
+
+    showDialog();
     try {
       const { data: response } = await axios.post(createUri, data, {
         headers: { Authorization: `Bearer ${session}` },
       });
     } catch (error) {
       console.error('Error creating tag', error);
+    } finally {
+      hideDialog();
+      goBack();
     }
   }
 
@@ -83,6 +90,7 @@ export default function TagCreateScreen() {
           Submit
         </Button>
       </View>
+      <FormLoading visible={visible} />
     </View>
   );
 }

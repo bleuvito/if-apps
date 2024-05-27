@@ -2,12 +2,17 @@ import axios from 'axios';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ActivityIndicator, Text } from 'react-native-paper';
+import {
+  FormLoading,
+  useFormLoading,
+} from '../../../../components/FormLoading';
 import Form from '../../../../components/tag/Form';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function EditTagDetailsScreen() {
   const { tagId } = useLocalSearchParams();
   const { session } = useSession();
+  const { visible, hideDialog, showDialog, goBack } = useFormLoading();
 
   const [defaultValues, setDefaultValues] = useState({
     id: '',
@@ -36,12 +41,16 @@ export default function EditTagDetailsScreen() {
 
   const handleSubmit = async (data) => {
     const patchUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag/${tagId}`;
+    showDialog();
     try {
       const { data: response } = await axios.patch(patchUri, data, {
         headers: { Authorization: `Bearer ${session}` },
       });
     } catch (error) {
       console.error('Error creating tag', error);
+    } finally {
+      hideDialog();
+      goBack();
     }
   };
 
@@ -56,9 +65,12 @@ export default function EditTagDetailsScreen() {
   }
 
   return (
-    <Form
-      onSubmit={handleSubmit}
-      defaultValues={defaultValues}
-    />
+    <>
+      <Form
+        onSubmit={handleSubmit}
+        defaultValues={defaultValues}
+      />
+      <FormLoading visible={visible} />
+    </>
   );
 }

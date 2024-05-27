@@ -7,6 +7,10 @@ import {
 import { useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
+import {
+  FormLoading,
+  useFormLoading,
+} from '../../../../components/FormLoading';
 import DetailsText from '../../../../components/room/DetailsText';
 import HeaderRight from '../../../../components/room/HeaderRight';
 import { useSession } from '../../../../providers/SessionProvider';
@@ -15,6 +19,12 @@ export default function ScheduleDetailsScreen() {
   const { roomId } = useLocalSearchParams();
   const { session, getRole } = useSession();
   const navigation = useNavigation();
+  const {
+    visible: formLoadingVisible,
+    hideDialog: formLoadingHide,
+    showDialog: formLoadingShow,
+    goBack,
+  } = useFormLoading();
 
   const [room, setRoom] = useState({
     name: '',
@@ -52,6 +62,9 @@ export default function ScheduleDetailsScreen() {
 
   const handleDeleteRoom = async () => {
     const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/room/${roomId}`;
+
+    hideDialog();
+    formLoadingShow();
     try {
       const { data } = await axios.delete(deleteUri, {
         headers: {
@@ -60,6 +73,9 @@ export default function ScheduleDetailsScreen() {
       });
     } catch (error) {
       console.error('Error deleting room: ', error);
+    } finally {
+      formLoadingHide();
+      goBack();
     }
   };
 
@@ -101,12 +117,11 @@ export default function ScheduleDetailsScreen() {
           <Dialog.Title>Delete room?</Dialog.Title>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Cancel</Button>
-          </Dialog.Actions>
-          <Dialog.Actions>
             <Button onPress={handleDeleteRoom}>Delete</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
+      <FormLoading visible={formLoadingVisible} />
     </View>
   );
 }

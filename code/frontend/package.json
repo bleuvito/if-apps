@@ -54,7 +54,8 @@
     "react-native-webview": "13.6.4",
     "react-quill": "^2.0.0",
     "typescript": "^5.3.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "expo-dev-client": "~3.3.12"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

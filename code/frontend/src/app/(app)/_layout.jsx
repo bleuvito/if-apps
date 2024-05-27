@@ -4,6 +4,7 @@ import { Drawer } from 'expo-router/drawer';
 import { Text, useTheme } from 'react-native-paper';
 
 import DrawerContent from '../../components/DrawerContent';
+import LoadingIndicator from '../../components/LoadingIndicator';
 import { useSession } from '../../providers/SessionProvider';
 
 export default function Layout() {
@@ -11,7 +12,7 @@ export default function Layout() {
   const theme = useTheme();
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <LoadingIndicator />;
   }
 
   if (!session) {

@@ -8,6 +8,10 @@ import {
 import { useCallback, useLayoutEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
+import {
+  FormLoading,
+  useFormLoading,
+} from '../../../../components/FormLoading';
 import TagDetailsHeaderRight from '../../../../components/tag/HeaderRight';
 import TagDetailsText from '../../../../components/tag/TagDetailsText';
 import { useSession } from '../../../../providers/SessionProvider';
@@ -16,6 +20,12 @@ export default function TagDetailsScreen() {
   const { tagId } = useLocalSearchParams();
   const { session, getUserId, getRole } = useSession();
   const navigation = useNavigation();
+  const {
+    visible: formLoadingVisible,
+    hideDialog: formLoadingHide,
+    showDialog: formLoadingShow,
+    goBack,
+  } = useFormLoading();
 
   const userId = getUserId();
   const userRole = getRole();
@@ -62,6 +72,8 @@ export default function TagDetailsScreen() {
   const handleDeleteTag = async () => {
     const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag/${tagId}`;
 
+    hideDialog();
+    formLoadingShow();
     try {
       const { data } = await axios.delete(deleteUri, {
         headers: {
@@ -70,6 +82,9 @@ export default function TagDetailsScreen() {
       });
     } catch (error) {
       console.error('Error deleting reservation: ', error);
+    } finally {
+      formLoadingHide();
+      goBack();
     }
   };
 
@@ -121,6 +136,7 @@ export default function TagDetailsScreen() {
           </Dialog.Actions>
         </Dialog>
       </Portal>
+      <FormLoading visible={formLoadingVisible} />
     </View>
   );
 }
