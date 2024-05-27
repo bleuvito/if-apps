@@ -1,15 +1,20 @@
 import axios from 'axios';
 
+// import { View } from 'react-native-reanimated/lib/typescript/Animated';
+import { View } from 'react-native';
+import { FormLoading, useFormLoading } from '../../../components/FormLoading';
 import AnnouncementForm from '../../../components/announcement/Form';
 import { createAnnouncementFormData } from '../../../helpers/utils';
 import { useSession } from '../../../providers/SessionProvider';
 
 export default function AnnouncementCreateScreen() {
   const { session } = useSession();
+  const { visible, hideDialog, showDialog, goBack } = useFormLoading();
 
   async function handleSubmit(data) {
     const postUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement`;
-    console.log(data);
+
+    showDialog();
     const form = new createAnnouncementFormData(data);
     try {
       await axios.post(postUri, form, {
@@ -20,6 +25,9 @@ export default function AnnouncementCreateScreen() {
       });
     } catch (error) {
       console.log('Error submitting form', error.message);
+    } finally {
+      hideDialog();
+      goBack();
     }
   }
 
@@ -33,10 +41,13 @@ export default function AnnouncementCreateScreen() {
   };
 
   return (
-    <AnnouncementForm
-      defaultValues={defaultValues}
-      defaultTags={[]}
-      onSubmit={handleSubmit}
-    />
+    <>
+      <AnnouncementForm
+        defaultValues={defaultValues}
+        defaultTags={[]}
+        onSubmit={handleSubmit}
+      />
+      <FormLoading visible={visible} />
+    </>
   );
 }

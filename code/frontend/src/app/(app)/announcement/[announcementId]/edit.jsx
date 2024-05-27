@@ -3,6 +3,10 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 
 import { ActivityIndicator, Text } from 'react-native-paper';
+import {
+  FormLoading,
+  useFormLoading,
+} from '../../../../components/FormLoading';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import AnnouncementForm from '../../../../components/announcement/Form';
 import { createAnnouncementFormData } from '../../../../helpers/utils';
@@ -11,6 +15,7 @@ import { useSession } from '../../../../providers/SessionProvider';
 export default function AnnouncementEditScreen() {
   const { announcementId } = useLocalSearchParams();
   const { session } = useSession();
+
   const [defaultValues, setDefaultValues] = useState({
     recipient: '',
     subject: '',
@@ -21,11 +26,13 @@ export default function AnnouncementEditScreen() {
   });
   const [defaultTags, setDefaultTags] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { visible, goBack, showDialog, hideDialog } = useFormLoading();
 
   async function handleSubmit(data) {
     const form = createAnnouncementFormData(data);
 
     const putUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
+    showDialog();
     try {
       const data = await axios.put(putUri, form, {
         headers: {
@@ -35,6 +42,9 @@ export default function AnnouncementEditScreen() {
       });
     } catch (error) {
       console.log('Error submitting form', error);
+    } finally {
+      hideDialog();
+      goBack();
     }
   }
 
@@ -46,8 +56,6 @@ export default function AnnouncementEditScreen() {
       const { data } = await axios.get(getUri, {
         headers: { Authorization: `Bearer ${session}` },
       });
-
-      // console.log(data.tags);
 
       setDefaultValues({
         ...defaultValues,
@@ -78,10 +86,13 @@ export default function AnnouncementEditScreen() {
   }
 
   return (
-    <AnnouncementForm
-      defaultValues={defaultValues}
-      onSubmit={handleSubmit}
-      editMode
-    />
+    <>
+      <AnnouncementForm
+        defaultValues={defaultValues}
+        onSubmit={handleSubmit}
+        editMode
+      />
+      <FormLoading visible={visible} />
+    </>
   );
 }

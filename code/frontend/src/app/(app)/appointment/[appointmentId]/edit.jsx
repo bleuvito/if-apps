@@ -48,7 +48,6 @@ export default function AppointmentEdit() {
   }
 
   const handleSubmit = async (data) => {
-    console.log(data);
     const putUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
     try {
       const { data: response } = await axios.put(putUri, data, {

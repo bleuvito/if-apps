@@ -24,12 +24,23 @@ import {
 import RenderHTML from 'react-native-render-html';
 
 import dayjs from 'dayjs';
+import {
+  FormLoading,
+  useFormLoading,
+} from '../../../../components/FormLoading';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import AnnouncementDetailsHeaderRight from '../../../../components/announcement/DetailsHeaderRight';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function AnnouncementDetailScreen() {
   const { announcementId } = useLocalSearchParams();
+
+  const {
+    visible: formVisible,
+    goBack,
+    hideDialog: hideFormDialog,
+    showDialog: showFormDialog,
+  } = useFormLoading();
   const [visible, setVisible] = useState(false);
   const [announcement, setAnnouncement] = useState({
     author: '',
@@ -101,13 +112,17 @@ export default function AnnouncementDetailScreen() {
 
   async function handleDeleteAnnouncement() {
     const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
-
+    hideDialog();
+    showFormDialog();
     try {
       const response = await axios.delete(deleteUri, {
         headers: { Authorization: `Bearer ${session}` },
       });
     } catch (error) {
       console.error('Error deleting announcement: ', response);
+    } finally {
+      hideFormDialog();
+      goBack();
     }
   }
 
@@ -204,6 +219,7 @@ export default function AnnouncementDetailScreen() {
           </Dialog.Actions>
         </Dialog>
       </Portal>
+      <FormLoading visible={formVisible} />
     </ScrollView>
   );
 }
