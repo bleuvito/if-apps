@@ -29,6 +29,7 @@ export default function AnnouncementCreateScreen() {
     body: '',
     pin: false,
     attachments: [],
+    tags: [],
   };
 
   return (

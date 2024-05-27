@@ -173,7 +173,7 @@ export default function AnnouncementDetailScreen() {
         </View>
       )}
       {announcement.tags.length > 0 && (
-        <View style={{ marginTop: 16 }}>
+        <View style={{ marginTop: 16, marginBottom: 96 }}>
           <Text
             variant='titleSmall'
             style={{ marginBottom: 4 }}

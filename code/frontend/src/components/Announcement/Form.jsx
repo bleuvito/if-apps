@@ -18,21 +18,21 @@ import AttachmentField from './AttachmentField.jsx';
 import TagBottomSheet from './TagBottomSheet.jsx';
 import TagField from './TagField.jsx';
 
-const schema = z.object({
-  recipient: z
-    .string()
-    .refine((emailValue) =>
-      emailValue
-        .split(',')
-        .every((item) => z.string().email().safeParse(item).success)
-    ),
-  subject: z.string().min(1, { message: 'Subjek harus diisi!' }),
-  // attachments: z.array().optional(),
-});
+const schema = z
+  .object({
+    recipient: z
+      .string()
+      .refine((emailValue) =>
+        emailValue
+          .split(',')
+          .every((item) => z.string().email().safeParse(item).success)
+      ),
+    subject: z.string().min(1, { message: 'Subjek harus diisi!' }),
+  })
+  .passthrough();
 
 export default function AnnouncementForm({
   defaultValues,
-  defaultTags,
   onSubmit,
   editMode,
 }) {
@@ -42,14 +42,11 @@ export default function AnnouncementForm({
     formState: { errors },
   } = useForm({
     defaultValues,
-    // resolver: zodResolver(schema),
+    resolver: zodResolver(schema.partial()),
   });
-  const [selectedTags, setSelectedTags] = useState(defaultTags);
   const bottomSheetRef = useRef(null);
 
   async function handleFormSubmit(data) {
-    // console.log(data.attachments);
-    data = { ...data, tags: selectedTags };
     await onSubmit(data);
   }
 
@@ -69,7 +66,6 @@ export default function AnnouncementForm({
                 />
                 <TextInput
                   disabled={editMode}
-                  // label='To'
                   mode='outlined'
                   value={value}
                   onBlur={onBlur}
@@ -137,19 +133,17 @@ export default function AnnouncementForm({
           defaultValue={[]}
           render={({ field: { onChange, value } }) => {
             return (
-              // <View style={{ marginBottom: 16 }}>
               <AttachmentField
                 files={value}
                 setFiles={onChange}
               />
-              // </View>
             );
           }}
         />
         <View style={{ marginBottom: 16 }}>
           <TagField
-            selectedTags={selectedTags}
-            setSelectedTags={setSelectedTags}
+            control={control}
+            name='tags'
             bottomSheetRef={bottomSheetRef}
           />
         </View>
@@ -172,7 +166,6 @@ export default function AnnouncementForm({
                   Pin
                 </Text>
                 <Checkbox
-                  // label='Pin
                   status={value ? 'checked' : 'unchecked'}
                   onPress={() => onChange(!value)}
                 />
@@ -201,10 +194,18 @@ export default function AnnouncementForm({
           </Button>
         </View>
       </ScrollView>
-      <TagBottomSheet
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
-        bottomSheetRef={bottomSheetRef}
+      <Controller
+        name='tags'
+        control={control}
+        render={({ field: { onChange, value } }) => {
+          return (
+            <TagBottomSheet
+              selectedTags={value}
+              setSelectedTags={onChange}
+              bottomSheetRef={bottomSheetRef}
+            />
+          );
+        }}
       />
     </>
   );

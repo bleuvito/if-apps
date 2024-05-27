@@ -2,11 +2,7 @@ import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import TagList from './TagList';
 
-export default function TagField({
-  selectedTags,
-  setSelectedTags,
-  bottomSheetRef,
-}) {
+export default function TagField({ control, name, bottomSheetRef }) {
   function handleOpenTagBottomSheet() {
     bottomSheetRef.current.snapToIndex(1);
   }
@@ -29,8 +25,8 @@ export default function TagField({
         </Button>
       </View>
       <TagList
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
+        control={control}
+        name={name}
       />
     </View>
   );

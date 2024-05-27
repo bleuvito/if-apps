@@ -17,6 +17,7 @@ export default function AnnouncementEditScreen() {
     body: '',
     attachments: [],
     pin: false,
+    tags: [],
   });
   const [defaultTags, setDefaultTags] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,14 +47,15 @@ export default function AnnouncementEditScreen() {
         headers: { Authorization: `Bearer ${session}` },
       });
 
+      // console.log(data.tags);
+
       setDefaultValues({
         ...defaultValues,
         recipient: data.recipient,
         subject: data.subject,
         pin: data.isPinned,
+        tags: data.tags,
       });
-
-      setDefaultTags(data.tags);
     } catch (error) {
       console.error('Error fetching data in announcement\\edit.jsx: ', error);
     }
@@ -63,7 +65,13 @@ export default function AnnouncementEditScreen() {
 
   useEffect(() => {
     getAnnouncement();
+    console.log(defaultValues);
   }, []);
+
+  useEffect(() => {
+    // getAnnouncement();
+    console.log(defaultValues);
+  }, [defaultValues]);
 
   if (isLoading) {
     return <LoadingIndicator />;
@@ -72,7 +80,6 @@ export default function AnnouncementEditScreen() {
   return (
     <AnnouncementForm
       defaultValues={defaultValues}
-      defaultTags={defaultTags}
       onSubmit={handleSubmit}
       editMode
     />

@@ -1,8 +1,12 @@
+import { useController } from 'react-hook-form';
 import { Card, useTheme } from 'react-native-paper';
 import TagChip from './TagChip';
 
-export default function TagList({ selectedTags, setSelectedTags }) {
+export default function TagList({ control, name }) {
   const theme = useTheme();
+  const {
+    field: { value: selectedTags, onChange: setSelectedTags },
+  } = useController({ control, name });
   return (
     <Card
       mode='outlined'
