@@ -61,13 +61,10 @@ export default function AnnouncementForm({
           render={({ field: { onChange, onBlur, value } }) => {
             return (
               <View style={{ marginBottom: 16 }}>
-                <View style={{ marginBottom: 4, flexDirection: 'row' }}>
-                  <Text variant='bodyMedium'>To</Text>
-                  <InputLabel
-                    isRequired={true}
-                    title='To'
-                  />
-                </View>
+                <InputLabel
+                  isRequired={true}
+                  title='To'
+                />
                 <TextInput
                   disabled={editMode}
                   // label='To'
