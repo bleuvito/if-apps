@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
@@ -8,11 +9,23 @@ import {
   Text,
   TextInput,
 } from 'react-native-paper';
+import z from 'zod';
 
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import AttachmentField from './AttachmentField.jsx';
 import TagBottomSheet from './TagBottomSheet.jsx';
 import TagField from './TagField.jsx';
+
+const schema = z.object({
+  recipient: z
+    .string()
+    .refine((emailValue) =>
+      emailValue
+        .split(',')
+        .every((item) => z.string().email().safeParse(item).success)
+    ),
+  subject: z.string().min(1, { message: 'Subjek harus diisi!' }),
+});
 
 export default function AnnouncementForm({
   defaultValues,
@@ -26,6 +39,7 @@ export default function AnnouncementForm({
     formState: { errors },
   } = useForm({
     defaultValues,
+    resolver: zodResolver(schema),
   });
   const [selectedTags, setSelectedTags] = useState(defaultTags);
   const bottomSheetRef = useRef(null);
@@ -45,12 +59,15 @@ export default function AnnouncementForm({
           render={({ field: { onChange, onBlur, value } }) => {
             return (
               <View style={{ marginBottom: 16 }}>
-                <Text
-                  variant='bodyMedium'
-                  style={{ marginBottom: 4 }}
-                >
-                  To
-                </Text>
+                <View style={{ marginBottom: 4, flexDirection: 'row' }}>
+                  <Text variant='bodyMedium'>To</Text>
+                  <Text
+                    variant='bodyMedium'
+                    style={{ color: 'red' }}
+                  >
+                    *
+                  </Text>
+                </View>
                 <TextInput
                   disabled={editMode}
                   // label='To'
@@ -60,6 +77,14 @@ export default function AnnouncementForm({
                   onChangeText={onChange}
                   placeholder='if20@unpar.ac.id,if21@unpar.ac.id'
                 />
+                {errors.recipient && (
+                  <HelperText
+                    type='error'
+                    visible={true}
+                  >
+                    Format email penerima salah!
+                  </HelperText>
+                )}
               </View>
             );
           }}
@@ -71,12 +96,15 @@ export default function AnnouncementForm({
           render={({ field: { onChange, onBlur, value } }) => {
             return (
               <View style={{ marginBottom: 16 }}>
-                <Text
-                  variant='bodyMedium'
-                  style={{ marginBottom: 4 }}
-                >
-                  Subjek
-                </Text>
+                <View style={{ marginBottom: 4, flexDirection: 'row' }}>
+                  <Text variant='bodyMedium'>Subjek</Text>
+                  <Text
+                    variant='bodyMedium'
+                    style={{ color: 'red' }}
+                  >
+                    *
+                  </Text>
+                </View>
                 <TextInput
                   disabled={editMode}
                   mode='outlined'
@@ -84,6 +112,14 @@ export default function AnnouncementForm({
                   onBlur={onBlur}
                   onChangeText={onChange}
                 />
+                {errors.subject && (
+                  <HelperText
+                    type='error'
+                    visible={true}
+                  >
+                    Subjek harus diisi!
+                  </HelperText>
+                )}
               </View>
             );
           }}
