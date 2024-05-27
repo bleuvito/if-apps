@@ -11,7 +11,7 @@ async function putAnnouncement(args) {
     body: requestBody,
   } = args;
 
-  console.log(requestBody);
+  console.log(requestBody.status);
 
   const refreshToken = await getRefreshToken(clientType, user.id);
 

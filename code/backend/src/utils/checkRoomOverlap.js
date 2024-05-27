@@ -37,8 +37,11 @@ export async function checkRoomOverlapReservations(
     },
     select: {
       id: true,
+      title: true,
     },
   });
+
+  console.log(reservations);
 
   if (reservations.length > 0) {
     throw Error('E_OVERLAP_APPOINTMENT');

@@ -1,4 +1,8 @@
 import { PrismaClient } from '@prisma/client';
+import {
+  checkRoomOverlapReservations,
+  checkRoomOverlapSchedules,
+} from '../utils/checkRoomOverlap.js';
 import { createEvent } from '../utils/googleCalendarApi.js';
 import { checkRoomOverlapAgenda, getRefreshToken } from '../utils/helpers.js';
 
@@ -13,7 +17,15 @@ async function createReservation(args) {
   // console.log(requestBody);
 
   try {
-    await checkRoomOverlapAgenda(
+    await checkRoomOverlapSchedules(
+      requestBody.room.id,
+      null,
+      requestBody.start,
+      requestBody.end,
+      requestBody.day
+    );
+
+    await checkRoomOverlapReservations(
       requestBody.room.id,
       null,
       requestBody.start,
