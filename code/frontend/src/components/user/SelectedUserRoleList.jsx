@@ -25,7 +25,7 @@ export default function SelectedUserRoleList({
       keyExtractor={(role, index) => index}
       renderItem={renderItem}
       horizontal={true}
-      style={{ borderWidth: 1, borderColor: 'red' }}
+      style={{ marginLeft: 8, paddingRight: 48, gap: 8 }}
     />
   );
 }

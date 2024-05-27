@@ -30,8 +30,8 @@ export default function RoomCreateScreen() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <Text>
+    <View style={{ flex: 1, paddingHorizontal: 16 }}>
+      <Text style={{ marginBottom: 16 }}>
         Gunakan text input di bawah untuk menambahkan satu atau lebih user.
         {'\n\n'}
         Setiap baris merepresentasikan sebuah user. Sintaks untuk setiap baris
@@ -49,30 +49,35 @@ export default function RoomCreateScreen() {
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <>
-              <TextInput
-                mode='outlined'
-                multiline={true}
-                value={value}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                style={{
-                  maxHeight: 500,
-                }}
-              />
-            </>
+            <TextInput
+              mode='outlined'
+              multiline={true}
+              value={value}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              style={{
+                maxHeight: 500,
+              }}
+            />
           );
         }}
       />
       <View
         style={{
           flexDirection: 'row',
+          marginTop: 64,
         }}
       >
-        <Button mode='outlined'>Cancel</Button>
+        <Button
+          mode='outlined'
+          style={{ flex: 1 }}
+        >
+          Cancel
+        </Button>
         <Button
           mode='contained'
           onPress={handleSubmit(handleFormSubmit)}
+          style={{ flex: 1 }}
         >
           Submit
         </Button>

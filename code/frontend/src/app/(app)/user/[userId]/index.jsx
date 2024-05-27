@@ -84,8 +84,13 @@ export default function UserDetailsScreen() {
   }, [navigation, user]);
 
   return (
-    <View>
-      <Text variant='headlineLarge'>{user.name}</Text>
+    <View style={{ paddingHorizontal: 16, rowGap: 16 }}>
+      <Text
+        variant='headlineLarge'
+        style={{ marginBottom: 8 }}
+      >
+        {user.name}
+      </Text>
       <UserDetailsText
         title={'Email'}
         body={user.email}
@@ -99,12 +104,12 @@ export default function UserDetailsScreen() {
           visible={visible}
           onDismiss={hideDialog}
         >
-          <Dialog.Title>Delete user?</Dialog.Title>
+          <Dialog.Title>Hapus pengguna?</Dialog.Title>
           <Dialog.Actions>
-            <Button onPress={hideDialog}>Cancel</Button>
+            <Button onPress={hideDialog}>Batal</Button>
           </Dialog.Actions>
           <Dialog.Actions>
-            <Button onPress={handleDeleteUser}>Delete</Button>
+            <Button onPress={handleDeleteUser}>Hapus</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

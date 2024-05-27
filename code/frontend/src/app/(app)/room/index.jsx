@@ -44,7 +44,9 @@ export default function RoomScreen() {
 
   return (
     <>
-      <RoomSearchInput setRooms={setRooms} />
+      <View style={{ paddingHorizontal: 16 }}>
+        <RoomSearchInput setRooms={setRooms} />
+      </View>
       <FlatList
         data={rooms}
         contentContainerStyle={styles.contentContainer}

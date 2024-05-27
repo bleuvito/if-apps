@@ -23,13 +23,13 @@ export default function Form({ defaultValues, onSubmit }) {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingHorizontal: 16, rowGap: 16 }}>
       <Controller
         name='name'
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <>
+            <View>
               <Text>Name</Text>
               <TextInput
                 mode='outlined'
@@ -37,7 +37,7 @@ export default function Form({ defaultValues, onSubmit }) {
                 onBlur={onBlur}
                 onChangeText={onChange}
               />
-            </>
+            </View>
           );
         }}
       />
@@ -47,14 +47,14 @@ export default function Form({ defaultValues, onSubmit }) {
         control={control}
         render={({ field: { onChange, value } }) => {
           return (
-            <>
+            <View>
               <Text>Email</Text>
               <TextInput
                 mode='outlined'
                 value={value}
                 onChangeText={onChange}
               />
-            </>
+            </View>
           );
         }}
       />
@@ -63,7 +63,7 @@ export default function Form({ defaultValues, onSubmit }) {
         control={control}
         render={({ field: { onChange, value } }) => {
           return (
-            <>
+            <View style={{ marginBottom: 32 }}>
               <Text>Role</Text>
               <TextInput
                 mode='outlined'
@@ -89,7 +89,7 @@ export default function Form({ defaultValues, onSubmit }) {
                 selectedRole={value}
                 setSelectedRole={onChange}
               />
-            </>
+            </View>
           );
         }}
       />
@@ -98,12 +98,18 @@ export default function Form({ defaultValues, onSubmit }) {
           flexDirection: 'row',
         }}
       >
-        <Button mode='outlined'>Cancel</Button>
+        <Button
+          mode='outlined'
+          style={{ flex: 1 }}
+        >
+          Batal
+        </Button>
         <Button
           mode='contained'
           onPress={handleSubmit(handleFormSubmit)}
+          style={{ flex: 1 }}
         >
-          Submit
+          Simpan
         </Button>
       </View>
     </View>

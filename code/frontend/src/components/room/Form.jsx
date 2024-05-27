@@ -17,13 +17,13 @@ export default function RoomForm({ defaultValues, onSubmit }) {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingHorizontal: 16, rowGap: 16 }}>
       <Controller
         name='name'
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <>
+            <View>
               <Text>Name</Text>
               <TextInput
                 mode='outlined'
@@ -31,7 +31,7 @@ export default function RoomForm({ defaultValues, onSubmit }) {
                 onBlur={onBlur}
                 onChangeText={onChange}
               />
-            </>
+            </View>
           );
         }}
       />
@@ -40,7 +40,7 @@ export default function RoomForm({ defaultValues, onSubmit }) {
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <>
+            <View>
               <Text>Capacity</Text>
               <TextInput
                 mode='outlined'
@@ -49,7 +49,7 @@ export default function RoomForm({ defaultValues, onSubmit }) {
                 keyboardType='numeric'
                 onChangeText={onChange}
               />
-            </>
+            </View>
           );
         }}
       />
@@ -58,7 +58,7 @@ export default function RoomForm({ defaultValues, onSubmit }) {
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <>
+            <View>
               <Text>Description</Text>
               <TextInput
                 mode='outlined'
@@ -67,7 +67,7 @@ export default function RoomForm({ defaultValues, onSubmit }) {
                 onChangeText={onChange}
                 multiline={true}
               />
-            </>
+            </View>
           );
         }}
       />
@@ -76,10 +76,16 @@ export default function RoomForm({ defaultValues, onSubmit }) {
           flexDirection: 'row',
         }}
       >
-        <Button mode='outlined'>Cancel</Button>
+        <Button
+          mode='outlined'
+          style={{ flex: 1 }}
+        >
+          Cancel
+        </Button>
         <Button
           mode='contained'
           onPress={handleSubmit(handleFormSubmit)}
+          style={{ flex: 1 }}
         >
           Submit
         </Button>

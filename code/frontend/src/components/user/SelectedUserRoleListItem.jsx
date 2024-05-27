@@ -18,6 +18,7 @@ export default function SelectedUserRoleListItem({
     <Chip
       closeIcon='close'
       onClose={() => handlePressClose()}
+      style={{ marginRight: 8 }}
     >
       {role}
     </Chip>
