@@ -18,6 +18,10 @@ export default function ParticipantCalendar({ participantId, control }) {
     control,
     name: 'date',
   });
+  const participant = useWatch({
+    control,
+    name: 'participant',
+  });
 
   const [currDate, setCurrDate] = useState(value);
   const [events, setEvents] = useState([]);
@@ -30,10 +34,10 @@ export default function ParticipantCalendar({ participantId, control }) {
   };
 
   const getEvents = async () => {
-    if (participantId === null) return;
+    if (participant.id === null) return;
 
     const [start, end] = getDateRange();
-    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/user/${participantId}/agenda`;
+    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/user/${participant.id}/agenda`;
     try {
       const { data } = await axios.get(getUri, {
         headers: { Authorization: `Bearer ${session}` },

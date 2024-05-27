@@ -31,7 +31,7 @@ const schema = z
         description: z.string(),
       })
       .partial()
-      .refine(atLeastOneDefined, { message: 'must be defined' }),
+      .refine(atLeastOneDefined, { message: 'Ruangan harus dipilih' }),
   })
   .refine(
     (data) => {

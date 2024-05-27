@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Chip, Text, TextInput } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
+import InputLabel from '../InputLabel';
 
 export default function AppointmentDateField({ onChange, value }) {
   // const [date, setDate] = useState(value);
@@ -24,13 +25,11 @@ export default function AppointmentDateField({ onChange, value }) {
   );
 
   return (
-    <View style={{ marginBottom: 16 }}>
-      <Text
-        variant='bodyMedium'
-        style={{ marginBottom: 4 }}
-      >
-        Hari, Tanggal
-      </Text>
+    <View style={{}}>
+      <InputLabel
+        isRequired={true}
+        title='Hari, Tanggal'
+      />
       <TextInput
         mode='outlined'
         editable={false}

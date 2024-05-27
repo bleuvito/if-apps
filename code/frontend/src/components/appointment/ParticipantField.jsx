@@ -1,5 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
+import InputLabel from '../InputLabel';
 
 export default function AppointmentParticipantField({
   selectedParticipant,
@@ -12,9 +13,12 @@ export default function AppointmentParticipantField({
   };
 
   return (
-    <View style={{ marginBottom: 32 }}>
+    <View>
       <View style={styles.label}>
-        <Text>Participant</Text>
+        <InputLabel
+          isRequired={true}
+          title='Partisipan'
+        />
         <Button onPress={() => onPresentAgendaModalPress()}>
           Lihat jadwal
         </Button>

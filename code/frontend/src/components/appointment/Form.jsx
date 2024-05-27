@@ -5,12 +5,66 @@ import { ScrollView, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { en, id, registerTranslation } from 'react-native-paper-dates';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import z from 'zod';
+import { atLeastOneDefined, updateDateTime } from '../../helpers/utils';
 import { useSession } from '../../providers/SessionProvider';
+import InputHelper from '../InputHelper';
+import InputLabel from '../InputLabel';
 import TimeField from '../TimeField';
 import AgendaBottomSheet from './AgendaBottomSheet';
 import ParticipantBottomSheet from './BottomSheet';
 import AppointmentDateField from './DateField';
 import AppointmentParticipantField from './ParticipantField';
+
+const schema = z
+  .object({
+    topic: z.string().min(1, { message: 'Topik harus diisi' }),
+    date: z.coerce.date(),
+    start: z.coerce.date(),
+    end: z.coerce.date(),
+    place: z.coerce.string().min(1, { message: 'Tempat harus diisi' }),
+    status: z.coerce.string(),
+    link: z.coerce.string(),
+    organizer: z.object({
+      id: z.string(),
+    }),
+    participant: z
+      .object({
+        id: z.string(),
+      })
+      .partial()
+      .refine(atLeastOneDefined, { message: 'Partisipan harus dipilih' }),
+  })
+  .refine(
+    (data) => {
+      return data.end >= data.start;
+    },
+    {
+      message: 'Waktu mulai tidak boleh lebih dari waktu selesai',
+      path: ['start'],
+    }
+  )
+  .refine(
+    (data) => {
+      const upEnd = updateDateTime(data.date, data.end);
+      return upEnd > new Date();
+    },
+    {
+      message: 'Waktu selesai harus melebihi waktu saat ini.',
+      path: ['end'],
+    }
+  )
+  .refine(
+    (data) => {
+      const upStart = updateDateTime(data.date, data.start);
+      return upStart > new Date();
+    },
+    {
+      message: 'Waktu mulai harus melebihi waktu saat ini.',
+      path: ['start'],
+    }
+  );
 
 export default function AppointmentForm({ defaultValues, onSubmit }) {
   registerTranslation('en', en);
@@ -26,6 +80,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
     formState: { errors },
   } = useForm({
     defaultValues,
+    resolver: zodResolver(schema),
   });
 
   const handlePresentModalPress = useCallback(() => {
@@ -57,7 +112,6 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
       ...data,
       start,
       end,
-      participant: selectedParticipant,
     };
 
     onSubmit(data);
@@ -72,17 +126,19 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           render={({ field: { onChange, onBlur, value } }) => {
             return (
               <View style={{ marginBottom: 16 }}>
-                <Text
-                  variant='bodyMedium'
-                  style={{ marginBottom: 4 }}
-                >
-                  Topik
-                </Text>
+                <InputLabel
+                  isRequired={true}
+                  title='Topik'
+                />
                 <TextInput
                   mode='outlined'
                   value={value}
                   onBlur={onBlur}
                   onChangeText={onChange}
+                />
+                <InputHelper
+                  error={errors.topic}
+                  message={errors.topic?.message}
                 />
               </View>
             );
@@ -93,10 +149,16 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
-              <AppointmentDateField
-                onChange={onChange}
-                value={value}
-              />
+              <View style={{ marginBottom: 16 }}>
+                <AppointmentDateField
+                  onChange={onChange}
+                  value={value}
+                />
+                <InputHelper
+                  error={errors.date}
+                  message={errors.date?.message}
+                />
+              </View>
             );
           }}
         />
@@ -112,11 +174,17 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
             control={control}
             render={({ field: { onChange, value } }) => {
               return (
-                <TimeField
-                  title='Waktu Mulai'
-                  value={value}
-                  onChange={onChange}
-                />
+                <View style={{ flex: 1 }}>
+                  <TimeField
+                    title='Waktu Mulai'
+                    value={value}
+                    onChange={onChange}
+                  />
+                  <InputHelper
+                    error={errors.start}
+                    message={errors.start?.message}
+                  />
+                </View>
               );
             }}
           />
@@ -125,11 +193,17 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
             control={control}
             render={({ field: { onChange, onBlur, value } }) => {
               return (
-                <TimeField
-                  title='Waktu Selesai'
-                  value={value}
-                  onChange={onChange}
-                />
+                <View style={{ flex: 1 }}>
+                  <TimeField
+                    title='Waktu Selesai'
+                    value={value}
+                    onChange={onChange}
+                  />
+                  <InputHelper
+                    error={errors.end}
+                    message={errors.end?.message}
+                  />
+                </View>
               );
             }}
           />
@@ -140,12 +214,19 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           render={({ field: { onChange, onBlur, value } }) => {
             return (
               <View style={{ marginBottom: 16 }}>
-                <Text style={{ marginBottom: 4 }}>Place</Text>
+                <InputLabel
+                  isRequired={true}
+                  title='Tempat'
+                />
                 <TextInput
                   mode='outlined'
                   value={value}
                   onBlur={onBlur}
                   onChangeText={onChange}
+                />
+                <InputHelper
+                  error={errors.place}
+                  message={errors.place?.message}
                 />
               </View>
             );
@@ -157,7 +238,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           render={({ field: { onChange, onBlur, value } }) => {
             return (
               <View style={{ marginBottom: 16 }}>
-                <Text style={{ marginBottom: 8 }}>Link</Text>
+                <Text style={{ marginBottom: 8 }}>Link Meeting</Text>
                 <TextInput
                   mode='outlined'
                   value={value}
@@ -168,15 +249,37 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
             );
           }}
         />
-        <AppointmentParticipantField
-          selectedParticipant={selectedParticipant}
-          setSelectedParticipant={setSelectedParticipant}
-          onPresentModalPress={handlePresentModalPress}
-          onPresentAgendaModalPress={handlePresentAgendaModalPress}
+        <Controller
+          name='participant'
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => {
+            return (
+              <>
+                <View style={{ marginBottom: 32 }}>
+                  <AppointmentParticipantField
+                    selectedParticipant={value}
+                    setSelectedParticipant={onChange}
+                    onPresentModalPress={handlePresentModalPress}
+                    onPresentAgendaModalPress={handlePresentAgendaModalPress}
+                  />
+                  <InputHelper
+                    error={errors.participant}
+                    message={errors.participant?.message}
+                  />
+                </View>
+                <ParticipantBottomSheet
+                  ref={bottomSheetModalRef}
+                  selectedParticipant={value}
+                  setSelectedParticipant={onChange}
+                />
+              </>
+            );
+          }}
         />
         <View
           style={{
             flex: 1,
+            paddingBottom: 96,
             flexDirection: 'row',
           }}
         >
@@ -195,11 +298,6 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           </Button>
         </View>
       </ScrollView>
-      <ParticipantBottomSheet
-        ref={bottomSheetModalRef}
-        selectedParticipant={selectedParticipant}
-        setSelectedParticipant={setSelectedParticipant}
-      />
       <AgendaBottomSheet
         ref={agendaBottomSheetModalRef}
         selectedParticipant={selectedParticipant}

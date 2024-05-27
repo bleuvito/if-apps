@@ -4,6 +4,7 @@ import AppointmentCard from './Card';
 
 export default function AppointmentTabList({ appointments }) {
   const { getUserId } = useSession();
+  const userId = getUserId();
 
   return (
     <FlatList
@@ -11,7 +12,12 @@ export default function AppointmentTabList({ appointments }) {
       keyExtractor={(appointment, index) => appointment.id}
       contentContainerStyle={{ gap: 16, padding: 16, paddingBottom: 48 }}
       renderItem={({ item }) => {
-        return <AppointmentCard appointment={item} />;
+        return (
+          <AppointmentCard
+            appointment={item}
+            userId={userId}
+          />
+        );
       }}
     />
   );
