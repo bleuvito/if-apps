@@ -27,6 +27,7 @@ const schema = z.object({
         .every((item) => z.string().email().safeParse(item).success)
     ),
   subject: z.string().min(1, { message: 'Subjek harus diisi!' }),
+  // attachments: z.array().optional(),
 });
 
 export default function AnnouncementForm({
@@ -41,12 +42,13 @@ export default function AnnouncementForm({
     formState: { errors },
   } = useForm({
     defaultValues,
-    resolver: zodResolver(schema),
+    // resolver: zodResolver(schema),
   });
   const [selectedTags, setSelectedTags] = useState(defaultTags);
   const bottomSheetRef = useRef(null);
 
   async function handleFormSubmit(data) {
+    // console.log(data.attachments);
     data = { ...data, tags: selectedTags };
     await onSubmit(data);
   }
@@ -135,12 +137,12 @@ export default function AnnouncementForm({
           defaultValue={[]}
           render={({ field: { onChange, value } }) => {
             return (
-              <View style={{ marginBottom: 16 }}>
-                <AttachmentField
-                  files={value}
-                  setFiles={onChange}
-                />
-              </View>
+              // <View style={{ marginBottom: 16 }}>
+              <AttachmentField
+                files={value}
+                setFiles={onChange}
+              />
+              // </View>
             );
           }}
         />

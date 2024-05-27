@@ -9,6 +9,7 @@ export default function AnnouncementCreateScreen() {
 
   async function handleSubmit(data) {
     const postUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement`;
+    console.log(data);
     const form = new createAnnouncementFormData(data);
     try {
       await axios.post(postUri, form, {

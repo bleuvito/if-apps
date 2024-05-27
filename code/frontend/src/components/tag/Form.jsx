@@ -1,8 +1,14 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { Button, HelperText, Text, TextInput } from 'react-native-paper';
+import z from 'zod';
 // import { useSession } from '../../../providers/SessionProvider';
+
+const schema = z.object({
+  name: z.string().min(1),
+});
 
 export default function Form({ defaultValues, onSubmit }) {
   const {
@@ -11,6 +17,7 @@ export default function Form({ defaultValues, onSubmit }) {
     formState: { errors },
   } = useForm({
     defaultValues,
+    resolver: zodResolver(schema),
   });
 
   async function handleFormSubmit(data) {
