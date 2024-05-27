@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
+import InputLabel from './InputLabel';
 
 export default function DateField({ title, onChange, value }) {
   const [open, setOpen] = useState(false);
@@ -25,7 +26,10 @@ export default function DateField({ title, onChange, value }) {
 
   return (
     <View>
-      <Text style={{ marginBottom: 4 }}>{title}</Text>
+      <InputLabel
+        isRequired={true}
+        title={title}
+      />
       <TextInput
         mode='outlined'
         editable={false}

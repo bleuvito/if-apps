@@ -12,7 +12,7 @@ export default function ScheduleScreen() {
     title: '',
     type: 'KELAS',
     isRecurring: true,
-    day: selectedDate,
+    day: new Date(selectedDate),
     start: '',
     end: '',
   };

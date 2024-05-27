@@ -4,12 +4,58 @@ import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { Button, Checkbox, Text, TextInput } from 'react-native-paper';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import dayjs from 'dayjs';
 import { en, id, registerTranslation } from 'react-native-paper-dates';
+import z from 'zod';
+import { updateDateTime } from '../../helpers/utils';
 import DateField from '../DateField';
+import InputHelper from '../InputHelper';
+import InputLabel from '../InputLabel';
 import TimeField from '../TimeField';
 import BottomSheet from './BottomSheet.jsx';
 import BottomSheetField from './TypeBottomSheetField';
+
+const schema = z
+  .object({
+    title: z.string().min(1, { message: 'Judul harus diisi' }),
+    type: z.string().min(1, { message: 'Tipe harus dipilih' }),
+    day: z.coerce.date({ message: 'Tanggal harus dipilih' }),
+    start: z.coerce.date(),
+    end: z.coerce.date(),
+    isRecurring: z.boolean(),
+  })
+  .refine(
+    (data) => {
+      return data.end > data.start;
+    },
+    {
+      message: 'Waktu mulai tidak boleh lebih dari waktu selesai',
+      path: ['start'],
+    }
+  )
+  .refine(
+    (data) => {
+      const upEnd = updateDateTime(data.day, data.end);
+
+      console.log(upEnd);
+      return upEnd > new Date();
+    },
+    {
+      message: 'Waktu selesai harus melebihi waktu saat ini.',
+      path: ['end'],
+    }
+  )
+  .refine(
+    (data) => {
+      const upStart = updateDateTime(data.day, data.start);
+      return upStart > new Date();
+    },
+    {
+      message: 'Waktu mulai harus melebihi waktu saat ini.',
+      path: ['start'],
+    }
+  );
 
 export default function Form({ defaultValues, onSubmit }) {
   registerTranslation('id', id);
@@ -21,6 +67,7 @@ export default function Form({ defaultValues, onSubmit }) {
     formState: { errors },
   } = useForm({
     defaultValues,
+    resolver: zodResolver(schema),
   });
   const bottomSheetModalRef = useRef(null);
 
@@ -56,21 +103,43 @@ export default function Form({ defaultValues, onSubmit }) {
         render={({ field: { onChange, onBlur, value } }) => {
           return (
             <View>
-              <Text style={{ marginBottom: 4 }}>Title</Text>
+              <InputLabel
+                isRequired={true}
+                title='Judul'
+              />
               <TextInput
                 mode='outlined'
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
               />
+              <InputHelper
+                error={errors.title}
+                message={errors.title?.message}
+              />
             </View>
           );
         }}
       />
-      <BottomSheetField
-        selectedType={selectedType}
-        setSelectedType={setSelectedType}
-        onPressBottomSheetPresent={handlePresentModalPress}
+      <Controller
+        name='type'
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => {
+          return (
+            <>
+              <BottomSheetField
+                selectedType={value}
+                setSelectedType={onChange}
+                onPressBottomSheetPresent={handlePresentModalPress}
+              />
+              <BottomSheet
+                ref={bottomSheetModalRef}
+                selectedType={value}
+                setSelectedType={onChange}
+              />
+            </>
+          );
+        }}
       />
       <Controller
         name='day'
@@ -96,11 +165,17 @@ export default function Form({ defaultValues, onSubmit }) {
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
             return (
-              <TimeField
-                title='Waktu Mulai'
-                value={value}
-                onChange={onChange}
-              />
+              <View style={{ flex: 1 }}>
+                <TimeField
+                  title='Waktu Mulai'
+                  value={value}
+                  onChange={onChange}
+                />
+                <InputHelper
+                  error={errors.start}
+                  message={errors.start?.message}
+                />
+              </View>
             );
           }}
         />
@@ -109,11 +184,17 @@ export default function Form({ defaultValues, onSubmit }) {
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
             return (
-              <TimeField
-                title='Waktu Selesai'
-                value={value}
-                onChange={onChange}
-              />
+              <View style={{ flex: 1 }}>
+                <TimeField
+                  title='Waktu Selesai'
+                  value={value}
+                  onChange={onChange}
+                />
+                <InputHelper
+                  error={errors.end}
+                  message={errors.end?.message}
+                />
+              </View>
             );
           }}
         />
@@ -158,17 +239,14 @@ export default function Form({ defaultValues, onSubmit }) {
         </Button>
         <Button
           mode='contained'
-          onPress={handleSubmit(handleFormSubmit)}
+          onPress={handleSubmit(handleFormSubmit, (errors) =>
+            console.log(errors)
+          )}
           style={{ flex: 1 }}
         >
           Submit
         </Button>
       </View>
-      <BottomSheet
-        ref={bottomSheetModalRef}
-        selectedType={selectedType}
-        setSelectedType={setSelectedType}
-      />
     </View>
   );
 }
