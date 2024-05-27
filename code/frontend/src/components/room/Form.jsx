@@ -1,6 +1,16 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
+import z from 'zod';
+import InputHelper from '../InputHelper';
+import InputLabel from '../InputLabel';
+
+const schema = z.object({
+  name: z.string().min(1),
+  capacity: z.coerce.number().int().gt(0),
+  description: z.string().min(1),
+});
 
 export default function RoomForm({ defaultValues, onSubmit }) {
   const {
@@ -9,6 +19,7 @@ export default function RoomForm({ defaultValues, onSubmit }) {
     formState: { errors },
   } = useForm({
     defaultValues,
+    resolver: zodResolver(schema),
   });
 
   async function handleFormSubmit(data) {
@@ -24,12 +35,19 @@ export default function RoomForm({ defaultValues, onSubmit }) {
         render={({ field: { onChange, onBlur, value } }) => {
           return (
             <View>
-              <Text>Name</Text>
+              <InputLabel
+                isRequired={true}
+                title='Nama'
+              />
               <TextInput
                 mode='outlined'
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
+              />
+              <InputHelper
+                error={errors.name}
+                message='Nama harus diisi'
               />
             </View>
           );
@@ -41,13 +59,20 @@ export default function RoomForm({ defaultValues, onSubmit }) {
         render={({ field: { onChange, onBlur, value } }) => {
           return (
             <View>
-              <Text>Capacity</Text>
+              <InputLabel
+                isRequired={true}
+                title='Kapasitas'
+              />
               <TextInput
                 mode='outlined'
                 value={value}
                 onBlur={onBlur}
                 keyboardType='numeric'
                 onChangeText={onChange}
+              />
+              <InputHelper
+                error={errors.capacity}
+                message='Kapasitas harus berupa bilangan bulat positif'
               />
             </View>
           );
@@ -59,13 +84,20 @@ export default function RoomForm({ defaultValues, onSubmit }) {
         render={({ field: { onChange, onBlur, value } }) => {
           return (
             <View>
-              <Text>Description</Text>
+              <InputLabel
+                isRequired={true}
+                title='Deskripsi'
+              />
               <TextInput
                 mode='outlined'
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 multiline={true}
+              />
+              <InputHelper
+                error={errors.description}
+                message='Deskripsi tidak boleh kosong'
               />
             </View>
           );
