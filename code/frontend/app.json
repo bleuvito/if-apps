@@ -31,6 +31,14 @@
       "expo-secure-store",
       "@react-native-google-signin/google-signin"
     ],
-    "scheme": "ifapps"
+    "scheme": "ifapps",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "56621908-ff1e-4ec7-b52a-d931062fb7d7"
+      }
+    }
   }
 }
