@@ -11,6 +11,8 @@ import {
 } from 'react-native-paper';
 import z from 'zod';
 
+import InputHelper from '../InputHelper';
+import InputLabel from '../InputLabel';
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import AttachmentField from './AttachmentField.jsx';
 import TagBottomSheet from './TagBottomSheet.jsx';
@@ -61,12 +63,10 @@ export default function AnnouncementForm({
               <View style={{ marginBottom: 16 }}>
                 <View style={{ marginBottom: 4, flexDirection: 'row' }}>
                   <Text variant='bodyMedium'>To</Text>
-                  <Text
-                    variant='bodyMedium'
-                    style={{ color: 'red' }}
-                  >
-                    *
-                  </Text>
+                  <InputLabel
+                    isRequired={true}
+                    title='To'
+                  />
                 </View>
                 <TextInput
                   disabled={editMode}
@@ -77,14 +77,10 @@ export default function AnnouncementForm({
                   onChangeText={onChange}
                   placeholder='if20@unpar.ac.id,if21@unpar.ac.id'
                 />
-                {errors.recipient && (
-                  <HelperText
-                    type='error'
-                    visible={true}
-                  >
-                    Format email penerima salah!
-                  </HelperText>
-                )}
+                <InputHelper
+                  error={errors.recipient}
+                  message='Format email penerima salah'
+                />
               </View>
             );
           }}
@@ -96,15 +92,10 @@ export default function AnnouncementForm({
           render={({ field: { onChange, onBlur, value } }) => {
             return (
               <View style={{ marginBottom: 16 }}>
-                <View style={{ marginBottom: 4, flexDirection: 'row' }}>
-                  <Text variant='bodyMedium'>Subjek</Text>
-                  <Text
-                    variant='bodyMedium'
-                    style={{ color: 'red' }}
-                  >
-                    *
-                  </Text>
-                </View>
+                <InputLabel
+                  isRequired={true}
+                  title='Subjek'
+                />
                 <TextInput
                   disabled={editMode}
                   mode='outlined'
@@ -112,14 +103,10 @@ export default function AnnouncementForm({
                   onBlur={onBlur}
                   onChangeText={onChange}
                 />
-                {errors.subject && (
-                  <HelperText
-                    type='error'
-                    visible={true}
-                  >
-                    Subjek harus diisi!
-                  </HelperText>
-                )}
+                <InputHelper
+                  error={errors.subject}
+                  message='Subjek harus diisi'
+                />
               </View>
             );
           }}
