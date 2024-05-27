@@ -10,10 +10,7 @@ export default function ReservationCreateScreen() {
     date: new Date(),
     start: '',
     end: '',
-    room: {
-      id: '',
-      name: '',
-    },
+    room: {},
   };
 
   const handleSubmit = async (data) => {

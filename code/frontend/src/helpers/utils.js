@@ -80,4 +80,12 @@ const updateDateTime = (date, appointmentTime) => {
   return dateObj;
 };
 
-export { createAnnouncementFormData, getTimeDuration, updateDateTime };
+const atLeastOneDefined = (obj) =>
+  Object.values(obj).some((v) => v !== undefined);
+
+export {
+  atLeastOneDefined,
+  createAnnouncementFormData,
+  getTimeDuration,
+  updateDateTime,
+};

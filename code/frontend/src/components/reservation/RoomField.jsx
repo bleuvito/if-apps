@@ -8,7 +8,7 @@ export default function RoomField({
   onPresentAgendaModalPress,
 }) {
   const handleDeleteSelectedParticipant = () => {
-    setSelectedRoom({ z: '' });
+    setSelectedRoom({});
   };
 
   return (

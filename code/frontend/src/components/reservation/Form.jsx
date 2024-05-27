@@ -3,12 +3,12 @@ import { useCallback, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
-import { en, id, registerTranslation } from 'react-native-paper-dates';
+import { ca, en, id, registerTranslation } from 'react-native-paper-dates';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import dayjs from 'dayjs';
 import z, { date, object } from 'zod';
-import { updateDateTime } from '../../helpers/utils';
+import { atLeastOneDefined, updateDateTime } from '../../helpers/utils';
 import InputHelper from '../InputHelper';
 import InputLabel from '../InputLabel';
 import TimeField from '../TimeField';
@@ -27,9 +27,11 @@ const schema = z
       .object({
         id: z.string(),
         name: z.string(),
-        capacity: z.coerce.number(),
+        capacity: z.number(),
+        description: z.string(),
       })
-      .strict({ message: 'Ruangan harus dipilih' }),
+      .partial()
+      .refine(atLeastOneDefined, { message: 'must be defined' }),
   })
   .refine(
     (data) => {
@@ -90,14 +92,12 @@ export default function Form({ defaultValues, onSubmit }) {
     const end = updateDateTime(data.date, data.end);
     const day = dayjs(data.date).locale('id').format('dddd').toUpperCase();
 
-    console.log(data);
     delete data.date;
     data = {
       ...data,
       start,
       end,
       day,
-      // room: { id: selectedRoom.id, name: selectedRoom.name },
     };
 
     onSubmit(data);
@@ -231,7 +231,9 @@ export default function Form({ defaultValues, onSubmit }) {
         </Button>
         <Button
           mode='contained'
-          onPress={handleSubmit(handleFormSubmit)}
+          onPress={handleSubmit(handleFormSubmit, (error) => {
+            console.log(error);
+          })}
           style={{ flex: 1 }}
         >
           Simpan
