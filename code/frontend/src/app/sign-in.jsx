@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import SignInWithGoogleButton from '../components/SignInWithGoogleButton';
@@ -11,12 +11,15 @@ export default function SignInScreen() {
     <View
       style={{
         width: '100%',
-        height: '100%',
+        height: '80%',
         justifyContent: 'center',
         alignItems: 'center',
       }}
     >
-      <Text>{error}</Text>
+      <Image
+        source={require('../../assets/logo.png')}
+        style={{ aspectRatio: 1, height: 300 }}
+      />
       <SignInWithGoogleButton handleError={setError} />
     </View>
   );

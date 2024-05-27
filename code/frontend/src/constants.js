@@ -114,19 +114,19 @@ export const ifAppsTheme = {
 
 export const drawerItem = {
   annnouncement: {
-    label: 'Announcement',
+    label: 'Pengumuman',
     route: 'announcement',
   },
   appointment: {
-    label: 'Appointment',
+    label: 'Janji Temu',
     route: 'appointment',
   },
   reservation: {
-    label: 'Reservation',
+    label: 'Pinjaman Ruangan',
     route: 'reservation',
   },
   room: {
-    label: 'Room',
+    label: 'Ruangan',
     route: 'room',
   },
   tag: {
@@ -134,7 +134,7 @@ export const drawerItem = {
     route: 'tag',
   },
   schedule: {
-    label: 'My Schedule',
+    label: 'Jadwal Saya',
     route: 'schedule',
   },
   user: {

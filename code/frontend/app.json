@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "ifapps",
+    "name": "IF Apps",
     "slug": "ifapps",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,7 +23,7 @@
       "package": "net.labftis.ifapps"
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./assets/icon.png",
       "bundler": "metro"
     },
     "plugins": [

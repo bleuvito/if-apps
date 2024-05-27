@@ -17,7 +17,7 @@ export default function Layout() {
       <Stack.Screen
         name='create'
         options={{
-          title: 'Create User',
+          title: 'Buat User',
         }}
       />
       <Stack.Screen

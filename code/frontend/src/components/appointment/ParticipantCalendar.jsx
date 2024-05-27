@@ -5,10 +5,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { Calendar } from 'react-native-big-calendar';
 
 import { useWatch } from 'react-hook-form';
+import { View } from 'react-native';
 import { dayInt } from '../../constants';
 import { useSession } from '../../providers/SessionProvider';
 import CalendarToolbar from '../schedule/CalendarToolbar';
 import Event from '../schedule/Event';
+import ScheduleLegend from '../schedule/ScheduleLegend';
 
 export default function ParticipantCalendar({ participantId, control }) {
   const { session } = useSession();
@@ -87,6 +89,18 @@ export default function ParticipantCalendar({ participantId, control }) {
         selectedDate={currDate}
         setSelectedDate={setCurrDate}
       />
+      <View
+        style={{
+          flexDirection: 'row',
+          gap: 8,
+          marginBottom: 4,
+          justifyContent: 'center',
+        }}
+      >
+        <ScheduleLegend type='Kelas' />
+        <ScheduleLegend type='Pertemuan' />
+        <ScheduleLegend type='Lainnya' />
+      </View>
       <Calendar
         date={currDate}
         activeDate={value}
