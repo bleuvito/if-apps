@@ -17,6 +17,10 @@ export default function RoomCalendar({ roomId, control }) {
     name: 'date',
     defaultValue: dayjs().locale('id').toDate(),
   });
+  const room = useWatch({
+    control,
+    name: 'room',
+  });
 
   const [currDate, setCurrDate] = useState(value);
   const [events, setEvents] = useState([]);
@@ -29,10 +33,10 @@ export default function RoomCalendar({ roomId, control }) {
   };
 
   const getEvents = async () => {
-    if (roomId === null) return;
+    if (room.id === null) return;
 
     const [start, end] = getDateRange();
-    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/room/${roomId}/agenda`;
+    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/room/${room.id}/agenda`;
     try {
       const { data } = await axios.get(getUri, {
         headers: { Authorization: `Bearer ${session}` },
@@ -62,6 +66,8 @@ export default function RoomCalendar({ roomId, control }) {
 
         return { ...event, start: dayjs(event.start), end: dayjs(event.end) };
       });
+
+      console.log(fetchedEvents);
 
       setEvents(fetchedEvents);
     } catch (error) {

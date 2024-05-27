@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
+import InputLabel from './InputLabel';
 import TimeInputDialog from './TimeInputDialog';
 
 export default function TimeField({ title, value, onChange }) {
@@ -31,8 +32,11 @@ export default function TimeField({ title, value, onChange }) {
   }
 
   return (
-    <View style={{ flexDirection: 'column', flex: 1 }}>
-      <Text style={{ marginBottom: 4 }}>{title}</Text>
+    <View style={{ flexDirection: 'column' }}>
+      <InputLabel
+        title={title}
+        isRequired={true}
+      />
       <TextInput
         editable={false}
         mode='outlined'

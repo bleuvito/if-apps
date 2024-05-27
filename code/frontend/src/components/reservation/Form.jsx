@@ -5,12 +5,62 @@ import { ScrollView, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { en, id, registerTranslation } from 'react-native-paper-dates';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import dayjs from 'dayjs';
+import z, { date, object } from 'zod';
+import { updateDateTime } from '../../helpers/utils';
+import InputHelper from '../InputHelper';
+import InputLabel from '../InputLabel';
 import TimeField from '../TimeField';
 import AgendaBottomSheet from './AgendaBottomSheet';
 import DateField from './DateField';
 import RoomBottomSheet from './RoomBottomSheet';
 import RoomField from './RoomField';
+
+const schema = z
+  .object({
+    title: z.string().min(1),
+    date: z.coerce.date(),
+    start: z.coerce.date(),
+    end: z.coerce.date(),
+    room: z
+      .object({
+        id: z.string(),
+        name: z.string(),
+        capacity: z.coerce.number(),
+      })
+      .strict({ message: 'Ruangan harus dipilih' }),
+  })
+  .refine(
+    (data) => {
+      return data.end > data.start;
+    },
+    {
+      message: 'Waktu mulai tidak boleh lebih dari waktu selesai',
+      path: ['start'],
+    }
+  )
+  .refine(
+    (data) => {
+      const upEnd = updateDateTime(data.date, data.end);
+
+      return upEnd > new Date();
+    },
+    {
+      message: 'Waktu selesai harus melebihi waktu saat ini.',
+      path: ['end'],
+    }
+  )
+  .refine(
+    (data) => {
+      const upStart = updateDateTime(data.date, data.start);
+      return upStart > new Date();
+    },
+    {
+      message: 'Waktu mulai harus melebihi waktu saat ini.',
+      path: ['start'],
+    }
+  );
 
 export default function Form({ defaultValues, onSubmit }) {
   registerTranslation('id', id);
@@ -24,6 +74,7 @@ export default function Form({ defaultValues, onSubmit }) {
     formState: { errors },
   } = useForm({
     defaultValues,
+    resolver: zodResolver(schema),
   });
 
   const handlePresentModalPress = useCallback(() => {
@@ -34,32 +85,19 @@ export default function Form({ defaultValues, onSubmit }) {
     agendaBottomSheetModalRef.current?.present();
   }, []);
 
-  const updateAppointmentTime = (date, appointmentTime) => {
-    let dateObj = dayjs(date).toDate();
-    const day = dateObj.getDate();
-    const month = dateObj.getMonth();
-    const year = dateObj.getFullYear();
-
-    dateObj = dayjs(appointmentTime).toDate();
-    dateObj.setDate(day);
-    dateObj.setMonth(month);
-    dateObj.setFullYear(year);
-
-    return appointmentTime;
-  };
-
   async function handleFormSubmit(data) {
-    const start = updateAppointmentTime(data.date, data.start);
-    const end = updateAppointmentTime(data.date, data.end);
+    const start = updateDateTime(data.date, data.start);
+    const end = updateDateTime(data.date, data.end);
     const day = dayjs(data.date).locale('id').format('dddd').toUpperCase();
 
+    console.log(data);
     delete data.date;
     data = {
       ...data,
       start,
       end,
       day,
-      room: { id: selectedRoom.id, name: selectedRoom.name },
+      // room: { id: selectedRoom.id, name: selectedRoom.name },
     };
 
     onSubmit(data);
@@ -73,12 +111,19 @@ export default function Form({ defaultValues, onSubmit }) {
         render={({ field: { onChange, onBlur, value } }) => {
           return (
             <View>
-              <Text>Judul</Text>
+              <InputLabel
+                isRequired={true}
+                title='Judul'
+              />
               <TextInput
                 mode='outlined'
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
+              />
+              <InputHelper
+                error={errors.title}
+                message='Judul harus diisi'
               />
             </View>
           );
@@ -89,10 +134,16 @@ export default function Form({ defaultValues, onSubmit }) {
         control={control}
         render={({ field: { onChange, value } }) => {
           return (
-            <DateField
-              onChange={onChange}
-              value={value}
-            />
+            <>
+              <DateField
+                onChange={onChange}
+                value={value}
+              />
+              <InputHelper
+                error={errors.date}
+                message={'Tanggal harus diisi'}
+              />
+            </>
           );
         }}
       />
@@ -107,11 +158,17 @@ export default function Form({ defaultValues, onSubmit }) {
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
-              <TimeField
-                title='Waktu Mulai'
-                value={value}
-                onChange={onChange}
-              />
+              <View style={{ flexDirection: 'column', flex: 1 }}>
+                <TimeField
+                  title='Waktu Mulai'
+                  value={value}
+                  onChange={onChange}
+                />
+                <InputHelper
+                  error={errors.start}
+                  message={errors.start?.message}
+                />
+              </View>
             );
           }}
         />
@@ -120,20 +177,45 @@ export default function Form({ defaultValues, onSubmit }) {
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
             return (
-              <TimeField
-                title='Waktu Selesai'
-                value={value}
-                onChange={onChange}
-              />
+              <View style={{ flexDirection: 'column', flex: 1 }}>
+                <TimeField
+                  title='Waktu Selesai'
+                  value={value}
+                  onChange={onChange}
+                />
+                <InputHelper
+                  error={errors.end}
+                  message={errors.end?.message}
+                />
+              </View>
             );
           }}
         />
       </View>
-      <RoomField
-        selectedRoom={selectedRoom}
-        setSelectedRoom={setSelectedRoom}
-        onPresentModalPress={handlePresentModalPress}
-        onPresentAgendaModalPress={handlePresentAgendaModalPress}
+      <Controller
+        name='room'
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => {
+          return (
+            <>
+              <RoomField
+                selectedRoom={value}
+                setSelectedRoom={onChange}
+                onPresentModalPress={handlePresentModalPress}
+                onPresentAgendaModalPress={handlePresentAgendaModalPress}
+              />
+              <RoomBottomSheet
+                ref={bottomSheetModalRef}
+                selectedRoom={value}
+                setSelectedRoom={onChange}
+              />
+              <InputHelper
+                error={errors.room}
+                message={errors.room?.message}
+              />
+            </>
+          );
+        }}
       />
       <View
         style={{
@@ -155,15 +237,10 @@ export default function Form({ defaultValues, onSubmit }) {
           Simpan
         </Button>
       </View>
-      <RoomBottomSheet
-        ref={bottomSheetModalRef}
-        selectedRoom={selectedRoom}
-        setSelectedRoom={setSelectedRoom}
-      />
       <AgendaBottomSheet
         ref={agendaBottomSheetModalRef}
         control={control}
-        selectedRoom={selectedRoom}
+        // selectedRoom={selectedRoom}
       />
     </View>
   );

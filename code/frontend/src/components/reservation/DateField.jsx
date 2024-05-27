@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Chip, Text, TextInput } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
+import InputLabel from '../InputLabel';
 
 export default function ReservationDateField({ onChange, value }) {
   // const [date, setDate] = useState(value);
@@ -26,7 +27,10 @@ export default function ReservationDateField({ onChange, value }) {
 
   return (
     <View>
-      <Text>Hari, Tanggal</Text>
+      <InputLabel
+        isRequired={true}
+        title='Hari, Tanggal'
+      />
       <TextInput
         mode='outlined'
         editable={false}

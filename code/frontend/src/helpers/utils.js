@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { Platform } from 'react-native';
 
 function createAnnouncementFormData(data) {
@@ -65,4 +66,18 @@ const getTimeDuration = (start, end) => {
   return `${getTimeString(new Date(start))}-${getTimeString(new Date(end))}`;
 };
 
-export { createAnnouncementFormData, getTimeDuration };
+const updateDateTime = (date, appointmentTime) => {
+  let dateObj = dayjs(date).toDate();
+  const day = dateObj.getDate();
+  const month = dateObj.getMonth();
+  const year = dateObj.getFullYear();
+
+  dateObj = dayjs(appointmentTime).toDate();
+  dateObj.setDate(day);
+  dateObj.setMonth(month);
+  dateObj.setFullYear(year);
+
+  return dateObj;
+};
+
+export { createAnnouncementFormData, getTimeDuration, updateDateTime };
