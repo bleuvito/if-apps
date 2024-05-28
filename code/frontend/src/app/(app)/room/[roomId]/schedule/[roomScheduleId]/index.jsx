@@ -8,6 +8,10 @@ import {
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Checkbox, Dialog, Portal, Text } from 'react-native-paper';
+import {
+  FormLoading,
+  useFormLoading,
+} from '../../../../../../components/FormLoading';
 import RoomScheduleDetailsHeaderRight from '../../../../../../components/room/RoomScheduleDetailsHeaderRight';
 import ScheduleDetailsHeaderRight from '../../../../../../components/schedule/HeaderRight';
 import ScheduleDetailsText from '../../../../../../components/schedule/ScheduleDetailsText';
@@ -28,6 +32,12 @@ export default function ScheduleDetailsScreen() {
     end: new Date(),
   });
   const [visible, setVisible] = useState(false);
+  const {
+    visible: formLoadingVisible,
+    showDialog: formLoadingShow,
+    hideDialog: formLoadingHide,
+    goBack,
+  } = useFormLoading();
 
   const userId = getUserId();
 
@@ -58,6 +68,7 @@ export default function ScheduleDetailsScreen() {
 
   const handleDeleteRoomSchedule = async () => {
     const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/room-schedule/${roomId}/schedule/${roomScheduleId}`;
+    formLoadingShow();
     try {
       const { data } = await axios.delete(deleteUri, {
         headers: {
@@ -66,6 +77,9 @@ export default function ScheduleDetailsScreen() {
       });
     } catch (error) {
       console.error('Error deleting shedule: ', error);
+    } finally {
+      formLoadingHide();
+      goBack();
     }
   };
 
@@ -121,6 +135,7 @@ export default function ScheduleDetailsScreen() {
           </Dialog.Actions>
         </Dialog>
       </Portal>
+      <FormLoading visible={formLoadingVisible} />
     </View>
   );
 }

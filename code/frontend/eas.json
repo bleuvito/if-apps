@@ -4,9 +4,9 @@
   },
   "build": {
     "development": {
+      "distribution": "internal",
       "android": {
-        "buildType": "apk",
-        "gradleCommand": ":app:assembleRelease"
+        "buildType": "apk"
       },
       "env": {
         "EXPO_PUBLIC_GAUTH_WEB_CLIENT_ID": "143904628396-a92ei3s0lltbrsb3ktjdfe4cnlf9lb7k.apps.googleusercontent.com",
@@ -15,9 +15,7 @@
       }
     },
     "preview": {
-      "android": {
-        "buildType": "apk"
-      }
+      "distribution": "internal"
     },
     "production": {}
   },
