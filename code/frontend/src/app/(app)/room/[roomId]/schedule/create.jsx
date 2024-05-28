@@ -50,6 +50,7 @@ export default function ScheduleScreen() {
       goBack();
     } catch (error) {
       formLoadingHide();
+      setMessage(error.response.data);
       formErrorShow();
       console.error('Error creating room schedule: ', error);
     }

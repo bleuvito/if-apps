@@ -33,6 +33,7 @@ export default function AppointmentCreate() {
     const postUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment`;
 
     formLoadingShow();
+
     try {
       const { data: response } = await axios.post(postUri, data, {
         headers: {
@@ -55,6 +56,7 @@ export default function AppointmentCreate() {
         defaultValues={defaultValues}
         onSubmit={handleSubmit}
       />
+
       <FormLoading visible={formLoadingVisible} />
       <FormError
         visible={formErrorVisible}

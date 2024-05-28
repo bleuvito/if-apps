@@ -72,6 +72,7 @@ export default function ReservasionEditScreen() {
       goBack();
     } catch (error) {
       formLoadingHide();
+      setMessage(error.response.data);
       formErrorShow();
       // console.error('Error creating appointment', error);
     }

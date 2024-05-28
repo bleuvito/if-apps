@@ -3,6 +3,11 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { set } from 'react-hook-form';
 import { ActivityIndicator, Text } from 'react-native-paper';
+import { FormError, useFormError } from '../../../../components/FormError';
+import {
+  FormLoading,
+  useFormLoading,
+} from '../../../../components/FormLoading';
 import Form from '../../../../components/schedule/Form';
 import { useSession } from '../../../../providers/SessionProvider';
 
@@ -19,6 +24,20 @@ export default function ScheduleEditScreen() {
     end: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    visible: formLoadingVisible,
+    showDialog: formLoadingShow,
+    hideDialog: formLoadingHide,
+    goBack,
+  } = useFormLoading();
+  const {
+    visible: formErrorVisible,
+    showDialog: formErrorShow,
+    hideDialog: formErrorHide,
+    message,
+    setMessage,
+  } = useFormError();
 
   const getScheduleDetails = async () => {
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/schedule/${scheduleId}`;
@@ -42,6 +61,7 @@ export default function ScheduleEditScreen() {
     // console.log(data);
 
     const patchUri = `${process.env.EXPO_PUBLIC_BASE_URL}/schedule/${scheduleId}`;
+    formLoadingShow();
     try {
       const { data: response } = await axios.patch(patchUri, data, {
         headers: {
@@ -50,8 +70,15 @@ export default function ScheduleEditScreen() {
       });
 
       // console.log(response);
+
+      formLoadingHide();
+      goBack();
     } catch (error) {
-      console.error('Error patching schedule: ', error);
+      // console.error('Error patching schedule: ', error);
+
+      formLoadingHide();
+      setMessage(error.response.data);
+      formErrorShow();
     }
   };
 
@@ -64,9 +91,18 @@ export default function ScheduleEditScreen() {
   }
 
   return (
-    <Form
-      defaultValues={defaultValues}
-      onSubmit={handleSubmit}
-    />
+    <>
+      <Form
+        defaultValues={defaultValues}
+        onSubmit={handleSubmit}
+      />
+
+      <FormLoading visible={formLoadingVisible} />
+      <FormError
+        visible={formErrorVisible}
+        message={message}
+        hideDialog={formErrorHide}
+      />
+    </>
   );
 }
