@@ -3,6 +3,11 @@ import dayjs from 'dayjs';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
+import { FormError, useFormError } from '../../../../components/FormError';
+import {
+  FormLoading,
+  useFormLoading,
+} from '../../../../components/FormLoading';
 import Form from '../../../../components/reservation/Form';
 import { useSession } from '../../../../providers/SessionProvider';
 
@@ -21,6 +26,19 @@ export default function ReservasionEditScreen() {
       name: '',
     },
   });
+  const {
+    visible: formLoadingVisible,
+    showDialog: formLoadingShow,
+    hideDialog: formLoadingHide,
+    goBack,
+  } = useFormLoading();
+  const {
+    visible: formErrorVisible,
+    showDialog: formErrorShow,
+    hideDialog: formErrorHide,
+    message,
+    setMessage,
+  } = useFormError();
 
   const getReservasionDetails = async () => {
     setIsLoading(true);
@@ -42,14 +60,20 @@ export default function ReservasionEditScreen() {
 
   const handleSubmit = async (data) => {
     const patchUri = `${process.env.EXPO_PUBLIC_BASE_URL}/reservation/${reservationId}`;
+    formLoadingShow();
+
     try {
       const { data: response } = await axios.patch(patchUri, data, {
         headers: {
           Authorization: `Bearer ${session}`,
         },
       });
+      formLoadingHide();
+      goBack();
     } catch (error) {
-      console.error('Error creating appointment', error);
+      formLoadingHide();
+      formErrorShow();
+      // console.error('Error creating appointment', error);
     }
   };
 
@@ -62,9 +86,17 @@ export default function ReservasionEditScreen() {
   }
 
   return (
-    <Form
-      defaultValues={defaultValues}
-      onSubmit={handleSubmit}
-    />
+    <>
+      <Form
+        defaultValues={defaultValues}
+        onSubmit={handleSubmit}
+      />
+      <FormLoading visible={formLoadingVisible} />
+      <FormError
+        visible={formErrorVisible}
+        message={message}
+        hideDialog={formErrorHide}
+      />
+    </>
   );
 }

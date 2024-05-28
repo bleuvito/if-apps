@@ -24,14 +24,16 @@ const schema = z
     start: z.coerce.date(),
     end: z.coerce.date(),
     place: z.coerce.string().min(1, { message: 'Tempat harus diisi' }),
-    status: z.coerce.string(),
+    // status: z.coerce.string(),
     link: z.coerce.string(),
-    organizer: z.object({
-      id: z.string(),
-    }),
+    // organizer: z
+    //   .object({
+    //     id: z.string(),
+    //   }),
     participant: z
       .object({
         id: z.string(),
+        name: z.string(),
       })
       .partial()
       .refine(atLeastOneDefined, { message: 'Partisipan harus dipilih' }),
@@ -113,6 +115,8 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
       start,
       end,
     };
+
+    console.log(data);
 
     onSubmit(data);
   }
@@ -291,7 +295,9 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           </Button>
           <Button
             mode='contained'
-            onPress={handleSubmit(handleFormSubmit)}
+            onPress={handleSubmit(handleFormSubmit, (error) =>
+              console.log(error)
+            )}
             style={{ flex: 1 }}
           >
             Submit

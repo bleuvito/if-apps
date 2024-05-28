@@ -3,6 +3,11 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text } from 'react-native-paper';
 import { id } from 'react-native-paper-dates';
+import { FormError, useFormError } from '../../../../components/FormError';
+import {
+  FormLoading,
+  useFormLoading,
+} from '../../../../components/FormLoading';
 import AppointmentForm from '../../../../components/appointment/Form';
 import { useSession } from '../../../../providers/SessionProvider';
 
@@ -19,6 +24,20 @@ export default function AppointmentEdit() {
     participant: {},
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    visible: formLoadingVisible,
+    showDialog: formLoadingShow,
+    hideDialog: formLoadingHide,
+    goBack,
+  } = useFormLoading();
+  const {
+    visible: formErrorVisible,
+    showDialog: formErrorShow,
+    hideDialog: formErrorHide,
+    message,
+    setMessage,
+  } = useFormError();
 
   const getAppointmentDetails = async () => {
     setIsLoading(true);
@@ -49,6 +68,8 @@ export default function AppointmentEdit() {
 
   const handleSubmit = async (data) => {
     const putUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
+
+    formLoadingShow();
     try {
       const { data: response } = await axios.put(putUri, data, {
         headers: {
@@ -56,16 +77,27 @@ export default function AppointmentEdit() {
         },
       });
 
-      console.log(response);
+      formLoadingHide();
+      goBack();
     } catch (error) {
-      console.error('Error creating appointment', error);
+      formLoadingHide();
+      formErrorShow();
+      // console.error('Error creating appointment', error);
     }
   };
 
   return (
-    <AppointmentForm
-      defaultValues={defaultValues}
-      onSubmit={handleSubmit}
-    />
+    <>
+      <AppointmentForm
+        defaultValues={defaultValues}
+        onSubmit={handleSubmit}
+      />
+      <FormLoading visible={formLoadingVisible} />
+      <FormError
+        visible={formErrorVisible}
+        message={message}
+        hideDialog={formErrorHide}
+      />
+    </>
   );
 }

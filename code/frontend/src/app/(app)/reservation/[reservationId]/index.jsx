@@ -14,6 +14,10 @@ import {
   Portal,
   Text,
 } from 'react-native-paper';
+import {
+  FormLoading,
+  useFormLoading,
+} from '../../../../components/FormLoading';
 import ReservationDetailsHeaderRight from '../../../../components/reservation/HeaderRight';
 import ReservationDetailsText from '../../../../components/reservation/ReservationDetailsText';
 import { useSession } from '../../../../providers/SessionProvider';
@@ -34,6 +38,12 @@ export default function ReservationDetailsScreen() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
+  const {
+    visible: formLoadingVisible,
+    showDialog: formLoadingShow,
+    hideDialog: formLoadingHide,
+    goBack,
+  } = useFormLoading();
 
   const role = getRole();
   const userId = getUserId();
@@ -68,6 +78,7 @@ export default function ReservationDetailsScreen() {
   const handleDeleteReservation = async () => {
     const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/reservation/${reservationId}`;
 
+    formLoadingShow();
     try {
       const { data: deletedReservation } = await axios.delete(deleteUri, {
         headers: {
@@ -78,6 +89,9 @@ export default function ReservationDetailsScreen() {
       console.log(deletedReservation);
     } catch (error) {
       console.error('Error deleting reservation: ', error);
+    } finally {
+      formLoadingHide();
+      goBack();
     }
   };
 
@@ -138,6 +152,7 @@ export default function ReservationDetailsScreen() {
           </Dialog.Actions>
         </Dialog>
       </Portal>
+      <FormLoading visible={formLoadingVisible} />
     </View>
   );
 }

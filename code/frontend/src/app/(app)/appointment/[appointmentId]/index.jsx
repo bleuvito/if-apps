@@ -15,6 +15,10 @@ import {
 } from 'react-native-paper';
 
 import { A } from '@expo/html-elements';
+import {
+  FormLoading,
+  useFormLoading,
+} from '../../../../components/FormLoading';
 import AppointmentResponseButton from '../../../../components/appointment/BottomButtons';
 import AppointmentDetailsHeaderRight from '../../../../components/appointment/HeaderRight';
 import AppointmentStatusChip from '../../../../components/appointment/StatusChip';
@@ -47,6 +51,13 @@ export default function AppointmentDetailsScreen() {
   const navigation = useNavigation();
   const userId = getUserId();
 
+  const {
+    visible: formLoadingVisible,
+    showDialog: formLoadingShow,
+    hideDialog: formLoadingHide,
+    goBack,
+  } = useFormLoading();
+
   const getAppointDetails = async () => {
     setIsLoading(true);
 
@@ -76,6 +87,7 @@ export default function AppointmentDetailsScreen() {
   const handleDeleteAppointment = async () => {
     const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
 
+    formLoadingShow();
     try {
       const { data: deletedAppointment } = await axios.delete(deleteUri, {
         headers: {
@@ -83,9 +95,11 @@ export default function AppointmentDetailsScreen() {
         },
       });
 
-      console.log(deletedAppointment);
+      // console.log(deletedAppointment);
     } catch (error) {
       console.error('Error deleting appointment: ', error);
+      formLoadingHide();
+      goBack();
     }
   };
 
@@ -186,6 +200,7 @@ export default function AppointmentDetailsScreen() {
           </Dialog.Actions>
         </Dialog>
       </Portal>
+      <FormLoading visible={formLoadingVisible} />
     </View>
   );
 }
