@@ -10,7 +10,7 @@ const ScheduleService = express.Router();
 
 ScheduleService.post(
   '/',
-  verify(['DOSEN', 'KALAB', 'KAJUR', 'ADMIN']),
+  verify(['DOSEN', 'KALAB', 'KAJUR', 'ADMIN', 'KAPRODI']),
   async (req, res, next) => {
     try {
       const result = await createSchedule(req);
