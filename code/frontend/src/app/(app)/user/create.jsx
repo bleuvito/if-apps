@@ -5,6 +5,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import z from 'zod';
+import {
+  ConfirmationDialog,
+  useConfirmation,
+} from '../../../components/ConfirmationDialog';
 import { FormLoading, useFormLoading } from '../../../components/FormLoading';
 import InputHelper from '../../../components/InputHelper';
 import { useSession } from '../../../providers/SessionProvider';
@@ -30,6 +34,8 @@ export default function RoomCreateScreen() {
     hideDialog: formLoadingHide,
     goBack,
   } = useFormLoading();
+  const { visible: confirmationVisible, showDialog: confirmationShowDialog } =
+    useConfirmation();
 
   const [errorUsers, setErrorUsers] = useState([]);
 
@@ -116,15 +122,17 @@ export default function RoomCreateScreen() {
         <Button
           mode='outlined'
           style={{ flex: 1 }}
+          onPress={() => confirmationShowDialog()}
         >
-          Cancel
+          Batal
         </Button>
+        <ConfirmationDialog visible={confirmationVisible} />
         <Button
           mode='contained'
           onPress={handleSubmit(handleFormSubmit)}
           style={{ flex: 1 }}
         >
-          Submit
+          Simpan
         </Button>
       </View>
       <FormLoading visible={formLoadingVisible} />

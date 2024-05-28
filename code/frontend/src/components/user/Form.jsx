@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
+import { ConfirmationDialog, useConfirmation } from '../ConfirmationDialog';
 import RolesBottomSheet from './RolesBottomSheet';
 
 export default function Form({ defaultValues, onSubmit }) {
@@ -21,6 +22,9 @@ export default function Form({ defaultValues, onSubmit }) {
   async function handleFormSubmit(data) {
     onSubmit(data);
   }
+
+  const { visible: confirmationVisible, showDialog: confirmationShowDialog } =
+    useConfirmation();
 
   return (
     <View style={{ flex: 1, paddingHorizontal: 16, rowGap: 16 }}>
@@ -101,9 +105,11 @@ export default function Form({ defaultValues, onSubmit }) {
         <Button
           mode='outlined'
           style={{ flex: 1 }}
+          onPress={() => confirmationShowDialog()}
         >
           Batal
         </Button>
+        <ConfirmationDialog visible={confirmationVisible} />
         <Button
           mode='contained'
           onPress={handleSubmit(handleFormSubmit)}

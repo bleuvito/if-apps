@@ -11,6 +11,7 @@ import {
 } from 'react-native-paper';
 import z from 'zod';
 
+import { ConfirmationDialog, useConfirmation } from '../ConfirmationDialog';
 import InputHelper from '../InputHelper';
 import InputLabel from '../InputLabel';
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
@@ -49,6 +50,9 @@ export default function AnnouncementForm({
   async function handleFormSubmit(data) {
     await onSubmit(data);
   }
+
+  const { visible: confirmationVisible, showDialog: confirmationShowDialog } =
+    useConfirmation();
 
   return (
     <>
@@ -182,15 +186,17 @@ export default function AnnouncementForm({
           <Button
             mode='outlined'
             style={{ flex: 1 }}
+            onPress={() => confirmationShowDialog()}
           >
-            Cancel
+            Batal
           </Button>
+          <ConfirmationDialog visible={confirmationVisible} />
           <Button
             mode='contained'
             onPress={handleSubmit(handleFormSubmit)}
             style={{ flex: 1 }}
           >
-            Submit
+            Simpan
           </Button>
         </View>
       </ScrollView>

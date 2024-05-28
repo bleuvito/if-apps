@@ -86,7 +86,7 @@ export default function ReservationDetailsScreen() {
         },
       });
 
-      console.log(deletedReservation);
+      // console.log(deletedReservation);
     } catch (error) {
       console.error('Error deleting reservation: ', error);
     } finally {
@@ -143,12 +143,12 @@ export default function ReservationDetailsScreen() {
           visible={visible}
           onDismiss={hideDialog}
         >
-          <Dialog.Title>Delete reservation?</Dialog.Title>
+          <Dialog.Title>Hapus pinjaman ruangan?</Dialog.Title>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Cancel</Button>
           </Dialog.Actions>
           <Dialog.Actions>
-            <Button onPress={handleDeleteReservation}>Delete</Button>
+            <Button onPress={handleDeleteReservation}>Hapus</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

@@ -4,6 +4,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 import z from 'zod';
+import {
+  ConfirmationDialog,
+  useConfirmation,
+} from '../../../components/ConfirmationDialog';
 import { FormLoading, useFormLoading } from '../../../components/FormLoading';
 import InputHelper from '../../../components/InputHelper';
 import InputLabel from '../../../components/InputLabel';
@@ -28,6 +32,8 @@ export default function TagCreateScreen() {
     resolver: zodResolver(schema),
   });
   const { visible, goBack, hideDialog, showDialog } = useFormLoading();
+  const { visible: confirmationVisible, showDialog: confirmationShowDialog } =
+    useConfirmation();
 
   async function onSubmit(data) {
     const createUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag`;
@@ -79,15 +85,17 @@ export default function TagCreateScreen() {
         <Button
           mode='outlined'
           style={{ flex: 1 }}
+          onPress={() => confirmationShowDialog()}
         >
-          Cancel
+          Batal
         </Button>
+        <ConfirmationDialog visible={confirmationVisible} />
         <Button
           mode='contained'
           onPress={handleSubmit(onSubmit)}
           style={{ flex: 1 }}
         >
-          Submit
+          Simpan
         </Button>
       </View>
       <FormLoading visible={visible} />

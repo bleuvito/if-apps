@@ -15,6 +15,7 @@ import {
 } from 'react-native-paper';
 
 import { A } from '@expo/html-elements';
+import dayjs from 'dayjs';
 import {
   FormLoading,
   useFormLoading,
@@ -154,6 +155,12 @@ export default function AppointmentDetailsScreen() {
         body={appointment?.participant.name}
       />
       <AppointmentDetailsText
+        title='Hari, Tanggal'
+        body={dayjs(appointment?.start)
+          .locale('id')
+          .format('dddd, DD MMMM YYYY')}
+      />
+      <AppointmentDetailsText
         title='Waktu'
         body={getTimeDuration(appointment?.start, appointment?.end)}
       />
@@ -161,15 +168,15 @@ export default function AppointmentDetailsScreen() {
         title='Tempat'
         body={appointment?.place}
       />
-      {appointment?.link.length > 0 && (
+      {appointment?.link?.length > 0 && (
         <View>
           <Text variant='bodyLarge'>Tautan</Text>
           <A
-            href='http://google.com'
+            href={appointment.link}
             target='_blank'
             style={{ fontSize: 24, textDecorationLine: 'underline' }}
           >
-            google.com
+            {appointment.link}
           </A>
         </View>
       )}

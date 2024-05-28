@@ -78,7 +78,7 @@ export default function TimeInputDialog({ visible, onHide, onConfirm }) {
           </View>
         </Dialog.Content>
         <Dialog.Actions>
-          <Button onPress={() => handleHide()}>Cancel</Button>
+          <Button onPress={() => handleHide()}>Batal</Button>
           <Button onPress={() => handleConfirm()}>Ok</Button>
         </Dialog.Actions>
       </Dialog>

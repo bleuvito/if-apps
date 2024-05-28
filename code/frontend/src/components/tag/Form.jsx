@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 import z from 'zod';
+import { ConfirmationDialog, useConfirmation } from '../ConfirmationDialog';
 // import { useSession } from '../../../providers/SessionProvider';
 
 const schema = z.object({
@@ -23,6 +24,9 @@ export default function Form({ defaultValues, onSubmit }) {
   async function handleFormSubmit(data) {
     onSubmit(data);
   }
+
+  const { visible: confirmationVisible, showDialog: confirmationShowDialog } =
+    useConfirmation();
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
@@ -56,15 +60,17 @@ export default function Form({ defaultValues, onSubmit }) {
         <Button
           mode='outlined'
           style={{ flex: 1 }}
+          onPress={() => confirmationShowDialog()}
         >
-          Cancel
+          Batal
         </Button>
+        <ConfirmationDialog visible={confirmationVisible} />
         <Button
           mode='contained'
           onPress={handleSubmit(onSubmit)}
           style={{ flex: 1 }}
         >
-          Submit
+          Simpan
         </Button>
       </View>
     </View>

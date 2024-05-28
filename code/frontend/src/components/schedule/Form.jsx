@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { en, id, registerTranslation } from 'react-native-paper-dates';
 import z from 'zod';
 import { updateDateTime } from '../../helpers/utils';
+import { ConfirmationDialog, useConfirmation } from '../ConfirmationDialog';
 import DateField from '../DateField';
 import InputHelper from '../InputHelper';
 import InputLabel from '../InputLabel';
@@ -91,6 +92,9 @@ export default function Form({ defaultValues, onSubmit }) {
 
     onSubmit(data);
   }
+
+  const { visible: confirmationVisible, showDialog: confirmationShowDialog } =
+    useConfirmation();
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -235,9 +239,11 @@ export default function Form({ defaultValues, onSubmit }) {
         <Button
           mode='outlined'
           style={{ flex: 1 }}
+          onPress={() => confirmationShowDialog()}
         >
-          Cancel
+          Batal
         </Button>
+        <ConfirmationDialog visible={confirmationVisible} />
         <Button
           mode='contained'
           onPress={handleSubmit(handleFormSubmit, (errors) =>
@@ -245,7 +251,7 @@ export default function Form({ defaultValues, onSubmit }) {
           )}
           style={{ flex: 1 }}
         >
-          Submit
+          Simpan
         </Button>
       </View>
     </View>

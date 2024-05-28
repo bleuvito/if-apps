@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import z from 'zod';
+import { ConfirmationDialog, useConfirmation } from '../ConfirmationDialog';
 import InputHelper from '../InputHelper';
 import InputLabel from '../InputLabel';
 
@@ -26,6 +27,9 @@ export default function RoomForm({ defaultValues, onSubmit }) {
     data.capacity = Number(data.capacity);
     onSubmit(data);
   }
+
+  const { visible: confirmationVisible, showDialog: confirmationShowDialog } =
+    useConfirmation();
 
   return (
     <View style={{ flex: 1, paddingHorizontal: 16, rowGap: 16 }}>
@@ -111,15 +115,17 @@ export default function RoomForm({ defaultValues, onSubmit }) {
         <Button
           mode='outlined'
           style={{ flex: 1 }}
+          onPress={() => confirmationShowDialog()}
         >
-          Cancel
+          Batal
         </Button>
+        <ConfirmationDialog visible={confirmationVisible} />
         <Button
           mode='contained'
           onPress={handleSubmit(handleFormSubmit)}
           style={{ flex: 1 }}
         >
-          Submit
+          Simpan
         </Button>
       </View>
     </View>

@@ -116,7 +116,7 @@ export default function ScheduleDetailsScreen() {
         >
           <Dialog.Title>Delete room?</Dialog.Title>
           <Dialog.Actions>
-            <Button onPress={hideDialog}>Cancel</Button>
+            <Button onPress={hideDialog}>Batal</Button>
             <Button onPress={handleDeleteRoom}>Delete</Button>
           </Dialog.Actions>
         </Dialog>

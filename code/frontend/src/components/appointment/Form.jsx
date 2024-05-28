@@ -25,7 +25,11 @@ const schema = z
     end: z.coerce.date(),
     place: z.coerce.string().min(1, { message: 'Tempat harus diisi' }),
     status: z.string(),
-    link: z.coerce.string(),
+    link: z
+      .string()
+      .url({ message: 'Harus berupa URL' })
+      .optional()
+      .or(z.literal('')),
     organizer: z.object({
       id: z.string(),
     }),
@@ -247,9 +251,13 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
                   value={value}
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  // placeholder='Kosongkan bila luring'
+                  placeholder='https://meet.google.com'
                 />
                 <HelperText>Kosongkan bila luring</HelperText>
+                <InputHelper
+                  error={errors.link}
+                  message={errors.link?.message}
+                />
               </View>
             );
           }}
@@ -292,7 +300,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
             mode='outlined'
             style={{ flex: 1 }}
           >
-            Cancel
+            Batal
           </Button>
           <Button
             mode='contained'
@@ -301,7 +309,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
             )}
             style={{ flex: 1 }}
           >
-            Submit
+            Simpan
           </Button>
         </View>
       </ScrollView>

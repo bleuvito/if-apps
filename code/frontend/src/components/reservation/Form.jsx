@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import dayjs from 'dayjs';
 import z, { date, object } from 'zod';
 import { atLeastOneDefined, updateDateTime } from '../../helpers/utils';
+import { ConfirmationDialog, useConfirmation } from '../ConfirmationDialog';
 import InputHelper from '../InputHelper';
 import InputLabel from '../InputLabel';
 import TimeField from '../TimeField';
@@ -78,6 +79,9 @@ export default function Form({ defaultValues, onSubmit }) {
     defaultValues,
     resolver: zodResolver(schema),
   });
+
+  const { visible: confirmationVisible, showDialog: confirmationShowDialog } =
+    useConfirmation();
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -226,9 +230,11 @@ export default function Form({ defaultValues, onSubmit }) {
         <Button
           mode='outlined'
           style={{ flex: 1 }}
+          onPress={() => confirmationShowDialog()}
         >
           Batal
         </Button>
+        <ConfirmationDialog visible={confirmationVisible} />
         <Button
           mode='contained'
           onPress={handleSubmit(handleFormSubmit, (error) => {
