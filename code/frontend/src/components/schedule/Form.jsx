@@ -38,7 +38,7 @@ const schema = z
     (data) => {
       const upEnd = updateDateTime(data.day, data.end);
 
-      console.log(upEnd);
+      // console.log(upEnd);
       return upEnd > new Date();
     },
     {

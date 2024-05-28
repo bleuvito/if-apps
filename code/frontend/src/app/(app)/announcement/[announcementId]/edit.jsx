@@ -73,13 +73,13 @@ export default function AnnouncementEditScreen() {
 
   useEffect(() => {
     getAnnouncement();
-    console.log(defaultValues);
+    // console.log(defaultValues);
   }, []);
 
-  useEffect(() => {
-    // getAnnouncement();
-    console.log(defaultValues);
-  }, [defaultValues]);
+  // useEffect(() => {
+  //   // getAnnouncement();
+  //   // console.log(defaultValues);
+  // }, [defaultValues]);
 
   if (isLoading) {
     return <LoadingIndicator />;

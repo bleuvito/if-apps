@@ -115,7 +115,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
       end,
     };
 
-    console.log(data);
+    // console.log(data);
 
     onSubmit(data);
   }

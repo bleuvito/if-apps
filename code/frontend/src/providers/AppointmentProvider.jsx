@@ -25,7 +25,7 @@ export function AppointmentProvider({ children }) {
 
   useEffect(() => {
     getAppointments();
-    console.log(appointments);
+    // console.log(appointments);
   }, [type, search, filter]);
 
   return (
