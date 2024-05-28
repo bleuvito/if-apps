@@ -85,8 +85,9 @@ export default function Form({ defaultValues, onSubmit }) {
       day: dayjs(data.day).locale('id').format('dddd').toUpperCase(),
       start: setTimeToSelectedDate(data.start, data.day),
       end: setTimeToSelectedDate(data.end, data.day),
-      type: selectedType.toUpperCase(),
     };
+
+    // console.log(data);
 
     onSubmit(data);
   }

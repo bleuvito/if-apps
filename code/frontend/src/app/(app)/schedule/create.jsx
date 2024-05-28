@@ -12,7 +12,7 @@ export default function ScheduleScreen() {
 
   const defaultValues = {
     title: '',
-    type: 'KELAS',
+    type: '',
     isRecurring: true,
     day: new Date(selectedDate),
     start: '',

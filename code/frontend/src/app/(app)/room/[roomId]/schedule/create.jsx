@@ -16,7 +16,7 @@ export default function ScheduleScreen() {
 
   const defaultValues = {
     title: '',
-    type: 'KELAS',
+    type: '',
     isRecurring: true,
     day: selectedDate,
     start: '',
@@ -52,7 +52,7 @@ export default function ScheduleScreen() {
       formLoadingHide();
       setMessage(error.response.data);
       formErrorShow();
-      console.error('Error creating room schedule: ', error);
+      // console.error('Error creating room schedule: ', error);
     }
   };
 
