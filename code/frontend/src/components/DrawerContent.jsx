@@ -106,16 +106,9 @@ export default function DrawerContent(props) {
             />
           )}
         </Drawer.Section>
-        <Drawer.Section title={drawerItem.user.label}>
-          {['ADMIN', 'KAJUR'].includes(userRole) && (
-            <Drawer.Item
-              label={drawerItem.user.label}
-              icon='account-group'
-              active={active === drawerItem.user.route}
-              onPress={() => handleDrawerItemPress(drawerItem.user.route)}
-            />
-          )}
-          {/* <Drawer.Item
+        {/* <Drawer.Section title={drawerItem.user.label}> */}
+
+        {/* <Drawer.Item
             label={`Halo, ${user.name}`}
             icon='account-circle'
             style={{ backgroundColor: 'grey' }}
@@ -123,7 +116,15 @@ export default function DrawerContent(props) {
             disabled={true}
             // onPress={() => handleDrawerItemPress(drawerItem.profile.route)}
           /> */}
-        </Drawer.Section>
+        {/* </Drawer.Section> */}
+        {['ADMIN', 'KAJUR'].includes(userRole) && (
+          <Drawer.Item
+            label={drawerItem.user.label}
+            icon='account-group'
+            active={active === drawerItem.user.route}
+            onPress={() => handleDrawerItemPress(drawerItem.user.route)}
+          />
+        )}
         <Drawer.Item
           label={drawerItem.signOut.label}
           icon='logout'

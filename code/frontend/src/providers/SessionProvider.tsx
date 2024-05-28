@@ -53,7 +53,7 @@ export function SessionProvider(props: PropsWithChildren) {
 
             return role;
           } catch (error) {
-            console.error('Error getting role:', error);
+            // console.error('Error getting role:', error);
           }
         },
         getUserId() {
@@ -67,7 +67,7 @@ export function SessionProvider(props: PropsWithChildren) {
 
             return id;
           } catch (error) {
-            console.error('Error getting user id:', error);
+            // console.error('Error getting user id:', error);
           }
         },
         getUser() {

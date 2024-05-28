@@ -41,13 +41,13 @@ export default function NewTagBottomSheet({
       topInset={topInset}
     >
       <BottomSheetView style={styles.contentContainer}>
-        <View style={{ width: '100%', padding: 16 }}>
+        {/* <View style={{ width: '100%', padding: 16 }}>
           <TextInput
             mode='outlined'
             placeholder='Cari tag'
             style={{ width: '100%' }}
           />
-        </View>
+        </View> */}
         <NewTagBottomSheetList
           selectedTags={selectedTags}
           setSelectedTags={setSelectedTags}
