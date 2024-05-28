@@ -61,6 +61,10 @@ export default function AppointmentEdit() {
   useEffect(() => {
     getAppointmentDetails();
   }, []);
+  useEffect(() => {
+    // getAppointmentDetails();
+    console.log(defaultValues);
+  }, [defaultValues]);
 
   if (isLoading) {
     return <ActivityIndicator size='large' />;
@@ -80,6 +84,7 @@ export default function AppointmentEdit() {
       formLoadingHide();
       goBack();
     } catch (error) {
+      console.log(error);
       formLoadingHide();
       setMessage(error.response.data);
       formErrorShow();

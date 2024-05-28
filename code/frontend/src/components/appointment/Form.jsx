@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useCallback, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
-import { Button, Text, TextInput } from 'react-native-paper';
+import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 import { en, id, registerTranslation } from 'react-native-paper-dates';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,12 +24,11 @@ const schema = z
     start: z.coerce.date(),
     end: z.coerce.date(),
     place: z.coerce.string().min(1, { message: 'Tempat harus diisi' }),
-    // status: z.coerce.string(),
+    status: z.string(),
     link: z.coerce.string(),
-    // organizer: z
-    //   .object({
-    //     id: z.string(),
-    //   }),
+    organizer: z.object({
+      id: z.string(),
+    }),
     participant: z
       .object({
         id: z.string(),
@@ -248,7 +247,9 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
                   value={value}
                   onBlur={onBlur}
                   onChangeText={onChange}
+                  // placeholder='Kosongkan bila luring'
                 />
+                <HelperText>Kosongkan bila luring</HelperText>
               </View>
             );
           }}

@@ -34,7 +34,9 @@ import { useSession } from '../../../../providers/SessionProvider';
 
 export default function AnnouncementDetailScreen() {
   const { announcementId } = useLocalSearchParams();
+  const { getUserId } = useSession();
 
+  const userId = getUserId();
   const {
     visible: formVisible,
     goBack,
@@ -59,7 +61,7 @@ export default function AnnouncementDetailScreen() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return role !== 'MAHASISWA' ? (
+        return role !== 'MAHASISWA' && announcement.author.id !== userId ? (
           <AnnouncementDetailsHeaderRight onPressDelete={showDialog} />
         ) : null;
       },

@@ -75,7 +75,6 @@ export default function ScheduleEditScreen() {
       goBack();
     } catch (error) {
       // console.error('Error patching schedule: ', error);
-
       formLoadingHide();
       setMessage(error.response.data);
       formErrorShow();

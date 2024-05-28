@@ -9,6 +9,7 @@ const AuthContext = createContext<{
   isLoading: boolean;
   getRole: () => string | null;
   getUserId: () => string | null;
+  getUser: () => object;
 }>({
   signIn: () => null,
   signOut: () => null,
@@ -16,6 +17,7 @@ const AuthContext = createContext<{
   isLoading: false,
   getRole: () => null,
   getUserId: () => null,
+  getUser: () => null,
 });
 
 export function useSession() {
@@ -66,6 +68,18 @@ export function SessionProvider(props: PropsWithChildren) {
             return id;
           } catch (error) {
             console.error('Error getting user id:', error);
+          }
+        },
+        getUser() {
+          try {
+            const { user } = JWT.decode(
+              session,
+              `LK20+/B?Ey-r%4:F9<-A+,!CHxp4zmVG_~$_Lih5A!r^,CXJ`
+            );
+
+            return user;
+          } catch (error) {
+            // console.error('Error getting user id:', error);
           }
         },
       }}

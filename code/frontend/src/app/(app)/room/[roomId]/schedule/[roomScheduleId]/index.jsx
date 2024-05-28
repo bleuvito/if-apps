@@ -68,6 +68,7 @@ export default function ScheduleDetailsScreen() {
 
   const handleDeleteRoomSchedule = async () => {
     const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/room-schedule/${roomId}/schedule/${roomScheduleId}`;
+    hideDialog();
     formLoadingShow();
     try {
       const { data } = await axios.delete(deleteUri, {
@@ -126,12 +127,10 @@ export default function ScheduleDetailsScreen() {
           visible={visible}
           onDismiss={hideDialog}
         >
-          <Dialog.Title>Delete schedule?</Dialog.Title>
+          <Dialog.Title>Hapus Jadwal?</Dialog.Title>
           <Dialog.Actions>
-            <Button onPress={hideDialog}>Cancel</Button>
-          </Dialog.Actions>
-          <Dialog.Actions>
-            <Button onPress={handleDeleteRoomSchedule}>Delete</Button>
+            <Button onPress={hideDialog}>Batal</Button>
+            <Button onPress={handleDeleteRoomSchedule}>Hapus</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

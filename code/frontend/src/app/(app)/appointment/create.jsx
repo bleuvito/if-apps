@@ -13,7 +13,11 @@ export default function AppointmentCreate() {
     end: '',
     place: '',
     link: '',
+    status: '',
     participant: {},
+    organizer: {
+      id: 'asda',
+    },
   };
   const {
     visible: formLoadingVisible,

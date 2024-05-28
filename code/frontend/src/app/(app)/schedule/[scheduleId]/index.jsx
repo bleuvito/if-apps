@@ -69,13 +69,15 @@ export default function ScheduleDetailsScreen() {
   const handleDeleteSchedule = async () => {
     const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/schedule/${scheduleId}`;
     try {
+      formLoadingShow();
       const { data } = await axios.delete(deleteUri, {
         headers: {
           Authorization: `Bearer ${session}`,
         },
       });
-      formLoadingShow();
     } catch (error) {
+    } finally {
+      hideDialog();
       formLoadingHide();
       goBack();
     }

@@ -16,10 +16,10 @@ export default function SignInScreen() {
         alignItems: 'center',
       }}
     >
-      <View style={{ height: 300 }}>
+      <View style={{ height: 300, aspectRatio: 1 }}>
         <Image
           source={require('../../assets/logo.png')}
-          style={{ height: 300 }}
+          style={{ height: 300, aspectRatio: 1 }}
         />
       </View>
       <SignInWithGoogleButton handleError={setError} />

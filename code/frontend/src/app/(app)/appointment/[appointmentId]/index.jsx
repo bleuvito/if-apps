@@ -98,6 +98,8 @@ export default function AppointmentDetailsScreen() {
       // console.log(deletedAppointment);
     } catch (error) {
       console.error('Error deleting appointment: ', error);
+    } finally {
+      hideDialog();
       formLoadingHide();
       goBack();
     }

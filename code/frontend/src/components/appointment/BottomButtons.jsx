@@ -4,6 +4,8 @@ import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Dialog, Portal, TextInput } from 'react-native-paper';
 import { useSession } from '../../providers/SessionProvider';
+import { FormError, useFormError } from '../FormError';
+import { FormLoading, useFormLoading } from '../FormLoading';
 
 export default function BottomButtons({ status, userId, organizerId }) {
   const { session } = useSession();
@@ -14,6 +16,20 @@ export default function BottomButtons({ status, userId, organizerId }) {
 
   const hideDialog = () => setVisible(false);
   const showDialog = () => setVisible(true);
+
+  const {
+    visible: formLoadingVisible,
+    showDialog: formLoadingShow,
+    hideDialog: formLoadingHide,
+    goBack,
+  } = useFormLoading();
+  const {
+    visible: formErrorVisible,
+    showDialog: formErrorShow,
+    hideDialog: formErrorHide,
+    message,
+    setMessage,
+  } = useFormError();
 
   if (status === 'ACCEPTED') {
     return null;
@@ -41,12 +57,22 @@ export default function BottomButtons({ status, userId, organizerId }) {
   const responseToInvite = useCallback(
     async (status, declineReason) => {
       const putUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
-      const data = { status, declineReason };
-      const { data: response } = await axios.patch(putUri, data, {
-        headers: {
-          Authorization: `Bearer ${session}`,
-        },
-      });
+      try {
+        formLoadingShow();
+
+        const data = { status, declineReason };
+        const { data: response } = await axios.patch(putUri, data, {
+          headers: {
+            Authorization: `Bearer ${session}`,
+          },
+        });
+        formLoadingHide();
+        goBack();
+      } catch (error) {
+        formLoadingHide();
+        setMessage(error.response.data);
+        formErrorShow();
+      }
     },
     [status]
   );
@@ -90,6 +116,12 @@ export default function BottomButtons({ status, userId, organizerId }) {
           </Dialog.Actions>
         </Dialog>
       </Portal>
+      <FormLoading visible={formLoadingVisible} />
+      <FormError
+        visible={formErrorVisible}
+        message={message}
+        hideDialog={formErrorHide}
+      />
     </>
   );
 }

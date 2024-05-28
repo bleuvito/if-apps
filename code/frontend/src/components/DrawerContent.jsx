@@ -2,16 +2,18 @@ import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Platform } from 'react-native';
-import { Drawer } from 'react-native-paper';
+import { Drawer, useTheme } from 'react-native-paper';
 
 import { drawerItem } from '../constants';
 import { useSession } from '../providers/SessionProvider';
 
 export default function DrawerContent(props) {
-  const { signOut, getRole } = useSession();
+  const { signOut, getRole, getUser } = useSession();
   const [active, setActive] = useState('announcement');
 
   const userRole = getRole();
+  // const user = getUser();
+  const theme = useTheme();
 
   let handleSignout;
   if (Platform.OS === 'web') {
@@ -113,12 +115,14 @@ export default function DrawerContent(props) {
               onPress={() => handleDrawerItemPress(drawerItem.user.route)}
             />
           )}
-          <Drawer.Item
-            label={drawerItem.profile.label}
+          {/* <Drawer.Item
+            label={`Halo, ${user.name}`}
             icon='account-circle'
-            active={active === drawerItem.profile.route}
-            onPress={() => handleDrawerItemPress(drawerItem.profile.route)}
-          />
+            style={{ backgroundColor: 'grey' }}
+            active={true}
+            disabled={true}
+            // onPress={() => handleDrawerItemPress(drawerItem.profile.route)}
+          /> */}
         </Drawer.Section>
         <Drawer.Item
           label={drawerItem.signOut.label}
