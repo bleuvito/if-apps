@@ -3,7 +3,7 @@ import { google } from 'googleapis';
 const oAuth2ClientWeb = new google.auth.OAuth2(
   process.env.GOOGLE_WEB_OAUTH_CLIENT_ID,
   process.env.GOOGLE_WEB_OAUTH_CLIENT_SECRET,
-  'http://localhost:3000'
+  'http://localhost:8081'
 );
 
 const oAuth2ClientAndroid = new google.auth.OAuth2(

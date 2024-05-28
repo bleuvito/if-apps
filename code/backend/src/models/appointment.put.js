@@ -11,7 +11,7 @@ async function putAnnouncement(args) {
     body: requestBody,
   } = args;
 
-  console.log(requestBody.status);
+  // console.log(requestBody.status);
 
   const refreshToken = await getRefreshToken(clientType, user.id);
 
@@ -31,7 +31,7 @@ async function putAnnouncement(args) {
     });
 
     let status = requestBody.status;
-    console.log(status);
+    // console.log(status);
     if (status === 'DECLINED') {
       status = 'RESCHEDULE';
     }

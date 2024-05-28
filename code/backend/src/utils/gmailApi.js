@@ -8,28 +8,42 @@ async function replyMessage(
   email,
   recipient,
   subject,
-  body,
-  threadId,
-  messageId
+  body
 ) {
   const oAuth2Client = getReadyOauth2Client(clientType, refreshToken);
 
   const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
 
-  const messageMetadata = await getMessageMetadata(
-    clientType,
-    refreshToken,
-    messageId
-  );
-  const [metadataMessageId, metadataReferences] =
-    messageMetadata.payload.headers;
+  const {
+    data: { messages: emailList },
+  } = await gmail.users.messages.list({
+    userId: 'me',
+    q: `subject:${subject}`,
+  });
+
+  const {
+    data: { messages: threadMessages },
+  } = await gmail.users.threads.get({
+    userId: 'me',
+    id: emailList[0].threadId,
+    format: 'metadata',
+  });
+
+  let idMessages = [];
+  for (let i = 0; i < threadMessages.length; i++) {
+    const id = threadMessages[i].payload.headers.find(
+      (obj) => obj.name.toLowerCase() === 'message-id'
+    );
+
+    idMessages.push(id.value);
+  }
 
   let base64Message = btoa(
-    `From: ${name} <${email}>\n` +
+    `References: ${idMessages.join(' ')}\n` +
+      `In-Reply-To ${idMessages[idMessages.length - 1]}\n` +
+      `Subject: Re:${subject}\n` +
+      `From: ${name} <${email}>\n` +
       `To: ${recipient}\n` +
-      `Subject: Re: ${subject}\n` +
-      `In-Reply-To ${metadataMessageId.value}\n` +
-      `References: ${metadataMessageId.value}\n` +
       `Content-Type: text/html; charset=UTF-8\n\n` +
       `${body}`
   );
@@ -39,13 +53,14 @@ async function replyMessage(
     const { data: message } = await gmail.users.messages.send({
       userId: 'me',
       requestBody: {
-        threadId,
+        threadId: `${threadMessages[threadMessages.length - 1].threadId}`,
         raw: base64Message,
       },
     });
 
     return message;
   } catch (error) {
+    console.error(error);
     throw Error('E_GMAIL_SEND', error);
   }
 }

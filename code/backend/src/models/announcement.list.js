@@ -52,7 +52,7 @@ async function listAnnouncement(args) {
       orderBy: [{ isPinned: 'desc' }, { updatedAt: 'desc' }],
     });
 
-    console.log(announcements);
+    // console.log(announcements);
 
     const payload = announcements;
     return payload;

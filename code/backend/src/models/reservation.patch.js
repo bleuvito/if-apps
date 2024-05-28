@@ -15,7 +15,7 @@ async function patchReservation(args) {
     params: requestParams,
   } = args;
 
-  console.log(requestParams);
+  // console.log(requestParams);
 
   try {
     const reservation = await prisma.roomReservation.findFirst({

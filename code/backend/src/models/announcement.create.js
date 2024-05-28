@@ -18,6 +18,38 @@ async function createAnnouncement(args) {
   const { pin, recipient, subject, body, tags } = requestBody;
   const refreshToken = await getRefreshToken(clientType, user.id);
 
+  let emailRecipient = recipient;
+  if (user.role !== 'ADMIN') {
+    const adminEmails = await prisma.user.findMany({
+      where: {
+        role: 'ADMIN',
+      },
+      select: {
+        email: true,
+      },
+    });
+
+    const parsedAdminEmails =
+      adminEmails.map((obj) => obj.email).join(',') + ',' + emailRecipient;
+    emailRecipient = parsedAdminEmails;
+  }
+  if (user.role !== 'KAJUR') {
+    const kajurEmails = await prisma.user.findMany({
+      where: {
+        role: 'KAJUR',
+      },
+      select: {
+        email: true,
+      },
+    });
+
+    const parsedKajurEmails =
+      kajurEmails.map((obj) => obj.email).join(',') + ',' + emailRecipient;
+    emailRecipient = parsedKajurEmails;
+  }
+
+  // console.log(emailRecipient);
+
   try {
     const uploadResponse = await uploadAttachments(
       clientType,
@@ -39,7 +71,7 @@ async function createAnnouncement(args) {
       refreshToken,
       user.name,
       user.email,
-      recipient,
+      emailRecipient,
       subject,
       emailContent
     );
@@ -53,7 +85,7 @@ async function createAnnouncement(args) {
     const announcement = await prisma.announcementHeader.create({
       data: {
         gmailThreadId: gmailGetResponse.threadId,
-        recipient,
+        recipient: emailRecipient,
         subject,
         isPinned: JSON.parse(pin),
         bodies: {
@@ -64,6 +96,11 @@ async function createAnnouncement(args) {
             attachments: {
               createMany: {
                 data: transformedAttachments,
+              },
+            },
+            author: {
+              connect: {
+                id: user.id,
               },
             },
           },

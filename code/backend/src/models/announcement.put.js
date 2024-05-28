@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { getMessageMetadata, replyMessage } from '../utils/gmailApi.js';
+import { getReadyOauth2Client } from '../utils/googleOAuth2Client.js';
 import {
   generateAttachmentUrls,
   getRefreshToken,
@@ -42,6 +43,7 @@ async function putAnnouncement(args) {
           select: {
             id: true,
             gmailId: true,
+            author: true,
           },
           where: {
             isLatest: true,
@@ -58,16 +60,26 @@ async function putAnnouncement(args) {
       gmailThreadId,
       bodies: [latestMessage],
     } = announcementHeader;
+
+    let from = latestMessage.author.email;
+    let to = recipient;
+    if (recipient.includes(user.email)) {
+      const emailArray = recipient.split(',');
+      const filteredEmails = emailArray.filter((email) => email !== user.email);
+
+      from = user.email;
+      to = filteredEmails.join(',') + ',' + latestMessage.author.email;
+    }
+
     const gmailSendResponse = await replyMessage(
       clientType,
       refreshToken,
       user.name,
       user.email,
-      recipient,
+      to,
       subject,
       emailContent,
-      gmailThreadId,
-      latestMessage.gmailId
+      gmailThreadId
     );
 
     const gmailGetResponse = await getMessageMetadata(
@@ -91,6 +103,7 @@ async function putAnnouncement(args) {
       },
       data: {
         isPinned: JSON.parse(pin),
+        recipient: to,
         tags: {
           connect: JSON.parse(tags),
         },
@@ -104,6 +117,16 @@ async function putAnnouncement(args) {
                 data: transformedAttachments,
               },
             },
+            author: {
+              connect: {
+                id: user.id,
+              },
+            },
+          },
+        },
+        author: {
+          connect: {
+            id: user.id,
           },
         },
         updatedAt: new Date(),

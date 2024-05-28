@@ -23,8 +23,8 @@ async function listRoom(args) {
       },
     });
 
-    console.log(requestQuery);
-    console.log(rooms);
+    // console.log(requestQuery);
+    // console.log(rooms);
 
     // console.log(rooms);
 

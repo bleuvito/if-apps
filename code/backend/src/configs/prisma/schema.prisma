@@ -49,6 +49,7 @@ model User {
   androidRefreshToken       String? @db.VarChar(512)
 
   announcements             AnnouncementHeader[]
+  announcementBodies        AnnouncementBody[]
   announcementTags          AnnouncementTag[]
   schedules                 LecturerSchedule[]
   reservations              RoomReservation[]
@@ -84,6 +85,8 @@ model AnnouncementBody {
 
   headerId      String
   header        AnnouncementHeader @relation(fields: [headerId], references: [id], onDelete: Cascade)
+  authorId      String
+  author        User @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model AnnouncementTag {

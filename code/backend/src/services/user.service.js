@@ -31,7 +31,7 @@ UserService.get('/', verify(['ADMIN', 'KAJUR']), async (req, res, next) => {
 
 UserService.get('/invitee', verify('all'), async (req, res, next) => {
   try {
-    console.log('invitee');
+    // console.log('invitee');
     const result = await listInvitee(req);
     res.json(result);
   } catch (error) {
@@ -41,7 +41,7 @@ UserService.get('/invitee', verify('all'), async (req, res, next) => {
 
 UserService.get('/:id', verify(['ADMIN', 'KAJUR']), async (req, res, next) => {
   try {
-    console.log('geta');
+    // console.log('geta');
     const result = await getUser(req);
     res.json(result);
   } catch (error) {

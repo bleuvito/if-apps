@@ -37,7 +37,7 @@ async function responseAppointment(args) {
       },
     });
 
-    console.log(requestBody);
+    // console.log(requestBody);
 
     if (requestBody.status === 'ACCEPTED') {
       const appointmentDay = new Date(appointment.start)

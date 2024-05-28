@@ -8,7 +8,7 @@ async function getAppointment(args) {
     locals: { user },
   } = args;
 
-  console.log(id);
+  // console.log(id);
 
   try {
     const appointment = await prisma.appointment.findFirst({
@@ -41,7 +41,7 @@ async function getAppointment(args) {
       },
     });
 
-    console.log(appointment);
+    // console.log(appointment);
 
     if (
       appointment.organizer.id !== user.id &&

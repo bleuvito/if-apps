@@ -146,7 +146,7 @@ async function checkUserOverlapAgenda(
   });
 
   // console.log(oneTimeSchedules);
-  console.log('onetime', oneTimeSchedules);
+  // console.log('onetime', oneTimeSchedules);
 
   if (oneTimeSchedules.length > 0) {
     throw Error('E_OVERLAP_SCHEDULE');
@@ -183,7 +183,7 @@ async function checkUserOverlapAgenda(
     return scheduleStartTime < reqEnd && scheduleEndTime > reqStart;
   });
 
-  console.log('overlap', overlapRecurringSchedules);
+  // console.log('overlap', overlapRecurringSchedules);
 
   if (overlapRecurringSchedules.length > 0) {
     throw Error('E_OVERLAP_SCHEDULE');
