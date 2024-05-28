@@ -31,9 +31,13 @@ app.use('/api/v1/room-schedule', RoomScheduleService);
 app.use('/api/v1/reservation', ReservationService);
 
 app.use((err, req, res, next) => {
-  console.error(err);
+  console.error(err.message);
   if (err.message === 'Invalid credentials') {
     res.status(401).json(createResponse(401, err.message));
+  } else if (err.message === 'Error: E_OVERLAP_SCHEDULE') {
+    res.status(400).json('Berbentrokan dengan jadwal dosen maupun ruangan');
+  } else if (err.message === 'Error: E_OVERLAP_APPOINTMENT') {
+    res.status(401).json('Berbentrokan dengan janji temu maupun pinjam ruang');
   } else {
     res
       .status(err.status || 500)

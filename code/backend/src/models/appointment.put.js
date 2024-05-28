@@ -31,6 +31,7 @@ async function putAnnouncement(args) {
     });
 
     let status = requestBody.status;
+    console.log(status);
     if (status === 'DECLINED') {
       status = 'RESCHEDULE';
     }
