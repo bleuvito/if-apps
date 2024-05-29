@@ -59,10 +59,6 @@ export default function AnnouncementDetailScreen() {
   const navigation = useNavigation();
   const role = getRole();
 
-  console.log('author', announcement.author.id);
-  console.log('author', userId);
-  console.log('author', userId);
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
