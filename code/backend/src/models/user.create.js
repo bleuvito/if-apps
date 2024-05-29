@@ -8,6 +8,7 @@ async function createUser(args) {
 
   try {
     const [passedUsers, errorUsers] = await validateUsers(requestBody.users);
+    console.log(errorUsers);
 
     const users = await prisma.user.createMany({
       data: passedUsers,

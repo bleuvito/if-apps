@@ -63,8 +63,10 @@ async function putAnnouncement(args) {
 
     let from = latestMessage.author.email;
     let to = recipient;
+    console.log('recipient2', recipient.includes(user.email));
     if (recipient.includes(user.email)) {
       const emailArray = recipient.split(',');
+      console.log('emailArray', recipient);
       const filteredEmails = emailArray.filter((email) => email !== user.email);
 
       from = user.email;
@@ -78,8 +80,7 @@ async function putAnnouncement(args) {
       user.email,
       to,
       subject,
-      emailContent,
-      gmailThreadId
+      emailContent
     );
 
     const gmailGetResponse = await getMessageMetadata(

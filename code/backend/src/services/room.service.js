@@ -9,14 +9,18 @@ import { patchRoom } from '../models/room.patch.js';
 
 const RoomService = express.Router();
 
-RoomService.post('/', verify(['ADMIN', 'KALAB']), async (req, res, next) => {
-  try {
-    const result = await createRoom(req);
-    res.json(result);
-  } catch (error) {
-    next(error);
+RoomService.post(
+  '/',
+  verify(['ADMIN', 'KALAB', 'KAJUR']),
+  async (req, res, next) => {
+    try {
+      const result = await createRoom(req);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 RoomService.get('/', verify('all'), async (req, res, next) => {
   try {

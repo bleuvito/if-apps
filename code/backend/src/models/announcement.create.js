@@ -48,6 +48,21 @@ async function createAnnouncement(args) {
     emailRecipient = parsedKajurEmails;
   }
 
+  if (user.role !== 'KAPRODI') {
+    const kaprodiEmails = await prisma.user.findMany({
+      where: {
+        role: 'KAPRODI',
+      },
+      select: {
+        email: true,
+      },
+    });
+
+    const parsedKaprodiEmails =
+      kaprodiEmails.map((obj) => obj.email).join(',') + ',' + emailRecipient;
+    emailRecipient = parsedKaprodiEmails;
+  }
+
   // console.log(emailRecipient);
 
   try {
@@ -115,6 +130,8 @@ async function createAnnouncement(args) {
         },
       },
     });
+
+    console.log(announcement);
 
     const payload = announcement;
     return payload;

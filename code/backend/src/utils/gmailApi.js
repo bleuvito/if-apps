@@ -21,6 +21,7 @@ async function replyMessage(
     q: `subject:${subject}`,
   });
 
+  // console.log('recipinte', emailList);
   const {
     data: { messages: threadMessages },
   } = await gmail.users.threads.get({

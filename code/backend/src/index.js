@@ -35,9 +35,9 @@ app.use((err, req, res, next) => {
   if (err.message === 'Invalid credentials') {
     res.status(401).json(createResponse(401, err.message));
   } else if (err.message === 'Error: E_OVERLAP_SCHEDULE') {
-    res.status(400).json('Berbentrokan dengan jadwal dosen maupun ruangan');
+    res.status(400).json('Berbentrokan dengan jadwal lain');
   } else if (err.message === 'Error: E_OVERLAP_APPOINTMENT') {
-    res.status(401).json('Berbentrokan dengan janji temu maupun pinjam ruang');
+    res.status(401).json('Berbentrokan dengan janji temu lain');
   } else {
     res
       .status(err.status || 500)

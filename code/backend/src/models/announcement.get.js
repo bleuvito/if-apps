@@ -39,6 +39,7 @@ async function getAnnouncement(args) {
         author: {
           select: {
             name: true,
+            id: true,
           },
         },
       },
