@@ -2,6 +2,10 @@ import axios from 'axios';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ActivityIndicator, Text } from 'react-native-paper';
+import {
+  FormLoading,
+  useFormLoading,
+} from '../../../../components/FormLoading';
 import Form from '../../../../components/user/Form';
 import { useSession } from '../../../../providers/SessionProvider';
 
@@ -16,6 +20,13 @@ export default function EditUserDetailsScreen() {
     role: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    visible: formLoadingVisible,
+    showDialog: formLoadingShow,
+    hideDialog: formLoadingHide,
+    goBack,
+  } = useFormLoading();
 
   const getUserDetails = async () => {
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/user/${userId}`;
@@ -38,11 +49,15 @@ export default function EditUserDetailsScreen() {
   const handleSubmit = async (data) => {
     const patchUri = `${process.env.EXPO_PUBLIC_BASE_URL}/user/${userId}`;
     try {
+      formLoadingShow();
       const { data: response } = await axios.patch(patchUri, data, {
         headers: { Authorization: `Bearer ${session}` },
       });
     } catch (error) {
-      console.error('Error creating tag', error);
+      // console.error('Error creating tag', error);
+    } finally {
+      formLoadingHide();
+      goBack();
     }
   };
 
@@ -57,9 +72,13 @@ export default function EditUserDetailsScreen() {
   }
 
   return (
-    <Form
-      onSubmit={handleSubmit}
-      defaultValues={defaultValues}
-    />
+    <>
+      <Form
+        onSubmit={handleSubmit}
+        defaultValues={defaultValues}
+      />
+
+      <FormLoading visible={formLoadingVisible} />
+    </>
   );
 }

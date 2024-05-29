@@ -1,3 +1,4 @@
+import 'quill/dist/quill.core';
 import 'quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 
@@ -28,6 +29,7 @@ export default function RichTextEditor({ onChange, defaultValue }) {
       modules={modules}
       formats={formats}
       onChange={onChange}
+      style={{ height: 200, maxHeight: 200, marginBottom: 32 }}
     />
   );
 }

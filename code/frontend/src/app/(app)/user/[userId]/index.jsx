@@ -107,8 +107,6 @@ export default function UserDetailsScreen() {
           <Dialog.Title>Hapus pengguna?</Dialog.Title>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Batal</Button>
-          </Dialog.Actions>
-          <Dialog.Actions>
             <Button onPress={handleDeleteUser}>Hapus</Button>
           </Dialog.Actions>
         </Dialog>

@@ -61,10 +61,6 @@ export default function AppointmentEdit() {
   useEffect(() => {
     getAppointmentDetails();
   }, []);
-  useEffect(() => {
-    // getAppointmentDetails();
-    console.log(defaultValues);
-  }, [defaultValues]);
 
   if (isLoading) {
     return <ActivityIndicator size='large' />;

@@ -29,6 +29,7 @@ export default function AnnouncementEditScreen() {
   const { visible, goBack, showDialog, hideDialog } = useFormLoading();
 
   async function handleSubmit(data) {
+    console.log(data);
     const form = createAnnouncementFormData(data);
 
     const putUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;

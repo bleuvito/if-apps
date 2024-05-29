@@ -57,11 +57,18 @@ export default function AnnouncementDetailScreen() {
   const { getRole, session } = useSession();
   const { width } = useWindowDimensions();
   const navigation = useNavigation();
+  const role = getRole();
+
+  console.log('author', announcement.author.id);
+  console.log('author', userId);
+  console.log('author', userId);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return role !== 'MAHASISWA' && announcement.author.id !== userId ? (
+        return role !== 'MAHASISWA' &&
+          (announcement.author.id === userId ||
+            ['ADMIN', 'KAJUR', 'KAPRODI'].includes(role)) ? (
           <AnnouncementDetailsHeaderRight onPressDelete={showDialog} />
         ) : null;
       },
@@ -127,8 +134,6 @@ export default function AnnouncementDetailScreen() {
       goBack();
     }
   }
-
-  const role = getRole();
 
   if (isLoading) {
     return <LoadingIndicator />;

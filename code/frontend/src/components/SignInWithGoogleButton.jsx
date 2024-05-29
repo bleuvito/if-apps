@@ -35,7 +35,7 @@ export default function SignInWithGoogleButton({ handleError }) {
         router.replace('/');
       },
       onError: ({ error, error_description }) => {
-        console.error('Error authenticating user: ', error);
+        // console.error('Error authenticating user: ', error);
         handleError(error_description);
       },
       onNonOAuthError: ({ type: errorType }) => {
@@ -46,7 +46,7 @@ export default function SignInWithGoogleButton({ handleError }) {
         } else {
           handleError('Unknow error on web sign in');
         }
-        console.error('Error signing in user on web: ', errorType);
+        // console.error('Error signing in user on web: ', errorType);
       },
     });
   } else {
@@ -75,7 +75,7 @@ export default function SignInWithGoogleButton({ handleError }) {
         } else {
           handleError('Unknow error on Android sign in');
         }
-        console.error('Error signing in user on Android: ', error);
+        // console.error('Error signing in user on Android: ', error);
       }
     };
   }
