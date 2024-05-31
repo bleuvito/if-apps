@@ -3,6 +3,7 @@ import { Redirect } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { Text, useTheme } from 'react-native-paper';
 
+import { Platform } from 'react-native';
 import DrawerContent from '../../components/DrawerContent';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { useSession } from '../../providers/SessionProvider';
@@ -24,6 +25,7 @@ export default function Layout() {
       <Drawer
         drawerContent={DrawerContent}
         screenOptions={{
+          drawerType: Platform.OS === 'web' ? 'permanent' : 'front',
           drawerStyle: { backgroundColor: theme.colors.background },
         }}
       >

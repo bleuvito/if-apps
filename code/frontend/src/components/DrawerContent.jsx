@@ -1,7 +1,7 @@
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Platform } from 'react-native';
+import { Image, Platform } from 'react-native';
 import { Drawer, useTheme } from 'react-native-paper';
 
 import { drawerItem } from '../constants';

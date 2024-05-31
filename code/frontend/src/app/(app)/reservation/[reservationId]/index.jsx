@@ -145,7 +145,7 @@ export default function ReservationDetailsScreen() {
         >
           <Dialog.Title>Hapus pinjaman ruangan?</Dialog.Title>
           <Dialog.Actions>
-            <Button onPress={hideDialog}>Cancel</Button>
+            <Button onPress={hideDialog}>Batal</Button>
           </Dialog.Actions>
           <Dialog.Actions>
             <Button onPress={handleDeleteReservation}>Hapus</Button>

@@ -35,8 +35,10 @@ import { useSession } from '../../../../providers/SessionProvider';
 export default function AnnouncementDetailScreen() {
   const { announcementId } = useLocalSearchParams();
   const { getUserId } = useSession();
+  const { getRole, session } = useSession();
 
   const userId = getUserId();
+  const role = getRole();
   const {
     visible: formVisible,
     goBack,
@@ -54,19 +56,25 @@ export default function AnnouncementDetailScreen() {
     isPinned: false,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { getRole, session } = useSession();
   const { width } = useWindowDimensions();
   const navigation = useNavigation();
-  const role = getRole();
+
+  // console.log('author', announcement.author.id);
+  // console.log('author', announcement.author.id === userId);
+  // console.log('author', ['ADMIN', 'KAJUR', 'KAPRODI'].includes(role));
+  // console.log(
+  //   'author',
+  //   announcement.author.id === userId ||
+  //     ['ADMIN', 'KAJUR', 'KAPRODI'].includes(role)
+  // );
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return role !== 'MAHASISWA' &&
-          (announcement.author.id === userId ||
-            ['ADMIN', 'KAJUR', 'KAPRODI'].includes(role)) ? (
+        return announcement.author.id !== userId &&
+          !['ADMIN', 'KAJUR', 'KAPRODI'].includes(role) ? null : (
           <AnnouncementDetailsHeaderRight onPressDelete={showDialog} />
-        ) : null;
+        );
       },
     });
   }, [navigation]);
