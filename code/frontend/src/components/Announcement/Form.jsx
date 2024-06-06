@@ -74,7 +74,6 @@ export default function AnnouncementForm({
                   value={value}
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  placeholder='if20@unpar.ac.id,if21@unpar.ac.id'
                 />
                 <InputHelper
                   error={errors.recipient}
