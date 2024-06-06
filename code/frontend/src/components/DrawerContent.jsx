@@ -52,6 +52,16 @@ export default function DrawerContent(props) {
   return (
     <>
       <DrawerContentScrollView>
+        <Image
+          source={require('../../assets/icon.png')}
+          style={{
+            height: 75,
+            width: 75,
+            aspectRatio: 1,
+            resizeMode: 'contain',
+            alignSelf: 'center',
+          }}
+        />
         <Drawer.Section title={drawerItem.annnouncement.label}>
           <Drawer.Item
             label={drawerItem.annnouncement.label}
