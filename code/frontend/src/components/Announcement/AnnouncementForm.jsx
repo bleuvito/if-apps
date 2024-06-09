@@ -1,36 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Platform, ScrollView, View } from 'react-native';
-import {
-  Button,
-  Checkbox,
-  HelperText,
-  Text,
-  TextInput,
-} from 'react-native-paper';
-import z from 'zod';
+import { ScrollView, View } from 'react-native';
+import { Button, Text, TextInput } from 'react-native-paper';
 
+import { announcementSchema } from '../../helpers/schemas';
 import { ConfirmationDialog, useConfirmation } from '../ConfirmationDialog';
 import InputHelper from '../InputHelper';
 import InputLabel from '../InputLabel';
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import AttachmentField from './AttachmentField.jsx';
-import TagBottomSheet from './TagBottomSheet.jsx';
-import TagField from './TagField.jsx';
 
-const schema = z
-  .object({
-    recipient: z
-      .string()
-      .refine((emailValue) =>
-        emailValue
-          .split(',')
-          .every((item) => z.string().email().safeParse(item).success)
-      ),
-    subject: z.string().min(1, { message: 'Subjek harus diisi!' }),
-  })
-  .passthrough();
+import TagBottomSheet from './TagBottomSheet';
+import TagField from './TagField.jsx';
 
 export default function AnnouncementForm({
   defaultValues,
@@ -43,7 +25,7 @@ export default function AnnouncementForm({
     formState: { errors },
   } = useForm({
     defaultValues,
-    resolver: zodResolver(schema.partial()),
+    resolver: zodResolver(announcementSchema.partial()),
   });
   const bottomSheetRef = useRef(null);
 
@@ -56,14 +38,14 @@ export default function AnnouncementForm({
 
   return (
     <>
-      <ScrollView style={{ flex: 1, paddingHorizontal: 16 }}>
+      <ScrollView style={styles.container}>
         <Controller
           name='recipient'
           defaultValue=''
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
             return (
-              <View style={{ marginBottom: 16 }}>
+              <View style={styles.fieldContainer}>
                 <InputLabel
                   isRequired={true}
                   title='To'
@@ -89,7 +71,7 @@ export default function AnnouncementForm({
           control={control}
           render={({ field: { onChange, onBlur, value } }) => {
             return (
-              <View style={{ marginBottom: 16 }}>
+              <View style={styles.fieldContainer}>
                 <InputLabel
                   isRequired={true}
                   title='Subjek'
@@ -115,10 +97,10 @@ export default function AnnouncementForm({
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
-              <View style={{ marginBottom: 16 }}>
+              <View style={styles.fieldContainer}>
                 <Text
                   variant='bodyMedium'
-                  style={{ marginBottom: 4 }}
+                  style={styles.fieldLabel}
                 >
                   Isi
                 </Text>
@@ -143,48 +125,17 @@ export default function AnnouncementForm({
             );
           }}
         />
-        <View style={{ marginBottom: 16 }}>
+        <View style={styles.lastField}>
           <TagField
             control={control}
             name='tags'
             bottomSheetRef={bottomSheetRef}
           />
         </View>
-        <Controller
-          name='pin'
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <View
-                style={{
-                  marginBottom: 32,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-              >
-                <Text
-                  variant='bodyMedium'
-                  style={{ flex: 1 }}
-                >
-                  Pin
-                </Text>
-                <Checkbox
-                  status={value ? 'checked' : 'unchecked'}
-                  onPress={() => onChange(!value)}
-                />
-              </View>
-            );
-          }}
-        />
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingBottom: 96,
-          }}
-        >
+        <View style={styles.buttonContainer}>
           <Button
             mode='outlined'
-            style={{ flex: 1 }}
+            style={styles.button}
             onPress={() => confirmationShowDialog()}
           >
             Batal
@@ -193,7 +144,7 @@ export default function AnnouncementForm({
           <Button
             mode='contained'
             onPress={handleSubmit(handleFormSubmit)}
-            style={{ flex: 1 }}
+            style={styles.button}
           >
             Simpan
           </Button>
@@ -215,3 +166,15 @@ export default function AnnouncementForm({
     </>
   );
 }
+
+const styles = {
+  container: { flex: 1, paddingHorizontal: 16 },
+  fieldContainer: { marginBottom: 16 },
+  fieldLabel: { marginBottom: 4 },
+  lastField: { marginBottom: 32 },
+  buttonContainer: {
+    flexDirection: 'row',
+    paddingBottom: 96,
+  },
+  button: { flex: 1 },
+};

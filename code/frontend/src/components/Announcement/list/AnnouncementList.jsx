@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { Icon, Text } from 'react-native-paper';
 import { useSession } from '../../../providers/SessionProvider';
+import ListEmpty from '../../ListEmpty';
 import LoadingIndicator from '../../LoadingIndicator';
 import AnnouncementListItem from './AnnouncementListItem';
 
@@ -20,6 +22,7 @@ export default function AnnouncementList({ subject, tags }) {
         headers: { Authorization: `Bearer ${session}` },
         params: { subject, tags },
       });
+
       setAnnouncements(data);
     } catch (error) {
       console.error('Error fetching announcement list: ', error);
@@ -30,6 +33,10 @@ export default function AnnouncementList({ subject, tags }) {
 
   const renderItem = useCallback(({ item }) => {
     return <AnnouncementListItem announcement={item} />;
+  }, []);
+
+  const renderListEmpty = useCallback(() => {
+    return <ListEmpty itemType='pengumuman' />;
   }, []);
 
   useFocusEffect(
@@ -51,6 +58,7 @@ export default function AnnouncementList({ subject, tags }) {
       data={announcements}
       keyExtractor={(announcement) => announcement.id}
       renderItem={renderItem}
+      ListEmptyComponent={renderListEmpty}
       contentContainerStyle={styles.contentContainer}
     />
   );
@@ -58,8 +66,14 @@ export default function AnnouncementList({ subject, tags }) {
 
 const styles = StyleSheet.create({
   contentContainer: {
+    flex: 1,
     gap: 16,
     padding: 16,
     paddingBottom: 48,
+  },
+  listEmpty: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

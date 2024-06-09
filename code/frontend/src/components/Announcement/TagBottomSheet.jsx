@@ -1,94 +1,75 @@
-import BottomSheet, {
+import {
   BottomSheetBackdrop,
-  BottomSheetFlatList,
+  BottomSheetModal,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
-import axios from 'axios';
-import { useFocusEffect } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
-import { useSession } from '../../providers/SessionProvider';
-import TagCheckBox from './TagCheckBox';
+import { StyleSheet, View } from 'react-native';
+import TagBottomSheetList from './TagBottomSheetList';
+import TagBottomSheetSearch from './TagBottomSheetSearch';
 
 export default function TagBottomSheet({
   bottomSheetRef,
   selectedTags,
   setSelectedTags,
 }) {
-  const snapPoints = useMemo(() => ['25%', '50%', '100%'], []);
-  const [tags, setTags] = useState([]);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
-  const { session } = useSession();
+  const snapPoints = useMemo(() => ['25%', '60%', '90%'], []);
+  const topInset = useMemo(() => 60, []);
 
-  async function getTags() {
-    setIsLoading(true);
-    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag`;
-    const { data } = await axios.get(getUri, {
-      headers: { Authorization: `Bearer ${session}` },
-    });
-    setTags(data);
-    setIsLoading(false);
-  }
+  const [search, setSearch] = useState('');
 
-  useFocusEffect(
-    useCallback(() => {
-      getTags();
-    }, [])
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+      />
+    ),
+    []
   );
 
-  const handleRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await getTags();
-    setRefreshing(false);
-  }, []);
-
-  const handleSheetChanges = useCallback((index) => {}, []);
-
-  const renderBackdrop = useCallback((props) => (
-    <BottomSheetBackdrop
-      {...props}
-      disappearsOnIndex={-1}
-      appearsOnIndex={0}
-    />
-  ));
-
-  const renderItem = useCallback(({ item }) => {
-    const isSelected = selectedTags.some((selectedTag) => {
-      return selectedTag.id === item.id;
-    });
-
-    return (
-      <TagCheckBox
-        tag={item}
-        isSelected={isSelected}
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
-      />
-    );
-  });
+  const resetSearch = useCallback(
+    (index) => {
+      if (index === -1) {
+        setSearch('');
+      }
+    },
+    [setSearch]
+  );
 
   return (
-    <BottomSheet
+    <BottomSheetModal
       ref={bottomSheetRef}
       snapPoints={snapPoints}
-      index={-1}
+      index={0}
+      topInset={topInset}
+      overDragResistanceFactor={10}
+      animateOnMount={true}
       backdropComponent={renderBackdrop}
-      onChange={handleSheetChanges}
+      onChange={resetSearch}
     >
-      <BottomSheetView
-        style={{
-          flex: 1,
-        }}
-      >
-        <BottomSheetFlatList
-          data={tags}
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
-          keyExtractor={(tag) => tag.id}
-          renderItem={renderItem}
+      <BottomSheetView style={styles.contentContainer}>
+        <View style={styles.searchContainer}>
+          <TagBottomSheetSearch
+            search={search}
+            setSearch={setSearch}
+          />
+        </View>
+        <TagBottomSheetList
+          search={search}
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
         />
       </BottomSheetView>
-    </BottomSheet>
+    </BottomSheetModal>
   );
 }
+
+const styles = StyleSheet.create({
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  searchContainer: { width: '100%', padding: 16 },
+});

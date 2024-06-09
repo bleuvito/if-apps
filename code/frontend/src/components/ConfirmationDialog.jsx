@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Button, Dialog, Portal } from 'react-native-paper';
+import { Button, Dialog, Portal } from 'react-native-paper';
 
 function useConfirmation() {
   const [visible, setVisible] = useState(false);
@@ -27,11 +27,12 @@ const ConfirmationDialog = ({ visible, hideDialog }) => {
             textAlign: 'center',
           }}
         >
-          Apakah Anda ingin kembali? Isi dari form tidak akan disimpan!
+          Apakah Anda ingin membatalkan isi formulir? Isi dari formulir tidak
+          akan disimpan!
         </Dialog.Title>
         <Dialog.Actions>
+          <Button onPress={() => hideDialog()}>Tidak</Button>
           <Button onPress={() => goBack()}>Kembali</Button>
-          <Button onPress={hideDialog}>Tidak</Button>
         </Dialog.Actions>
       </Dialog>
     </Portal>

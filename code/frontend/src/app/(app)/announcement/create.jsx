@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-// import { View } from 'react-native-reanimated/lib/typescript/Animated';
-import { View } from 'react-native';
 import { FormLoading, useFormLoading } from '../../../components/FormLoading';
-import AnnouncementForm from '../../../components/announcement/Form';
+import AnnouncementForm from '../../../components/announcement/AnnouncementForm';
 import { createAnnouncementFormData } from '../../../helpers/utils';
 import { useSession } from '../../../providers/SessionProvider';
 
@@ -24,7 +22,7 @@ export default function AnnouncementCreateScreen() {
         },
       });
     } catch (error) {
-      console.log('Error submitting form', error.message);
+      console.error('Error submitting form', error);
     } finally {
       hideDialog();
       goBack();

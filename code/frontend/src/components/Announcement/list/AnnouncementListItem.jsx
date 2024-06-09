@@ -37,7 +37,7 @@ export default function AnnouncementListItem({ announcement }) {
                   numberOfLines={1}
                   style={styles.subDetailsText}
                 >
-                  {announcement.author.name}
+                  {announcement.bodies[0].author.name}
                 </Text>
               </View>
             </View>

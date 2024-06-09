@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Checkbox } from 'react-native-paper';
 
 export default function TagBottomSheetListItem({

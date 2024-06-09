@@ -1,8 +1,7 @@
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
-import { Platform, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-import AttachmentFileList from './AttachmentFileList';
+import AttachmentFieldList from './AttachmentFieldList';
 
 export default function AttachmentField({ files, setFiles }) {
   async function handlePickFile() {
@@ -24,13 +23,7 @@ export default function AttachmentField({ files, setFiles }) {
 
   return (
     <View>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
+      <View style={styles.container}>
         <Text variant='bodyMedium'>Lampiran</Text>
         <Button
           icon='plus'
@@ -39,10 +32,18 @@ export default function AttachmentField({ files, setFiles }) {
           Tambah
         </Button>
       </View>
-      <AttachmentFileList
+      <AttachmentFieldList
         files={files}
         setFiles={setFiles}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+});

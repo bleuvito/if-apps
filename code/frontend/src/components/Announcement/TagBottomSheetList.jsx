@@ -1,11 +1,10 @@
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-paper';
-import { useTagList } from '../../../hooks/useTagList';
-import { useSession } from '../../../providers/SessionProvider';
-import LoadingIndicator from '../../LoadingIndicator';
+
+import { useSession } from '../../providers/SessionProvider';
+import ListEmpty from '../ListEmpty';
+import LoadingIndicator from '../LoadingIndicator';
 import TagBottomSheetListItem from './TagBottomSheetListItem';
 
 export default function TagBottomSheetList({
@@ -55,6 +54,10 @@ export default function TagBottomSheetList({
     [selectedTags]
   );
 
+  const renderListEmpty = useCallback(() => {
+    return <ListEmpty itemType='tag pengumuman' />;
+  }, []);
+
   useEffect(() => {
     listTag();
   }, []);
@@ -67,8 +70,9 @@ export default function TagBottomSheetList({
     <BottomSheetFlatList
       data={filteredTags}
       keyExtractor={(tag) => tag.id}
+      style={{ width: '100%', flex: 1 }}
       renderItem={renderItem}
-      style={{ width: '100%' }}
+      ListEmptyComponent={renderListEmpty}
     />
   );
 }

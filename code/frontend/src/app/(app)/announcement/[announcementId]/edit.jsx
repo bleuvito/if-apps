@@ -8,7 +8,7 @@ import {
   useFormLoading,
 } from '../../../../components/FormLoading';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import AnnouncementForm from '../../../../components/announcement/Form';
+import AnnouncementForm from '../../../../components/announcement/AnnouncementForm';
 import { createAnnouncementFormData } from '../../../../helpers/utils';
 import { useSession } from '../../../../providers/SessionProvider';
 

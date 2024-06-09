@@ -3,8 +3,9 @@ import { StyleSheet, View } from 'react-native';
 import { Chip } from 'react-native-paper';
 
 import { useDebounce } from '../../../hooks/useDebounce';
+// import TagBottomSheet from '../TagBottomSheet';
+import TagBottomSheet from '../TagBottomSheet';
 import SelectedTagList from './SelectedTagList';
-import TagBottomSheet from './TagBottomSheet';
 
 export default function TagFilter({ setTags }) {
   const tagBottomSheetRef = useRef(null);

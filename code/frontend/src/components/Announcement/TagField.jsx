@@ -4,7 +4,7 @@ import TagList from './TagList';
 
 export default function TagField({ control, name, bottomSheetRef }) {
   function handleOpenTagBottomSheet() {
-    bottomSheetRef.current.snapToIndex(1);
+    bottomSheetRef?.current.present();
   }
 
   return (

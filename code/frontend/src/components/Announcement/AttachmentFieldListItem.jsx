@@ -1,6 +1,6 @@
 import { Chip, Text } from 'react-native-paper';
 
-export default function AttachmentFileChip({ idx, name, files, setFiles }) {
+export default function AttachmentFileListItem({ idx, name, files, setFiles }) {
   function handleDeletePickedFile() {
     const filteredFiles = files
       .filter((file) => {

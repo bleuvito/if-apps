@@ -1,7 +1,7 @@
 import { Card, useTheme } from 'react-native-paper';
-import AttachmentFileChip from './AttachmentFileChip';
+import AttachmentFieldListItem from './AttachmentFieldListItem';
 
-export default function AttachmentFileList({ files, setFiles }) {
+export default function AttachmentFieldList({ files, setFiles }) {
   const theme = useTheme();
 
   return (
@@ -12,7 +12,7 @@ export default function AttachmentFileList({ files, setFiles }) {
       <Card.Content style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
         {files.map((file, index) => {
           return (
-            <AttachmentFileChip
+            <AttachmentFieldListItem
               key={index}
               idx={index}
               name={file.file.name}
