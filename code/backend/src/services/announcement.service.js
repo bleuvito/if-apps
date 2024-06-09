@@ -7,6 +7,7 @@ import { createAnnouncement } from '../models/announcement.create.js';
 import { deleteAnnouncement } from '../models/announcement.delete.js';
 import { getAnnouncement } from '../models/announcement.get.js';
 import { listAnnouncement } from '../models/announcement.list.js';
+import { pinAnnouncement } from '../models/announcement.pin.js';
 import { putAnnouncement } from '../models/announcement.put.js';
 import { verify } from '../models/authentication.js';
 import { upload } from '../utils/helpers.js';
@@ -52,6 +53,19 @@ AnnouncementService.put(
   async (req, res, next) => {
     try {
       const result = await putAnnouncement(req);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+AnnouncementService.patch(
+  '/:id/pin',
+  verify(['DOSEN', 'KALAB', 'KAPRODI', 'KAJUR', 'ADMIN']),
+  async (req, res, next) => {
+    try {
+      const result = await pinAnnouncement(req);
       res.json(result);
     } catch (error) {
       next(error);

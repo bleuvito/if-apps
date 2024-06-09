@@ -10,12 +10,24 @@ async function getAnnouncement(args) {
   try {
     const announcement = await prisma.announcementHeader.findFirst({
       select: {
-        isPinned: true,
-        recipient: true,
         subject: true,
+        isPinned: true,
+        tags: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         bodies: {
           select: {
+            author: {
+              select: {
+                name: true,
+                id: true,
+              },
+            },
             createdAt: true,
+            recipient: true,
             body: true,
             attachments: {
               select: {
@@ -28,18 +40,6 @@ async function getAnnouncement(args) {
           },
           where: {
             isLatest: true,
-          },
-        },
-        tags: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        author: {
-          select: {
-            name: true,
-            id: true,
           },
         },
       },
