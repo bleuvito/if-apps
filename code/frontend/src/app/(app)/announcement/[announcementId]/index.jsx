@@ -1,5 +1,6 @@
 import { A } from '@expo/html-elements';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import {
   useFocusEffect,
   useLocalSearchParams,
@@ -12,40 +13,33 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import {
-  ActivityIndicator,
-  Button,
-  Chip,
-  Dialog,
-  Icon,
-  Portal,
-  Text,
-} from 'react-native-paper';
+import { Chip, Icon, Text } from 'react-native-paper';
 import RenderHTML from 'react-native-render-html';
 
-import dayjs from 'dayjs';
 import {
   FormLoading,
   useFormLoading,
 } from '../../../../components/FormLoading';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import AnnouncementDetailsHeaderRight from '../../../../components/announcement/DetailsHeaderRight';
+import AnnouncementDetailsHeader from '../../../../components/announcement/AnnouncementDetailsHeader';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function AnnouncementDetailScreen() {
   const { announcementId } = useLocalSearchParams();
-  const { getUserId } = useSession();
-  const { getRole, session } = useSession();
+  const { getRole, session, getUserId } = useSession();
 
   const userId = getUserId();
   const role = getRole();
+
   const {
     visible: formVisible,
     goBack,
     hideDialog: hideFormDialog,
     showDialog: showFormDialog,
   } = useFormLoading();
-  const [visible, setVisible] = useState(false);
+  const { width } = useWindowDimensions();
+  const navigation = useNavigation();
+
   const [announcement, setAnnouncement] = useState({
     author: '',
     createdAt: '',
@@ -56,28 +50,39 @@ export default function AnnouncementDetailScreen() {
     isPinned: false,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { width } = useWindowDimensions();
-  const navigation = useNavigation();
 
-  // console.log('author', announcement.author.id);
-  // console.log('author', announcement.author.id === userId);
-  // console.log('author', ['ADMIN', 'KAJUR', 'KAPRODI'].includes(role));
-  // console.log(
-  //   'author',
-  //   announcement.author.id === userId ||
-  //     ['ADMIN', 'KAJUR', 'KAPRODI'].includes(role)
-  // );
+  async function getAnnouncement() {
+    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(getUri, {
+        headers: {
+          Authorization: `Bearer ${session}`,
+        },
+      });
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => {
-        return announcement.author.id !== userId &&
-          !['ADMIN', 'KAJUR', 'KAPRODI'].includes(role) ? null : (
-          <AnnouncementDetailsHeaderRight onPressDelete={showDialog} />
-        );
-      },
-    });
-  }, [navigation]);
+      const {
+        subject,
+        isPinned,
+        tags,
+        bodies: [{ author, createdAt, body, attachments }],
+      } = data;
+
+      setAnnouncement({
+        author,
+        createdAt,
+        subject,
+        isPinned,
+        tags,
+        body,
+        attachments,
+      });
+    } catch (error) {
+      console.error('Error fetching announcement details: ', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -85,59 +90,21 @@ export default function AnnouncementDetailScreen() {
     }, [])
   );
 
-  async function getAnnouncement() {
-    setIsLoading(true);
-
-    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
-    const { data } = await axios.get(getUri, {
-      headers: {
-        Authorization: `Bearer ${session}`,
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return ['ADMIN', 'KAJUR', 'KAPRODI'].includes(role) ||
+          announcement.author.id === userId ? (
+          <AnnouncementDetailsHeader
+            showFormDialog={showFormDialog}
+            hideFormDialog={hideFormDialog}
+            goBack={goBack}
+            isPinned={announcement.isPinned}
+          />
+        ) : null;
       },
     });
-
-    const {
-      author,
-      isPinned,
-      subject,
-      bodies: [{ createdAt, body, attachments }],
-      tags,
-    } = data;
-    setAnnouncement({
-      author,
-      createdAt,
-      subject,
-      body,
-      attachments,
-      tags,
-      isPinned,
-    });
-
-    setIsLoading(false);
-  }
-
-  function showDialog() {
-    setVisible(true);
-  }
-
-  function hideDialog() {
-    setVisible(false);
-  }
-
-  async function handleDeleteAnnouncement() {
-    const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
-    hideDialog();
-    showFormDialog();
-    try {
-      const response = await axios.delete(deleteUri, {
-        headers: { Authorization: `Bearer ${session}` },
-      });
-    } catch (error) {
-      console.error('Error deleting announcement: ', response);
-    } finally {
-      hideFormDialog();
-      goBack();
-    }
-  }
+  }, [navigation, announcement]);
 
   if (isLoading) {
     return <LoadingIndicator />;
@@ -218,18 +185,6 @@ export default function AnnouncementDetailScreen() {
           </View>
         </View>
       )}
-      <Portal>
-        <Dialog
-          visible={visible}
-          onDismiss={hideDialog}
-        >
-          <Dialog.Title>Hapus pengumuman?</Dialog.Title>
-          <Dialog.Actions>
-            <Button onPress={hideDialog}>Batal</Button>
-            <Button onPress={handleDeleteAnnouncement}>Hapus</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
       <FormLoading visible={formVisible} />
     </ScrollView>
   );

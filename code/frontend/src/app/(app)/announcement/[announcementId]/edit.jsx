@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 
-import { ActivityIndicator, Text } from 'react-native-paper';
 import {
   FormLoading,
   useFormLoading,
@@ -24,18 +23,16 @@ export default function AnnouncementEditScreen() {
     pin: false,
     tags: [],
   });
-  const [defaultTags, setDefaultTags] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { visible, goBack, showDialog, hideDialog } = useFormLoading();
 
   async function handleSubmit(data) {
-    console.log(data);
     const form = createAnnouncementFormData(data);
 
     const putUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
     showDialog();
     try {
-      const data = await axios.put(putUri, form, {
+      const { data } = await axios.put(putUri, form, {
         headers: {
           Authorization: `Bearer ${session}`,
           'Content-Type': 'multipart/form-data',
@@ -74,13 +71,7 @@ export default function AnnouncementEditScreen() {
 
   useEffect(() => {
     getAnnouncement();
-    // console.log(defaultValues);
   }, []);
-
-  // useEffect(() => {
-  //   // getAnnouncement();
-  //   // console.log(defaultValues);
-  // }, [defaultValues]);
 
   if (isLoading) {
     return <LoadingIndicator />;
