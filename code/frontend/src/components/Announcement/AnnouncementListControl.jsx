@@ -1,7 +1,7 @@
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import SearchInput from '../../SearchInput';
+import SearchInput from '../SearchInput';
 import AnnouncementTagFilter from './AnnouncementTagFilter';
 
 export default function AnnouncementListControl({ setSubject, setTags }) {

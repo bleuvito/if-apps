@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FAB } from 'react-native-paper';
 
-import AnnouncementList from '../../../components/announcement/list/AnnouncementList';
-import { default as AnnouncementListControl } from '../../../components/announcement/list/AnnouncementListControl';
+import AnnouncementList from '../../../components/announcement/AnnouncementList';
+import { default as AnnouncementListControl } from '../../../components/announcement/AnnouncementListControl';
 import { useSession } from '../../../providers/SessionProvider';
 
 export default function AnnouncementScreen() {

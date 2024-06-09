@@ -3,9 +3,9 @@ import { useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
-import { useSession } from '../../../providers/SessionProvider';
-import ListEmpty from '../../ListEmpty';
-import LoadingIndicator from '../../LoadingIndicator';
+import { useSession } from '../../providers/SessionProvider';
+import ListEmpty from '../ListEmpty';
+import LoadingIndicator from '../LoadingIndicator';
 import AnnouncementListItem from './AnnouncementListItem';
 
 export default function AnnouncementList({ subject, tags }) {
