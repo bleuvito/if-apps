@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Chip } from 'react-native-paper';
 
-export default function NewSelectedTagListItem({
+export default function SelectedTagListItem({
   tag,
   selectedTags,
   setSelectedTags,

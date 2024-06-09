@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import { Checkbox } from 'react-native-paper';
 
-export default function NewTagBottomSheetListItem({
+export default function TagBottomSheetListItem({
   tag,
-  isTagSelected,
+  isSelected,
   selectedTags,
   setSelectedTags,
 }) {
-  const [checked, setChecked] = useState(isTagSelected);
+  const [checked, setChecked] = useState(isSelected);
 
   const handlePress = () => {
     if (checked) {

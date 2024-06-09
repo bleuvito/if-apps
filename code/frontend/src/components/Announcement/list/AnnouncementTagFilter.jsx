@@ -1,18 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Chip } from 'react-native-paper';
-import { useDebounce } from '../../hooks/useDebounce';
-import NewSelectedTagList from './NewSelectedTagList';
-import NewTagBottomSheet from './NewTagBottomSheet';
+
+import { useDebounce } from '../../../hooks/useDebounce';
+import SelectedTagList from './SelectedTagList';
+import TagBottomSheet from './TagBottomSheet';
 
 export default function TagFilter({ setTags }) {
-  const newTagBottomSheetRef = useRef(null);
+  const tagBottomSheetRef = useRef(null);
 
   const [selectedTags, setSelectedTags] = useState([]);
   const debouncedSelectedTags = useDebounce(selectedTags, 600);
 
   const handlePresentModalPress = useCallback(() => {
-    newTagBottomSheetRef.current?.present();
+    tagBottomSheetRef.current?.present();
   }, []);
 
   useEffect(() => {
@@ -20,25 +21,30 @@ export default function TagFilter({ setTags }) {
   }, [debouncedSelectedTags]);
 
   return (
-    <View style={{ flexDirection: 'row' }}>
+    <View style={styles.container}>
       <Chip
         mode='outlined'
         closeIcon='menu-down'
         onPress={handlePresentModalPress}
         onClose={handlePresentModalPress}
-        style={{ alignSelf: 'flex-start' }}
+        style={styles.filterButton}
       >
         Tag
       </Chip>
-      <NewSelectedTagList
+      <SelectedTagList
         selectedTags={selectedTags}
         setSelectedTags={setSelectedTags}
       />
-      <NewTagBottomSheet
-        bottomSheetRef={newTagBottomSheetRef}
+      <TagBottomSheet
+        bottomSheetRef={tagBottomSheetRef}
         selectedTags={selectedTags}
         setSelectedTags={setSelectedTags}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flexDirection: 'row' },
+  filterButton: { alignSelf: 'flex-start' },
+});

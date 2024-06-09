@@ -3,22 +3,22 @@ import {
   BottomSheetModal,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import { SearchBar } from 'react-native-screens';
-import NewTagBottomSheetList from './NewTagBottomSheetList';
+import TagBottomSheetList from './TagBottomSheetList';
+import TagBottomSheetSearch from './TagBottomSheetSearch';
 
-export default function NewTagBottomSheet({
+export default function TagBottomSheet({
   bottomSheetRef,
   selectedTags,
   setSelectedTags,
 }) {
-  // const safeInsets = useSafeAreaInsets();
   const snapPoints = useMemo(() => ['25%', '60%', '90%'], []);
   const topInset = useMemo(() => 60, []);
 
-  // renders
+  const [search, setSearch] = useState('');
+
   const renderBackdrop = useCallback(
     (props) => (
       <BottomSheetBackdrop
@@ -30,25 +30,35 @@ export default function NewTagBottomSheet({
     []
   );
 
+  const resetSearch = useCallback(
+    (index) => {
+      if (index === -1) {
+        setSearch('');
+      }
+    },
+    [setSearch]
+  );
+
   return (
     <BottomSheetModal
       ref={bottomSheetRef}
-      index={0}
       snapPoints={snapPoints}
-      backdropComponent={renderBackdrop}
+      index={0}
+      topInset={topInset}
       overDragResistanceFactor={10}
       animateOnMount={true}
-      topInset={topInset}
+      backdropComponent={renderBackdrop}
+      onChange={resetSearch}
     >
       <BottomSheetView style={styles.contentContainer}>
-        {/* <View style={{ width: '100%', padding: 16 }}>
-          <TextInput
-            mode='outlined'
-            placeholder='Cari tag'
-            style={{ width: '100%' }}
+        <View style={styles.searchContainer}>
+          <TagBottomSheetSearch
+            search={search}
+            setSearch={setSearch}
           />
-        </View> */}
-        <NewTagBottomSheetList
+        </View>
+        <TagBottomSheetList
+          search={search}
           selectedTags={selectedTags}
           setSelectedTags={setSelectedTags}
         />
@@ -58,14 +68,9 @@ export default function NewTagBottomSheet({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    justifyContent: 'center',
-    backgroundColor: 'grey',
-  },
   contentContainer: {
     flex: 1,
     alignItems: 'center',
   },
+  searchContainer: { width: '100%', padding: 16 },
 });

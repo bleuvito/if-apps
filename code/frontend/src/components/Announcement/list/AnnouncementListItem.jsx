@@ -2,51 +2,40 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
-import { Button, Card, Chip, Icon, Text, useTheme } from 'react-native-paper';
+import { Card, Chip, Icon, Text } from 'react-native-paper';
 
-export default function AnnouncementCard({ announcement }) {
+export default function AnnouncementListItem({ announcement }) {
   return (
     <Card onPress={() => router.push(`announcement/${announcement.id}`)}>
       <Card.Content>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
+        <View style={styles.headerContainer}>
+          <View style={styles.subjectContainer}>
             <Text
               variant='titleLarge'
               numberOfLines={1}
-              style={{ marginBottom: 4 }}
+              style={styles.subject}
             >
               {announcement.subject}
             </Text>
-            <View style={{ flexDirection: 'row', marginBottom: 8 }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginRight: 8,
-                }}
-              >
+            <View style={styles.subDetailsContainer}>
+              <View style={[styles.subDetails, styles.updatedAt]}>
                 <Icon source='clock-outline' />
                 <Text
                   variant='bodySmall'
                   numberOfLines={1}
-                  style={{ marginLeft: 4 }}
+                  style={styles.subDetailsText}
                 >
                   {dayjs(announcement.updatedAt)
                     .locale('id')
                     .format('DD MMM YYYY')}
                 </Text>
               </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-              >
+              <View style={styles.subDetails}>
                 <Icon source='account-outline' />
                 <Text
                   variant='bodySmall'
                   numberOfLines={1}
-                  style={{ marginLeft: 4 }}
+                  style={styles.subDetailsText}
                 >
                   {announcement.author.name}
                 </Text>
@@ -83,15 +72,19 @@ export default function AnnouncementCard({ announcement }) {
 }
 
 const styles = StyleSheet.create({
-  pinIcon: {
-    alignSelf: 'flex-start',
+  headerContainer: { flexDirection: 'row' },
+  subjectContainer: { flex: 1 },
+  subject: { marginBottom: 4 },
+  subDetailsContainer: { flexDirection: 'row', marginBottom: 8 },
+  subDetails: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  subDetailsText: { marginLeft: 4 },
+  updatedAt: {
     marginRight: 8,
-    marginTop: 16,
   },
   snippet: { marginBottom: 8 },
-  tagTitle: {
-    marginBottom: 4,
-  },
   chipContainer: {
     alignSelf: 'flex-start',
     flexDirection: 'row',
