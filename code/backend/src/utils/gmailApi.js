@@ -112,7 +112,7 @@ async function getMessageMetadata(clientType, refreshToken, messageId) {
       userId: 'me',
       id: messageId,
       format: 'metadata',
-      metadataHeaders: ['Message-Id', 'References'],
+      // metadataHeaders: ['Message-Id', 'References'],
     });
 
     return message;

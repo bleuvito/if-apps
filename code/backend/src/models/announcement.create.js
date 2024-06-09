@@ -63,8 +63,6 @@ async function createAnnouncement(args) {
     emailRecipient = parsedKaprodiEmails;
   }
 
-  // console.log(emailRecipient);
-
   try {
     const uploadResponse = await uploadAttachments(
       clientType,
@@ -97,15 +95,18 @@ async function createAnnouncement(args) {
       gmailSendResponse.id
     );
 
+    const gmailId = gmailGetResponse.payload.headers.find(
+      (obj) => obj.name.toLowerCase() === 'message-id'
+    );
+
     const announcement = await prisma.announcementHeader.create({
       data: {
-        gmailThreadId: gmailGetResponse.threadId,
-        recipient: emailRecipient,
         subject,
         isPinned: JSON.parse(pin),
         bodies: {
           create: {
-            gmailId: gmailGetResponse.id,
+            gmailId: gmailId.value,
+            recipient: emailRecipient,
             snippet: gmailGetResponse.snippet,
             body,
             attachments: {
@@ -123,17 +124,11 @@ async function createAnnouncement(args) {
         tags: {
           connect: JSON.parse(tags),
         },
-        author: {
-          connect: {
-            id: user.id,
-          },
-        },
       },
     });
 
-    console.log(announcement);
-
     const payload = announcement;
+
     return payload;
   } catch (error) {
     throw new Error(error);

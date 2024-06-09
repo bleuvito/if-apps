@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function listAnnouncement(args) {
-  const { query: requestQuery, params: requestParams } = args;
+  const { query: requestQuery } = args;
 
   try {
     const tagIds = requestQuery.tags?.map((tag) => tag.id);
@@ -31,6 +31,7 @@ async function listAnnouncement(args) {
         updatedAt: true,
         bodies: {
           select: {
+            author: { select: { name: true } },
             snippet: true,
           },
           where: {
@@ -42,17 +43,10 @@ async function listAnnouncement(args) {
             name: true,
           },
         },
-        author: {
-          select: {
-            name: true,
-          },
-        },
       },
       where,
       orderBy: [{ isPinned: 'desc' }, { updatedAt: 'desc' }],
     });
-
-    // console.log(announcements);
 
     const payload = announcements;
     return payload;

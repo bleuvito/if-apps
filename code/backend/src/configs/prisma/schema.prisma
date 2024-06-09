@@ -48,8 +48,7 @@ model User {
   webRefreshToken           String? @db.VarChar(512)
   androidRefreshToken       String? @db.VarChar(512)
 
-  announcements             AnnouncementHeader[]
-  announcementBodies        AnnouncementBody[]
+  announcements             AnnouncementBody[]
   announcementTags          AnnouncementTag[]
   schedules                 LecturerSchedule[]
   reservations              RoomReservation[]
@@ -59,8 +58,8 @@ model User {
 
 model AnnouncementHeader {
   id            String  @id @unique @default(uuid())
-  gmailThreadId String
-  recipient     String
+  // gmailThreadId String
+  // recipient     String
   subject       String
   isPinned      Boolean @default(false)
   createdAt     DateTime @default(now())
@@ -68,18 +67,16 @@ model AnnouncementHeader {
   
   bodies        AnnouncementBody[]
   tags          AnnouncementTag[]
-  
-  authorId      String
-  author        User @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model AnnouncementBody {
   id            String @id @unique @default(uuid())
   gmailId       String
-  body          String
+  recipient     String
   snippet       String
-  createdAt     DateTime @default(now())
+  body          String
   isLatest      Boolean @default(true)
+  createdAt     DateTime @default(now())
   
   attachments   AnnoucementAttachment[]
 
