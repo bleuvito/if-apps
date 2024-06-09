@@ -28,18 +28,19 @@ export default function AnnouncementEditScreen() {
 
   async function handleSubmit(data) {
     const form = createAnnouncementFormData(data);
+    console.log(form);
 
-    const putUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
+    const patchUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
     showDialog();
     try {
-      const { data } = await axios.put(putUri, form, {
+      const { data } = await axios.patch(patchUri, form, {
         headers: {
           Authorization: `Bearer ${session}`,
           'Content-Type': 'multipart/form-data',
         },
       });
     } catch (error) {
-      console.log('Error submitting form', error);
+      console.log('Error submitting form', error.request);
     } finally {
       hideDialog();
       goBack();
@@ -57,10 +58,11 @@ export default function AnnouncementEditScreen() {
 
       setDefaultValues({
         ...defaultValues,
-        recipient: data.recipient,
         subject: data.subject,
         pin: data.isPinned,
         tags: data.tags,
+        recipient: data.bodies[0].recipient,
+        body: data.bodies[0].body,
       });
     } catch (error) {
       console.error('Error fetching data in announcement\\edit.jsx: ', error);

@@ -111,30 +111,24 @@ export default function AnnouncementDetailScreen() {
   }
 
   return (
-    <ScrollView style={{ paddingHorizontal: 16, paddingBottom: 48 }}>
-      <View style={{ marginBottom: 32 }}>
+    <ScrollView style={styles.container}>
+      <View style={styles.headerContainer}>
         <Text variant='headlineLarge'>{announcement.subject}</Text>
-        <View style={{ flexDirection: 'row' }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginRight: 8,
-            }}
-          >
+        <View style={styles.subHeaderContainer}>
+          <View style={[styles.subHeaderDetailsContainer, styles.createdAt]}>
             <Icon source='clock-outline' />
             <Text
               variant='bodyMedium'
-              style={{ marginLeft: 4 }}
+              style={styles.subHeaderDetailsText}
             >
               {dayjs(announcement.createdAt).locale('id').format('DD MMM YYYY')}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={styles.subHeaderDetailsContainer}>
             <Icon source='account-outline' />
             <Text
               variant='bodyMedium'
-              style={{ marginLeft: 4 }}
+              style={styles.subHeaderDetailsText}
             >
               {announcement.author.name}
             </Text>
@@ -146,10 +140,10 @@ export default function AnnouncementDetailScreen() {
         source={{ html: announcement.body }}
       />
       {announcement.attachments.length > 0 && (
-        <View style={{ marginTop: 64 }}>
+        <View style={styles.attachmentContainer}>
           <Text
             variant='titleSmall'
-            style={{ marginBottom: 4 }}
+            style={styles.label}
           >
             Lampiran
           </Text>
@@ -169,7 +163,7 @@ export default function AnnouncementDetailScreen() {
         <View style={{ marginTop: 16, marginBottom: 96 }}>
           <Text
             variant='titleSmall'
-            style={{ marginBottom: 4 }}
+            style={styles.label}
           >
             Tag
           </Text>
@@ -191,9 +185,14 @@ export default function AnnouncementDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 16 },
-  title: { marginBottom: 4 },
-  attachmentContainer: { rowGap: 4 },
+  container: { paddingHorizontal: 16, paddingBottom: 48 },
+  headerContainer: { marginBottom: 32 },
+  subHeaderContainer: { flexDirection: 'row' },
+  subHeaderDetailsContainer: { flexDirection: 'row', alignItems: 'center' },
+  subHeaderDetailsText: { marginLeft: 4 },
+  createdAt: { marginRight: 8 },
+  attachmentContainer: { marginTop: 64 },
+  label: { marginBottom: 4 },
   chipContainer: {
     alignSelf: 'flex-start',
     flexDirection: 'row',

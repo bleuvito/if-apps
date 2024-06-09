@@ -55,7 +55,6 @@ export default function AnnouncementHistoryScreen() {
                   variant='bodyMedium'
                   numberOfLines={2}
                   style={{ marginBottom: 8 }}
-                  // style={styles.snippet}
                 >
                   {item.snippet}
                 </Text>
