@@ -1,11 +1,12 @@
+import { useCallback } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-import TagList from './TagList';
+import TagFieldList from './TagFieldList';
 
 export default function TagField({ control, name, bottomSheetRef }) {
-  function handleOpenTagBottomSheet() {
-    bottomSheetRef?.current.present();
-  }
+  const handleOpenTagBottomSheet = useCallback(() => {
+    bottomSheetRef.current?.present();
+  }, [bottomSheetRef]);
 
   return (
     <View>
@@ -24,7 +25,7 @@ export default function TagField({ control, name, bottomSheetRef }) {
           Tambah
         </Button>
       </View>
-      <TagList
+      <TagFieldList
         control={control}
         name={name}
       />

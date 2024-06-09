@@ -13,7 +13,6 @@ export default function TagChip({ id, name, selectedTags, setSelectedTags }) {
       closeIcon='close'
       ellipsizeMode='middle'
       icon='tag'
-      // style={{ alignSelf: 'flex-start' }}
       onClose={() => handleDeleteTag()}
     >
       <Text>{name}</Text>

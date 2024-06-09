@@ -1,12 +1,13 @@
 import { useController } from 'react-hook-form';
 import { Card, useTheme } from 'react-native-paper';
-import TagChip from './TagChip';
+import TagFieldListItem from './TagFieldListItem';
 
-export default function TagList({ control, name }) {
+export default function TagFieldList({ control, name }) {
   const theme = useTheme();
   const {
     field: { value: selectedTags, onChange: setSelectedTags },
   } = useController({ control, name });
+
   return (
     <Card
       mode='outlined'
@@ -15,7 +16,7 @@ export default function TagList({ control, name }) {
       <Card.Content style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
         {selectedTags.map((selectedTag) => {
           return (
-            <TagChip
+            <TagFieldListItem
               key={selectedTag.id}
               id={selectedTag.id}
               name={selectedTag.name}
