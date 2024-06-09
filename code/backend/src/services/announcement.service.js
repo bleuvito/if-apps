@@ -1,14 +1,13 @@
 import express from 'express';
 
-import { resourcesettings } from 'googleapis/build/src/apis/resourcesettings/index.js';
 import { getAnnouncementHistoryDetails } from '../models/announcement-history.get.js';
 import { listAnnouncementHistory } from '../models/announcement-history.list.js';
 import { createAnnouncement } from '../models/announcement.create.js';
 import { deleteAnnouncement } from '../models/announcement.delete.js';
 import { getAnnouncement } from '../models/announcement.get.js';
 import { listAnnouncement } from '../models/announcement.list.js';
+import { patchAnnouncement } from '../models/announcement.patch.js';
 import { pinAnnouncement } from '../models/announcement.pin.js';
-import { putAnnouncement } from '../models/announcement.put.js';
 import { verify } from '../models/authentication.js';
 import { upload } from '../utils/helpers.js';
 
@@ -46,13 +45,14 @@ AnnouncementService.get('/', verify('all'), async (req, res, next) => {
   }
 });
 
-AnnouncementService.put(
+AnnouncementService.patch(
   '/:id',
   verify(['DOSEN', 'KALAB', 'KAPRODI', 'KAJUR', 'ADMIN']),
   upload.array('attachments'),
   async (req, res, next) => {
+    console.log('PATCH IS HIT');
     try {
-      const result = await putAnnouncement(req);
+      const result = await patchAnnouncement(req);
       res.json(result);
     } catch (error) {
       next(error);

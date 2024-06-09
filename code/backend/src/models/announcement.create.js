@@ -19,49 +19,55 @@ async function createAnnouncement(args) {
   const refreshToken = await getRefreshToken(clientType, user.id);
 
   let emailRecipient = recipient;
-  if (user.role !== 'ADMIN') {
-    const adminEmails = await prisma.user.findMany({
-      where: {
-        role: 'ADMIN',
-      },
-      select: {
-        email: true,
-      },
-    });
+  // if (user.role !== 'ADMIN') {
+  const adminEmails = await prisma.user.findMany({
+    where: {
+      role: 'ADMIN',
+    },
+    select: {
+      email: true,
+    },
+  });
 
+  if (adminEmails.length > 0) {
     const parsedAdminEmails =
       adminEmails.map((obj) => obj.email).join(',') + ',' + emailRecipient;
     emailRecipient = parsedAdminEmails;
   }
-  if (user.role !== 'KAJUR') {
-    const kajurEmails = await prisma.user.findMany({
-      where: {
-        role: 'KAJUR',
-      },
-      select: {
-        email: true,
-      },
-    });
+  // }
+  // if (user.role !== 'KAJUR') {
+  const kajurEmails = await prisma.user.findMany({
+    where: {
+      role: 'KAJUR',
+    },
+    select: {
+      email: true,
+    },
+  });
 
+  if (kajurEmails.length > 0) {
     const parsedKajurEmails =
       kajurEmails.map((obj) => obj.email).join(',') + ',' + emailRecipient;
     emailRecipient = parsedKajurEmails;
   }
+  // }
 
-  if (user.role !== 'KAPRODI') {
-    const kaprodiEmails = await prisma.user.findMany({
-      where: {
-        role: 'KAPRODI',
-      },
-      select: {
-        email: true,
-      },
-    });
+  // if (user.role !== 'KAPRODI') {
+  const kaprodiEmails = await prisma.user.findMany({
+    where: {
+      role: 'KAPRODI',
+    },
+    select: {
+      email: true,
+    },
+  });
 
+  if (kaprodiEmails.length > 0) {
     const parsedKaprodiEmails =
       kaprodiEmails.map((obj) => obj.email).join(',') + ',' + emailRecipient;
     emailRecipient = parsedKaprodiEmails;
   }
+  // }
 
   try {
     const uploadResponse = await uploadAttachments(

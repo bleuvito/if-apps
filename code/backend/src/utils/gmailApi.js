@@ -1,5 +1,8 @@
+import { PrismaClient } from '@prisma/client';
 import { google } from 'googleapis';
 import { getReadyOauth2Client } from './googleOAuth2Client.js';
+
+const prisma = new PrismaClient();
 
 async function replyMessage(
   clientType,
@@ -8,7 +11,8 @@ async function replyMessage(
   email,
   recipient,
   subject,
-  body
+  body,
+  gmailId
 ) {
   const oAuth2Client = getReadyOauth2Client(clientType, refreshToken);
 
@@ -18,10 +22,9 @@ async function replyMessage(
     data: { messages: emailList },
   } = await gmail.users.messages.list({
     userId: 'me',
-    q: `subject:${subject}`,
+    q: `rfc822msgid:${gmailId}`,
   });
 
-  // console.log('recipinte', emailList);
   const {
     data: { messages: threadMessages },
   } = await gmail.users.threads.get({

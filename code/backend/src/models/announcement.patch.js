@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { getMessageMetadata, replyMessage } from '../utils/gmailApi.js';
-import { getReadyOauth2Client } from '../utils/googleOAuth2Client.js';
 import {
   generateAttachmentUrls,
   getRefreshToken,
@@ -9,13 +8,15 @@ import {
 
 const prisma = new PrismaClient();
 
-async function putAnnouncement(args) {
+async function patchAnnouncement(args) {
   const {
     locals: { user, clientType },
     params: { id },
     body: requestBody,
     files: attachments,
   } = args;
+
+  console.log('attachments', attachments);
 
   const { pin, recipient, subject, body, tags } = requestBody;
   const refreshToken = await getRefreshToken(clientType, user.id);
@@ -49,7 +50,6 @@ async function putAnnouncement(args) {
             isLatest: true,
           },
         },
-        gmailThreadId: true,
       },
       where: {
         id,
@@ -57,13 +57,11 @@ async function putAnnouncement(args) {
     });
 
     const {
-      gmailThreadId,
       bodies: [latestMessage],
     } = announcementHeader;
 
     let from = latestMessage.author.email;
     let to = recipient;
-    console.log('recipient2', recipient.includes(user.email));
     if (recipient.includes(user.email)) {
       const emailArray = recipient.split(',');
       console.log('emailArray', recipient);
@@ -80,13 +78,18 @@ async function putAnnouncement(args) {
       user.email,
       to,
       subject,
-      emailContent
+      emailContent,
+      latestMessage.gmailId
     );
 
     const gmailGetResponse = await getMessageMetadata(
       clientType,
       refreshToken,
       gmailSendResponse.id
+    );
+
+    const gmailId = gmailGetResponse.payload.headers.find(
+      (obj) => obj.name.toLowerCase() === 'message-id'
     );
 
     await prisma.announcementBody.update({
@@ -103,31 +106,25 @@ async function putAnnouncement(args) {
         id,
       },
       data: {
-        isPinned: JSON.parse(pin),
-        recipient: to,
         tags: {
           connect: JSON.parse(tags),
         },
         bodies: {
           create: {
-            gmailId: gmailGetResponse.id,
-            body,
-            snippet: gmailGetResponse.snippet,
-            attachments: {
-              createMany: {
-                data: transformedAttachments,
-              },
-            },
+            gmailId: gmailId.value,
             author: {
               connect: {
                 id: user.id,
               },
             },
-          },
-        },
-        author: {
-          connect: {
-            id: user.id,
+            recipient: to,
+            snippet: gmailGetResponse.snippet,
+            body,
+            attachments: {
+              createMany: {
+                data: transformedAttachments,
+              },
+            },
           },
         },
         updatedAt: new Date(),
@@ -137,8 +134,9 @@ async function putAnnouncement(args) {
     const payload = announcement;
     return payload;
   } catch (error) {
+    console.error(error);
     throw new Error(error);
   }
 }
 
-export { putAnnouncement };
+export { patchAnnouncement };
