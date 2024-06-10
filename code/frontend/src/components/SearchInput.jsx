@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
 import { Searchbar } from 'react-native-paper';
 import { useDebounce } from '../hooks/useDebounce';
 
@@ -9,6 +10,12 @@ export default function SearchInput({ setSearch, itemToSearchFor }) {
   useEffect(() => {
     setSearch(debouncedSearchQuery);
   }, [debouncedSearchQuery]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setSearchQuery('');
+    }, [])
+  );
 
   return (
     <Searchbar

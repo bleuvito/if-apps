@@ -4,6 +4,7 @@ import { Chip } from 'react-native-paper';
 
 import { useDebounce } from '../../hooks/useDebounce';
 // import TagBottomSheet from '../TagBottomSheet';
+import { useFocusEffect } from 'expo-router';
 import SelectedTagList from './SelectedTagList';
 import TagBottomSheet from './TagBottomSheet';
 
@@ -20,6 +21,12 @@ export default function TagFilter({ setTags }) {
   useEffect(() => {
     setTags(debouncedSelectedTags);
   }, [debouncedSelectedTags]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setSelectedTags([]);
+    }, [setSelectedTags])
+  );
 
   return (
     <View style={styles.container}>
