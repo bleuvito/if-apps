@@ -1,19 +1,16 @@
-import axios from 'axios';
 import { Redirect, router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { ActivityIndicator, FAB, Text } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { FAB } from 'react-native-paper';
 
-import LoadingIndicator from '../../../components/LoadingIndicator';
-import TagCard from '../../../components/tag/Card';
-import TagSearchInput from '../../../components/tag/TagSearchInput';
+import SearchInput from '../../../components/SearchInput';
+import TagList from '../../../components/tag/TagList';
 import { useSession } from '../../../providers/SessionProvider';
 
 export default function TagScreen() {
-  const { getRole, session } = useSession();
-  const [tags, setTags] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+  const { getRole } = useSession();
+
+  const [search, setSearch] = useState('');
 
   const role = getRole();
 
@@ -21,47 +18,21 @@ export default function TagScreen() {
     return <Redirect href={'/'} />;
   }
 
-  async function getTags() {
-    setIsLoading(true);
-    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag`;
-    const { data } = await axios.get(getUri, {
-      headers: { Authorization: `Bearer ${session}` },
-    });
-    setTags(data);
-    setIsLoading(false);
-  }
-
   useFocusEffect(
     useCallback(() => {
-      getTags();
+      setSearch('');
     }, [])
   );
 
-  async function handleRefresh() {
-    setRefreshing(true);
-    await getTags();
-    setRefreshing(false);
-  }
-
   return (
     <>
-      <View style={{ paddingHorizontal: 16, paddingBottom: 16 }}>
-        <TagSearchInput setTags={setTags} />
-      </View>
-      {isLoading ? (
-        <LoadingIndicator />
-      ) : (
-        <FlatList
-          data={tags}
-          contentContainerStyle={styles.contentContainer}
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
-          keyExtractor={(tag, index) => tag.id}
-          renderItem={({ item }) => {
-            return <TagCard tag={item} />;
-          }}
+      <View style={styles.searchContainer}>
+        <SearchInput
+          setSearch={setSearch}
+          itemToSearchFor='tag pengumuman'
         />
-      )}
+      </View>
+      <TagList search={search} />
       <FAB
         icon='plus'
         style={styles.fab}
@@ -72,16 +43,11 @@ export default function TagScreen() {
 }
 
 const styles = StyleSheet.create({
+  searchContainer: { paddingHorizontal: 16, paddingBottom: 16 },
   fab: {
     position: 'absolute',
     margin: 16,
     right: 0,
     bottom: 0,
-  },
-  contentContainer: {
-    gap: 16,
-    padding: 16,
-    paddingTop: 8,
-    paddingBottom: 48,
   },
 });
