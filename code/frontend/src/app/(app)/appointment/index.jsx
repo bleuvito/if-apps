@@ -2,7 +2,7 @@ import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { FAB } from 'react-native-paper';
-import { TabsProvider } from 'react-native-paper-tabs';
+import { TabsProvider, useTabNavigation } from 'react-native-paper-tabs';
 
 import AppointmentListControl from '../../../components/appointment/AppointmentListControl';
 import AppointmentTabs from '../../../components/appointment/AppointmentTabs';
@@ -11,6 +11,14 @@ export default function AppointmentScreen() {
   const [type, setType] = useState('');
   const [search, setSearch] = useState('');
   const [statuses, setStatuses] = useState([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setType('');
+      setSearch('');
+      setStatuses([]);
+    }, [])
+  );
 
   return (
     <TabsProvider defaultIndex={0}>

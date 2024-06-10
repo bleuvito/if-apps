@@ -10,7 +10,7 @@ export default function AppointmentTabs({
 }) {
   return (
     <>
-      <Tabs>
+      <Tabs disableSwipe={true}>
         <TabScreen
           label='Semua'
           onPress={() => setType('')}

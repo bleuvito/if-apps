@@ -1,3 +1,4 @@
+import { useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Chip } from 'react-native-paper';
@@ -18,6 +19,12 @@ export default function AppointmentStatusFilter({ setStatuses }) {
   useEffect(() => {
     setStatuses(debouncedSelectedStatuses);
   }, [debouncedSelectedStatuses]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setSelectedStatuses([]);
+    }, [])
+  );
 
   return (
     <View style={{ flexDirection: 'row' }}>
