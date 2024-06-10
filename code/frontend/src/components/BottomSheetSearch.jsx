@@ -1,11 +1,15 @@
 import { StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
-export default function TagBottomSheetSearch({ search, setSearch }) {
+export default function BottomSheetSearch({
+  search,
+  setSearch,
+  itemToSearchFor,
+}) {
   return (
     <TextInput
       mode='outlined'
-      placeholder='Cari tag'
+      placeholder={`Cari ${itemToSearchFor}`}
       value={search}
       onChangeText={(text) => setSearch(text)}
       style={styles.search}

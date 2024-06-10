@@ -8,7 +8,7 @@ import {
   FormLoading,
   useFormLoading,
 } from '../../../../components/FormLoading';
-import AppointmentForm from '../../../../components/appointment/Form';
+import AppointmentForm from '../../../../components/appointment/AppointmentForm';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function AppointmentEdit() {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 import { useSession } from '../../providers/SessionProvider';
 import ListEmpty from '../ListEmpty';
@@ -72,7 +72,7 @@ export default function AnnouncementList({ subject, tags }) {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    flex: 1,
+    flexGrow: 1,
     gap: 16,
     padding: 16,
     paddingBottom: 48,

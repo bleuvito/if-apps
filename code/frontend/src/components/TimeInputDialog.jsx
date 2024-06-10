@@ -1,20 +1,19 @@
 import { useCallback, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-import {
-  Button,
-  Dialog,
-  Portal,
-  Text,
-  TextInput,
-  useTheme,
-} from 'react-native-paper';
+import { Button, Dialog, Portal, Text, useTheme } from 'react-native-paper';
 import TimeInput from './TimeInput';
 import TimeInputDivider from './TimeInputDivider';
 
-export default function TimeInputDialog({ visible, onHide, onConfirm }) {
+export default function TimeInputDialog({
+  currHour,
+  currMinute,
+  visible,
+  onHide,
+  onConfirm,
+}) {
   const theme = useTheme();
-  const [hour, setHour] = useState('8');
-  const [minute, setMinute] = useState('0');
+  const [hour, setHour] = useState(currHour || '7');
+  const [minute, setMinute] = useState(currMinute || '0');
 
   const handleHide = useCallback(() => {
     onHide(false);
@@ -43,7 +42,7 @@ export default function TimeInputDialog({ visible, onHide, onConfirm }) {
   };
 
   const handleHourChange = (operator) => {
-    handleChange(1, operator, hour, 8, 17, setHour);
+    handleChange(1, operator, hour, 7, 18, setHour);
   };
 
   const handleMinuteChange = (operator) => {
@@ -64,7 +63,7 @@ export default function TimeInputDialog({ visible, onHide, onConfirm }) {
         ]}
       >
         <Dialog.Content>
-          <Text>Select time</Text>
+          <Text>Pilih waktu</Text>
           <View style={[styles.inputContainer]}>
             <TimeInput
               onChange={handleHourChange}

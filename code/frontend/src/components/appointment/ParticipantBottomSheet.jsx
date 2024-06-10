@@ -5,29 +5,27 @@ import {
 } from '@gorhom/bottom-sheet';
 import { useCallback, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import BottomSheetSearch from '../BottomSheetSearch';
-import TagBottomSheetList from './TagBottomSheetList';
 
-export default function TagBottomSheet({
+import BottomSheetSearch from '../BottomSheetSearch';
+import ParticipantBottomSheetList from './ParticipantBottomSheetList';
+
+export default function ParticipantBottomSheet({
+  selectedParticipant,
+  setSelectedParticipant,
   bottomSheetRef,
-  selectedTags,
-  setSelectedTags,
 }) {
-  const snapPoints = useMemo(() => ['25%', '60%', '90%'], []);
+  const snapPoints = useMemo(() => ['50%', '75%'], []);
   const topInset = useMemo(() => 60, []);
 
   const [search, setSearch] = useState('');
 
-  const renderBackdrop = useCallback(
-    (props) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-      />
-    ),
-    []
-  );
+  const renderBackdrop = useCallback((props) => (
+    <BottomSheetBackdrop
+      {...props}
+      disappearsOnIndex={-1}
+      appearsOnIndex={0}
+    />
+  ));
 
   const resetSearch = useCallback(
     (index) => {
@@ -44,8 +42,6 @@ export default function TagBottomSheet({
       snapPoints={snapPoints}
       index={0}
       topInset={topInset}
-      overDragResistanceFactor={10}
-      animateOnMount={true}
       backdropComponent={renderBackdrop}
       onChange={resetSearch}
     >
@@ -54,13 +50,13 @@ export default function TagBottomSheet({
           <BottomSheetSearch
             search={search}
             setSearch={setSearch}
-            itemToSearchFor='tag'
+            itemToSearchFor='partisipan'
           />
         </View>
-        <TagBottomSheetList
+        <ParticipantBottomSheetList
           search={search}
-          selectedTags={selectedTags}
-          setSelectedTags={setSelectedTags}
+          setSelectedParticipant={setSelectedParticipant}
+          selectedParticipant={selectedParticipant}
         />
       </BottomSheetView>
     </BottomSheetModal>
@@ -68,9 +64,14 @@ export default function TagBottomSheet({
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    justifyContent: 'center',
+    backgroundColor: 'grey',
+  },
   contentContainer: {
     flex: 1,
-    alignItems: 'center',
   },
   searchContainer: { width: '100%', padding: 16 },
 });

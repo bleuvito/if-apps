@@ -1,6 +1,6 @@
 import { Checkbox } from 'react-native-paper';
 
-export default function ParticipantCheckbox({
+export default function ParticipantBottomSheetListItem({
   participant,
   selectedParticipant,
   setSelectedParticipant,

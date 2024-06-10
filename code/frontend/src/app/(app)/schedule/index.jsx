@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Calendar } from 'react-native-big-calendar';
 import { FAB, IconButton, Text } from 'react-native-paper';
-import CalendarToolbar from '../../../components/schedule/CalendarToolbar';
+import CalendarToolbar from '../../../components/CalendarToolbar';
 import Event from '../../../components/schedule/Event';
 // import { dayInt } from '../../../constants';
 import ScheduleLegend from '../../../components/schedule/ScheduleLegend';

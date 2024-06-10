@@ -7,7 +7,7 @@ import { Calendar } from 'react-native-big-calendar';
 import { useWatch } from 'react-hook-form';
 import { dayInt } from '../../constants';
 import { useSession } from '../../providers/SessionProvider';
-import CalendarToolbar from '../schedule/CalendarToolbar';
+import CalendarToolbar from '../CalendarToolbar';
 import Event from '../schedule/Event';
 
 export default function RoomCalendar({ roomId, control }) {

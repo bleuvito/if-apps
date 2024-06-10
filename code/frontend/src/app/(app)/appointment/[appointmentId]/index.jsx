@@ -1,10 +1,12 @@
+import { A } from '@expo/html-elements';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import {
   useFocusEffect,
   useLocalSearchParams,
   useNavigation,
 } from 'expo-router';
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
   ActivityIndicator,
@@ -14,14 +16,12 @@ import {
   Text,
 } from 'react-native-paper';
 
-import { A } from '@expo/html-elements';
-import dayjs from 'dayjs';
 import {
   FormLoading,
   useFormLoading,
 } from '../../../../components/FormLoading';
-import AppointmentResponseButton from '../../../../components/appointment/BottomButtons';
-import AppointmentDetailsHeaderRight from '../../../../components/appointment/HeaderRight';
+import AppointmentDetailsHeaderRight from '../../../../components/appointment/AppointmentDetailsHeaderRight';
+import AppointmentResponseButton from '../../../../components/appointment/ResponseButtons';
 import AppointmentStatusChip from '../../../../components/appointment/StatusChip';
 import AppointmentDetailsText from '../../../../components/appointment/Text';
 import { getTimeDuration } from '../../../../helpers/utils';
@@ -95,8 +95,6 @@ export default function AppointmentDetailsScreen() {
           Authorization: `Bearer ${session}`,
         },
       });
-
-      // console.log(deletedAppointment);
     } catch (error) {
       console.error('Error deleting appointment: ', error);
     } finally {

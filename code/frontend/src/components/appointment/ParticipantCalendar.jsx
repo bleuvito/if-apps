@@ -1,6 +1,5 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import id from 'dayjs/locale/id';
 import { useCallback, useEffect, useState } from 'react';
 import { Calendar } from 'react-native-big-calendar';
 
@@ -8,11 +7,11 @@ import { useWatch } from 'react-hook-form';
 import { View } from 'react-native';
 import { dayInt } from '../../constants';
 import { useSession } from '../../providers/SessionProvider';
-import CalendarToolbar from '../schedule/CalendarToolbar';
+import CalendarToolbar from '../CalendarToolbar';
 import Event from '../schedule/Event';
 import ScheduleLegend from '../schedule/ScheduleLegend';
 
-export default function ParticipantCalendar({ participantId, control }) {
+export default function ParticipantCalendar({ control }) {
   const { session } = useSession();
   const value = useWatch({
     control,
@@ -27,7 +26,7 @@ export default function ParticipantCalendar({ participantId, control }) {
   const [events, setEvents] = useState([]);
 
   const getDateRange = () => {
-    const firstDay = dayjs(currDate).locale(id).day(0);
+    const firstDay = dayjs(currDate).locale('id').day(0);
     const lastDay = dayjs(firstDay).add(6, 'day');
 
     return [firstDay, lastDay];
@@ -65,7 +64,11 @@ export default function ParticipantCalendar({ participantId, control }) {
           return { ...event, start: newStart, end: newEnd };
         }
 
-        return { ...event, start: dayjs(event.start), end: dayjs(event.end) };
+        return {
+          ...event,
+          start: dayjs(event.start),
+          end: dayjs(event.end),
+        };
       });
 
       setEvents(fetchedEvents);
@@ -106,14 +109,16 @@ export default function ParticipantCalendar({ participantId, control }) {
         <ScheduleLegend type='Lainnya' />
       </View>
       <Calendar
+        locale='en'
+        height={1}
         date={currDate}
         activeDate={value}
         events={events}
         renderEvent={eventRenderer}
+        onSwipeEnd={() => {}}
+        swipeEnabled={false}
         mode='week'
         weekStartsOn={0}
-        height={1}
-        onSwipeEnd={false}
       />
     </>
   );

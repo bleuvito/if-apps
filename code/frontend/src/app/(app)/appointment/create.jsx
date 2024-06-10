@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { FormError, useFormError } from '../../../components/FormError';
 import { FormLoading, useFormLoading } from '../../../components/FormLoading';
-import AppointmentForm from '../../../components/appointment/Form';
+import AppointmentForm from '../../../components/appointment/AppointmentForm';
 import { useSession } from '../../../providers/SessionProvider';
 
 export default function AppointmentCreate() {
@@ -16,7 +16,7 @@ export default function AppointmentCreate() {
     status: '',
     participant: {},
     organizer: {
-      id: 'asda',
+      id: 'id',
     },
   };
   const {
@@ -36,9 +36,8 @@ export default function AppointmentCreate() {
   const handleSubmit = async (data) => {
     const postUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment`;
 
-    formLoadingShow();
-
     try {
+      formLoadingShow();
       const { data: response } = await axios.post(postUri, data, {
         headers: {
           Authorization: `Bearer ${session}`,
@@ -60,7 +59,6 @@ export default function AppointmentCreate() {
         defaultValues={defaultValues}
         onSubmit={handleSubmit}
       />
-
       <FormLoading visible={formLoadingVisible} />
       <FormError
         visible={formErrorVisible}

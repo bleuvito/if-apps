@@ -70,12 +70,6 @@ export default function AppointmentTabList({
     }, [searchType])
   );
 
-  useFocusEffect(
-    useCallback(() => {
-      goTo(0);
-    }, [])
-  );
-
   useEffect(() => {
     if (type === searchType) {
       getAppointments();
@@ -100,5 +94,5 @@ export default function AppointmentTabList({
 }
 
 const styles = StyleSheet.create({
-  contectContainer: { flex: 1, gap: 16, padding: 16, paddingBottom: 48 },
+  contectContainer: { flexGrow: 1, gap: 16, padding: 16, paddingBottom: 48 },
 });

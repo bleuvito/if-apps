@@ -7,7 +7,7 @@ import { StyleSheet, View } from 'react-native';
 import { Calendar } from 'react-native-big-calendar';
 import { FAB } from 'react-native-paper';
 
-import CalendarToolbar from '../../../../../components/schedule/CalendarToolbar';
+import CalendarToolbar from '../../../../../components/CalendarToolbar';
 import Event from '../../../../../components/schedule/Event';
 import { dayInt } from '../../../../../constants';
 import { useSession } from '../../../../../providers/SessionProvider';

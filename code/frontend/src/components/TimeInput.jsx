@@ -1,6 +1,5 @@
-import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { IconButton, Text, TextInput, useTheme } from 'react-native-paper';
+import { IconButton, TextInput, useTheme } from 'react-native-paper';
 
 export default function TimeInput({ onChange, value }) {
   const theme = useTheme();

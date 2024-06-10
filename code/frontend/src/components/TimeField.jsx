@@ -1,11 +1,19 @@
+import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
-import { Text, TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import InputLabel from './InputLabel';
 import TimeInputDialog from './TimeInputDialog';
 
 export default function TimeField({ title, value, onChange }) {
   const [dialogVisible, setDialogVisible] = useState(false);
+
+  let currHour = '7',
+    currMinute = '0';
+  if (value) {
+    currHour = dayjs(value).locale('id').format('HH');
+    currMinute = dayjs(value).locale('id').format('mm');
+  }
 
   const handleShow = useCallback(() => {
     setDialogVisible(true);
@@ -24,11 +32,7 @@ export default function TimeField({ title, value, onChange }) {
   };
 
   function formatTime(dateTime) {
-    const time = new Date(dateTime);
-    const hours = time.getHours().toString().padStart(2, '0');
-    const minutes = time.getMinutes().toString().padStart(2, '0');
-
-    return `${hours}:${minutes}`;
+    return dayjs(dateTime).locale('id').format('HH:mm');
   }
 
   return (
@@ -51,6 +55,8 @@ export default function TimeField({ title, value, onChange }) {
         }
       />
       <TimeInputDialog
+        currHour={currHour}
+        currMinute={currMinute}
         visible={dialogVisible}
         onHide={handleHide}
         onConfirm={handleConfirm}

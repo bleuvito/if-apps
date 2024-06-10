@@ -1,10 +1,9 @@
 import dayjs from 'dayjs';
-import id from 'dayjs/locale/id';
 import { StyleSheet, View } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
 
 export default function CalendarToolbar({ selectedDate, setSelectedDate }) {
-  const handlePress = async (operator) => {
+  const handlePress = (operator) => {
     const newDate = dayjs(selectedDate).locale('id').add(operator, 'week');
     setSelectedDate(newDate);
   };
@@ -17,7 +16,9 @@ export default function CalendarToolbar({ selectedDate, setSelectedDate }) {
           handlePress(-1);
         }}
       />
-      <Text variant='titleLarge'>{dayjs(selectedDate).format('MMM YYYY')}</Text>
+      <Text variant='titleLarge'>
+        {dayjs(selectedDate).locale('id').format('MMM YYYY')}
+      </Text>
       <IconButton
         icon='chevron-right'
         onPress={() => {
@@ -34,9 +35,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     columnGap: 64,
-  },
-  debug: {
-    borderWidth: 1,
-    borderColor: 'red',
   },
 });

@@ -3,11 +3,12 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Dialog, Portal, TextInput } from 'react-native-paper';
+
 import { useSession } from '../../providers/SessionProvider';
 import { FormError, useFormError } from '../FormError';
 import { FormLoading, useFormLoading } from '../FormLoading';
 
-export default function BottomButtons({ status, userId, organizerId }) {
+export default function ResponseButtons({ status, userId, organizerId }) {
   const { session } = useSession();
   const { appointmentId } = useLocalSearchParams();
 
