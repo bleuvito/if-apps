@@ -8,22 +8,13 @@ import {
 } from 'expo-router';
 import { useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import {
-  ActivityIndicator,
-  Button,
-  Dialog,
-  Portal,
-  Text,
-} from 'react-native-paper';
+import { Text } from 'react-native-paper';
 
-import {
-  FormLoading,
-  useFormLoading,
-} from '../../../../components/FormLoading';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 import AppointmentDetailsHeaderRight from '../../../../components/appointment/AppointmentDetailsHeaderRight';
-import AppointmentResponseButton from '../../../../components/appointment/ResponseButtons';
-import AppointmentStatusChip from '../../../../components/appointment/StatusChip';
-import AppointmentDetailsText from '../../../../components/appointment/Text';
+import AppointmentDetailsText from '../../../../components/appointment/AppointmentDetailsText';
+import AppointmentStatusChip from '../../../../components/appointment/AppointmentStatusChip';
+import ResponseButtons from '../../../../components/appointment/ResponseButtons';
 import { getTimeDuration } from '../../../../helpers/utils';
 import { useSession } from '../../../../providers/SessionProvider';
 
@@ -48,16 +39,8 @@ export default function AppointmentDetailsScreen() {
     updateAt: new Date(),
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [visible, setVisible] = useState(false);
   const navigation = useNavigation();
   const userId = getUserId();
-
-  const {
-    visible: formLoadingVisible,
-    showDialog: formLoadingShow,
-    hideDialog: formLoadingHide,
-    goBack,
-  } = useFormLoading();
 
   const getAppointDetails = async () => {
     setIsLoading(true);
@@ -77,41 +60,11 @@ export default function AppointmentDetailsScreen() {
     setIsLoading(false);
   };
 
-  function showDialog() {
-    setVisible(true);
-  }
-
-  function hideDialog() {
-    setVisible(false);
-  }
-
-  const handleDeleteAppointment = async () => {
-    const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
-
-    formLoadingShow();
-    try {
-      const { data: deletedAppointment } = await axios.delete(deleteUri, {
-        headers: {
-          Authorization: `Bearer ${session}`,
-        },
-      });
-    } catch (error) {
-      console.error('Error deleting appointment: ', error);
-    } finally {
-      hideDialog();
-      formLoadingHide();
-      goBack();
-    }
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
         return appointment?.organizer.id === userId ? (
-          <AppointmentDetailsHeaderRight
-            onPressDelete={showDialog}
-            status={appointment?.status}
-          />
+          <AppointmentDetailsHeaderRight status={appointment.status} />
         ) : null;
       },
     });
@@ -124,11 +77,7 @@ export default function AppointmentDetailsScreen() {
   );
 
   if (isLoading) {
-    return (
-      <View style={{ flex: 1, padding: 32 }}>
-        <ActivityIndicator size='large' />
-      </View>
-    );
+    return <LoadingIndicator />;
   }
 
   return (
@@ -190,24 +139,11 @@ export default function AppointmentDetailsScreen() {
           <Text variant='titleLarge'>{appointment?.declineReason}</Text>
         </View>
       )}
-      <AppointmentResponseButton
+      <ResponseButtons
         status={appointment?.status}
         organizerId={appointment?.organizer.id}
         userId={userId}
       />
-      <Portal>
-        <Dialog
-          visible={visible}
-          onDismiss={hideDialog}
-        >
-          <Dialog.Title>Hapus janji temu?</Dialog.Title>
-          <Dialog.Actions>
-            <Button onPress={hideDialog}>Batal</Button>
-            <Button onPress={handleDeleteAppointment}>Hapus</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-      <FormLoading visible={formLoadingVisible} />
     </View>
   );
 }

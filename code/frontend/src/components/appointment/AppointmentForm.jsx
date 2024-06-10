@@ -7,6 +7,7 @@ import { id, registerTranslation } from 'react-native-paper-dates';
 
 import { appointmentSchema } from '../../helpers/schemas';
 import { updateDateTime } from '../../helpers/utils';
+import { ConfirmationDialog, useConfirmation } from '../ConfirmationDialog';
 import InputHelper from '../InputHelper';
 import InputLabel from '../InputLabel';
 import TimeField from '../TimeField';
@@ -29,6 +30,9 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
     defaultValues,
     resolver: zodResolver(appointmentSchema),
   });
+
+  const { visible: confirmationVisible, showDialog: confirmationShowDialog } =
+    useConfirmation();
 
   const handlePresentParticipantModalPress = useCallback(() => {
     participantBottomSheetModalRef.current?.present();
@@ -229,9 +233,11 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
         <Button
           mode='outlined'
           style={{ flex: 1 }}
+          onPress={confirmationShowDialog}
         >
           Batal
         </Button>
+        <ConfirmationDialog visible={confirmationVisible} />
         <Button
           mode='contained'
           onPress={handleSubmit(handleFormSubmit)}

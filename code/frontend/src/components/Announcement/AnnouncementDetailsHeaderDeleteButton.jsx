@@ -3,15 +3,20 @@ import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Appbar, Button, Dialog, Portal } from 'react-native-paper';
 import { useSession } from '../../providers/SessionProvider';
+import { FormLoading, useFormLoading } from '../FormLoading';
 
-export default function AnnouncementDetailsHeaderDeleteButton({
-  showFormDialog,
-  hideFormDialog,
-  goBack,
-}) {
+export default function AnnouncementDetailsHeaderDeleteButton() {
+  const { appointmentId } = useLocalSearchParams();
+
   const { session } = useSession();
+  const {
+    visible: formDialogVisible,
+    hideDialog: hideFormDialog,
+    showDialog: showFormDialog,
+    goBack,
+  } = useFormLoading();
+
   const [visible, setVisible] = useState(false);
-  const { announcementId } = useLocalSearchParams();
 
   function showDialog() {
     setVisible(true);
@@ -22,7 +27,7 @@ export default function AnnouncementDetailsHeaderDeleteButton({
   }
 
   async function handleDeleteAnnouncement() {
-    const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
+    const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
     hideDialog();
     showFormDialog();
     try {
@@ -55,6 +60,7 @@ export default function AnnouncementDetailsHeaderDeleteButton({
           </Dialog.Actions>
         </Dialog>
       </Portal>
+      <FormLoading visible={formDialogVisible} />
     </>
   );
 }

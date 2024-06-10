@@ -1,11 +1,10 @@
-import { A } from '@expo/html-elements';
 import { MaterialIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
-import { Button, Card, Chip, Icon, Text } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { Card, Icon, Text } from 'react-native-paper';
 import { getTimeDuration } from '../../helpers/utils';
 import LeftCalendarComponent from '../LeftCalendarIconComponent';
-import AppointmentStatusChip from './StatusChip';
+import AppointmentStatusChip from './AppointmentStatusChip';
 
 export default function AppointmentListItem({ appointment }) {
   const {

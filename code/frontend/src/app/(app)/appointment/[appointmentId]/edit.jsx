@@ -1,13 +1,12 @@
 import axios from 'axios';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Text } from 'react-native-paper';
-import { id } from 'react-native-paper-dates';
 import { FormError, useFormError } from '../../../../components/FormError';
 import {
   FormLoading,
   useFormLoading,
 } from '../../../../components/FormLoading';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 import AppointmentForm from '../../../../components/appointment/AppointmentForm';
 import { useSession } from '../../../../providers/SessionProvider';
 
@@ -63,7 +62,7 @@ export default function AppointmentEdit() {
   }, []);
 
   if (isLoading) {
-    return <ActivityIndicator size='large' />;
+    return <LoadingIndicator />;
   }
 
   const handleSubmit = async (data) => {
