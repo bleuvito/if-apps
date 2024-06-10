@@ -39,6 +39,12 @@ export default function AnnouncementForm({
   return (
     <>
       <ScrollView style={styles.container}>
+        <Text style={styles.notice}>
+          <Text variant='titleMedium'>Perhatian!{'\n'}</Text>
+          Pengumuman yang dibuat akan dikirim juga pada Gmail dengan menggunakan
+          akun Anda. Lampiran akan diunggah ke Google Drive Anda dan akan
+          dimasukkan dalam folder 'IF Apps'
+        </Text>
         <Controller
           name='recipient'
           defaultValue=''
@@ -177,4 +183,5 @@ const styles = {
     paddingBottom: 96,
   },
   button: { flex: 1 },
+  notice: { marginBottom: 32 },
 };

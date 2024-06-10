@@ -30,7 +30,7 @@ export default function TagFilter({ setTags }) {
         onClose={handlePresentModalPress}
         style={styles.filterButton}
       >
-        Tag
+        Filter
       </Chip>
       <SelectedTagList
         selectedTags={selectedTags}
