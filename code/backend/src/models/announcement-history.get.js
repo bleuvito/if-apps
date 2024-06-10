@@ -11,12 +11,12 @@ async function getAnnouncementHistoryDetails(args) {
     const announcementHistoryDetails =
       await prisma.announcementHeader.findFirst({
         select: {
-          author: {
-            select: { name: true },
-          },
           subject: true,
           bodies: {
             select: {
+              author: {
+                select: { name: true },
+              },
               createdAt: true,
               body: true,
               attachments: true,

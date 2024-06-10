@@ -16,9 +16,6 @@ async function listAnnouncementHistory(args) {
             createdAt: true,
             snippet: true,
           },
-          where: {
-            isLatest: false,
-          },
           orderBy: {
             createdAt: 'desc',
           },
@@ -30,7 +27,6 @@ async function listAnnouncementHistory(args) {
     });
 
     const payload = announcementHistory;
-    // console.log(payload);
 
     return payload;
   } catch (error) {
