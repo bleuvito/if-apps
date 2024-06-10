@@ -7,7 +7,7 @@ import { getTimeDuration } from '../../helpers/utils';
 import LeftCalendarComponent from '../LeftCalendarIconComponent';
 import AppointmentStatusChip from './StatusChip';
 
-export default function AppointmentCard({ appointment }) {
+export default function AppointmentListItem({ appointment }) {
   const {
     id,
     status,

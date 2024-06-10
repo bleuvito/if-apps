@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import SelectedStatusListItem from './SelectedStatusListItem';
 
 export default function SelectedStatusList({
@@ -22,10 +22,14 @@ export default function SelectedStatusList({
   return (
     <FlatList
       data={selectedStatuses}
-      keyExtractor={(status, index) => index}
+      keyExtractor={(index) => index}
       renderItem={renderItem}
       horizontal={true}
-      contentContainerStyle={{ marginLeft: 8, paddingRight: 48, gap: 8 }}
+      contentContainerStyle={styles.contentContainer}
     />
   );
 }
+
+const styles = StyleSheet.create({
+  contentContainer: { marginLeft: 8, paddingRight: 48, gap: 8 },
+});

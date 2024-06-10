@@ -2,7 +2,12 @@ import { View } from 'react-native';
 import { TabScreen, Tabs } from 'react-native-paper-tabs';
 import AppointmentTabList from './AppointmentTabList';
 
-export default function AppointmentTabs({ appointments, setType }) {
+export default function AppointmentTabs({
+  setType,
+  searchType,
+  search,
+  status,
+}) {
   return (
     <>
       <Tabs>
@@ -11,7 +16,12 @@ export default function AppointmentTabs({ appointments, setType }) {
           onPress={() => setType('')}
         >
           <View style={{ flex: 1 }}>
-            <AppointmentTabList appointments={appointments} />
+            <AppointmentTabList
+              type={''}
+              searchType={searchType}
+              search={search}
+              status={status}
+            />
           </View>
         </TabScreen>
         <TabScreen
@@ -19,7 +29,12 @@ export default function AppointmentTabs({ appointments, setType }) {
           onPress={() => setType('participant')}
         >
           <View style={{ flex: 1 }}>
-            <AppointmentTabList appointments={appointments} />
+            <AppointmentTabList
+              type={'participant'}
+              searchType={searchType}
+              search={search}
+              status={status}
+            />
           </View>
         </TabScreen>
         <TabScreen
@@ -27,7 +42,12 @@ export default function AppointmentTabs({ appointments, setType }) {
           onPress={() => setType('organizer')}
         >
           <View style={{ flex: 1 }}>
-            <AppointmentTabList appointments={appointments} />
+            <AppointmentTabList
+              type={'organizer'}
+              searchType={searchType}
+              search={search}
+              status={status}
+            />
           </View>
         </TabScreen>
       </Tabs>

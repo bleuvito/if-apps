@@ -15,7 +15,6 @@ export default function StatusBottomSheet({
   const snapPoints = useMemo(() => ['25%', '60%', '90%'], []);
   const topInset = useMemo(() => 60, []);
 
-  // renders
   const renderBackdrop = useCallback(
     (props) => (
       <BottomSheetBackdrop

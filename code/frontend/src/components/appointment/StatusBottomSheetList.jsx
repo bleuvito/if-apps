@@ -1,6 +1,5 @@
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { useCallback, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
 import StatusBottomSheetListItem from './StatusBottomSheetListItem';
 
 export default function StatusBottomSheetList({
@@ -33,24 +32,9 @@ export default function StatusBottomSheetList({
   return (
     <BottomSheetFlatList
       data={statuses}
-      keyExtractor={(status, index) => index}
+      keyExtractor={(index) => index}
       renderItem={renderItem}
       style={{ width: '100%' }}
     />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 200,
-  },
-  contentContainer: {
-    backgroundColor: 'white',
-  },
-  itemContainer: {
-    padding: 6,
-    margin: 6,
-    backgroundColor: '#eee',
-  },
-});

@@ -1,18 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Chip } from 'react-native-paper';
 import { useDebounce } from '../../hooks/useDebounce';
 import SelectedStatusList from './SelectedStatusList';
 import StatusBottomSheet from './StatusBottomSheet';
 
 export default function AppointmentStatusFilter({ setStatuses }) {
-  const statusBottomSheetRef = useRef(null);
+  const bottomSheetRef = useRef(null);
 
   const [selectedStatuses, setSelectedStatuses] = useState([]);
   const debouncedSelectedStatuses = useDebounce(selectedStatuses, 600);
 
   const handlePresentModalPress = useCallback(() => {
-    statusBottomSheetRef.current?.present();
+    bottomSheetRef.current?.present();
   }, []);
 
   useEffect(() => {
@@ -26,19 +26,23 @@ export default function AppointmentStatusFilter({ setStatuses }) {
         closeIcon='menu-down'
         onPress={handlePresentModalPress}
         onClose={handlePresentModalPress}
-        style={{ alignSelf: 'flex-start' }}
+        style={styles.filterButton}
       >
-        Status
+        Filter
       </Chip>
       <SelectedStatusList
         selectedStatuses={selectedStatuses}
         setSelectedStatuses={setSelectedStatuses}
       />
       <StatusBottomSheet
-        bottomSheetRef={statusBottomSheetRef}
+        bottomSheetRef={bottomSheetRef}
         selectedStatuses={selectedStatuses}
         setSelectedStatuses={setSelectedStatuses}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  filterButton: { alignSelf: 'flex-start' },
+});

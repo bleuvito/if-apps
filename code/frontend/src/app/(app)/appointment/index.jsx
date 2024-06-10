@@ -3,29 +3,26 @@ import { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { TabsProvider } from 'react-native-paper-tabs';
+
 import AppointmentListControl from '../../../components/appointment/AppointmentListControl';
-import { useAppointmentList } from '../../../hooks/useAppointmentList';
-import { useSession } from '../../../providers/SessionProvider';
+import AppointmentTabs from '../../../components/appointment/AppointmentTabs';
 
 export default function AppointmentScreen() {
-  const { session } = useSession();
-  const [appointments, setAppointments] = useState([]);
-
-  const getAppointments = async () => {
-    setAppointments(await useAppointmentList(session, '', '', undefined));
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      getAppointments();
-    }, [])
-  );
+  const [type, setType] = useState('');
+  const [search, setSearch] = useState('');
+  const [statuses, setStatuses] = useState([]);
 
   return (
     <TabsProvider defaultIndex={0}>
       <AppointmentListControl
-        appointments={appointments}
-        setAppointments={setAppointments}
+        setSearch={setSearch}
+        setStatuses={setStatuses}
+      />
+      <AppointmentTabs
+        setType={setType}
+        searchType={type}
+        search={search}
+        status={statuses}
       />
       <FAB
         icon='plus'

@@ -80,11 +80,10 @@ export default function AppointmentEdit() {
       formLoadingHide();
       goBack();
     } catch (error) {
-      console.log(error);
+      console.error('Error editing tag: ', error);
       formLoadingHide();
       setMessage(error.response.data);
       formErrorShow();
-      // console.error('Error creating appointment', error);
     }
   };
 
