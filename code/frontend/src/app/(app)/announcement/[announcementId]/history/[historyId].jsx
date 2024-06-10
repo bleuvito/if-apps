@@ -21,26 +21,35 @@ export default function AnnouncementHistoryDetailsScreen() {
   const { width } = useWindowDimensions();
 
   const [announcementHistory, setAnnouncementHistory] = useState({
-    author: {
-      name: '',
-    },
     subject: '',
-    bodies: [{ createdAt: '', body: '', attachments: [] }],
+    bodies: [
+      {
+        createdAt: '',
+        body: '',
+        attachments: [],
+        author: {
+          name: '',
+        },
+      },
+    ],
   });
   const [isLoading, setIsLoading] = useState(false);
 
   async function getAnnouncementHistoryDetails() {
-    setIsLoading(true);
-
     const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}/history/${historyId}`;
-    const { data } = await axios.get(getUri, {
-      headers: {
-        Authorization: `Bearer ${session}`,
-      },
-    });
-    setAnnouncementHistory(data);
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(getUri, {
+        headers: {
+          Authorization: `Bearer ${session}`,
+        },
+      });
 
-    setIsLoading(false);
+      setAnnouncementHistory(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching announcement history details: ', error);
+    }
   }
 
   useEffect(() => {
@@ -52,21 +61,15 @@ export default function AnnouncementHistoryDetailsScreen() {
   }
 
   return (
-    <ScrollView style={{ paddingHorizontal: 16, paddingBottom: 48 }}>
-      <View style={{ marginBottom: 32 }}>
+    <ScrollView style={styles.container}>
+      <View style={styles.headerContainer}>
         <Text variant='headlineLarge'>{announcementHistory?.subject}</Text>
         <View style={{ flexDirection: 'row' }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginRight: 8,
-            }}
-          >
+          <View style={[styles.subheaderContainer, styles.createdAt]}>
             <Icon source='clock-outline' />
             <Text
               variant='bodyMedium'
-              style={{ marginLeft: 4 }}
+              style={styles.subheaderText}
             >
               {dayjs(announcementHistory?.bodies[0].createdAt)
                 .locale('id')
@@ -77,9 +80,9 @@ export default function AnnouncementHistoryDetailsScreen() {
             <Icon source='account-outline' />
             <Text
               variant='bodyMedium'
-              style={{ marginLeft: 4 }}
+              style={styles.subheaderText}
             >
-              {announcementHistory?.author?.name}
+              {announcementHistory?.bodies[0]?.author.name}
             </Text>
           </View>
         </View>
@@ -88,34 +91,45 @@ export default function AnnouncementHistoryDetailsScreen() {
         contentWidth={width}
         source={{ html: announcementHistory?.bodies[0].body }}
       />
-      <View style={{ marginTop: 64 }}>
-        <Text
-          variant='titleSmall'
-          style={{ marginBottom: 4 }}
-        >
-          Lampiran
-        </Text>
-        <View style={styles.chipContainer}>
-          {announcementHistory?.bodies[0]?.attachments.map(
-            (attachment, index) => (
-              <Chip
-                key={index}
-                icon='file'
-              >
-                <A href={attachment.webViewLink}>{attachment.name}</A>
-              </Chip>
-            )
-          )}
+      {announcementHistory?.bodies[0].attachments.length > 0 && (
+        <View style={styles.attachmentContainer}>
+          <Text
+            variant='titleSmall'
+            style={styles.title}
+          >
+            Lampiran
+          </Text>
+          <View style={styles.chipContainer}>
+            {announcementHistory?.bodies[0]?.attachments.map(
+              (attachment, index) => (
+                <Chip
+                  key={index}
+                  icon='file'
+                >
+                  <A href={attachment.webViewLink}>{attachment.name}</A>
+                </Chip>
+              )
+            )}
+          </View>
         </View>
-      </View>
+      )}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 16, rowGap: 32 },
+  container: { paddingHorizontal: 16, paddingBottom: 48 },
+  headerContainer: { marginBottom: 32 },
+  subheaderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  subheaderText: { marginLeft: 4 },
+  createdAt: {
+    marginRight: 8,
+  },
+  attachmentContainer: { marginTop: 64 },
   title: { marginBottom: 4 },
-  attachmentContainer: { rowGap: 4 },
   chipContainer: {
     alignSelf: 'flex-start',
     flexDirection: 'row',
