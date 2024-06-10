@@ -1,65 +1,55 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import { Controller, useForm } from 'react-hook-form';
-import { View } from 'react-native';
-import { Button, HelperText, Text, TextInput } from 'react-native-paper';
-import z from 'zod';
+import { StyleSheet, View } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
+
+import { tagSchema } from '../../helpers/schemas';
 import { ConfirmationDialog, useConfirmation } from '../ConfirmationDialog';
-// import { useSession } from '../../../providers/SessionProvider';
+import InputHelper from '../InputHelper';
+import InputLabel from '../InputLabel';
 
-const schema = z.object({
-  name: z.string().min(1),
-});
-
-export default function Form({ defaultValues, onSubmit }) {
+export default function TagForm({ onSubmit, defaultValues }) {
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues,
-    resolver: zodResolver(schema),
+    resolver: zodResolver(tagSchema),
   });
-
-  async function handleFormSubmit(data) {
-    onSubmit(data);
-  }
-
   const { visible: confirmationVisible, showDialog: confirmationShowDialog } =
     useConfirmation();
 
   return (
-    <View style={{ flex: 1, padding: 16 }}>
+    <View style={styles.container}>
       <Controller
         name='name'
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <View style={{ marginBottom: 16 }}>
-              <Text
-                variant='bodyMedium'
-                style={{ marginBottom: 4 }}
-              >
-                Nama
-              </Text>
+            <View style={styles.inputContainer}>
+              <InputLabel
+                isRequired={true}
+                title='Nama'
+              />
               <TextInput
                 mode='outlined'
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
               />
+              <InputHelper
+                error={errors.name}
+                message='Nama harus diisi'
+              />
             </View>
           );
         }}
       />
-      <View
-        style={{
-          flexDirection: 'row',
-        }}
-      >
+      <View style={styles.buttonsContainer}>
         <Button
           mode='outlined'
-          style={{ flex: 1 }}
+          style={styles.button}
           onPress={() => confirmationShowDialog()}
         >
           Batal
@@ -68,7 +58,7 @@ export default function Form({ defaultValues, onSubmit }) {
         <Button
           mode='contained'
           onPress={handleSubmit(onSubmit)}
-          style={{ flex: 1 }}
+          style={styles.button}
         >
           Simpan
         </Button>
@@ -76,3 +66,12 @@ export default function Form({ defaultValues, onSubmit }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 16 },
+  inputContainer: { marginBottom: 16 },
+  buttonsContainer: {
+    flexDirection: 'row',
+  },
+  button: { flex: 1 },
+});

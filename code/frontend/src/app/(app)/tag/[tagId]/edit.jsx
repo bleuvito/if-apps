@@ -6,7 +6,8 @@ import {
   FormLoading,
   useFormLoading,
 } from '../../../../components/FormLoading';
-import Form from '../../../../components/tag/Form';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
+import Form from '../../../../components/tag/TagForm';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function EditTagDetailsScreen() {
@@ -22,21 +23,20 @@ export default function EditTagDetailsScreen() {
   const [isLoading, setIsLoading] = useState(false);
 
   const getTagDetails = async () => {
-    const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag/${tagId}`;
-
-    setIsLoading(true);
     try {
+      setIsLoading(true);
+
+      const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/tag/${tagId}`;
       const { data } = await axios.get(getUri, {
         headers: {
           Authorization: `Bearer ${session}`,
         },
       });
-
       setDefaultValues(data);
+      setIsLoading(false);
     } catch (error) {
       console.log('Error getting tag details: ', error);
     }
-    setIsLoading(false);
   };
 
   const handleSubmit = async (data) => {
@@ -61,7 +61,7 @@ export default function EditTagDetailsScreen() {
   );
 
   if (isLoading) {
-    return <ActivityIndicator size='large' />;
+    return <LoadingIndicator />;
   }
 
   return (

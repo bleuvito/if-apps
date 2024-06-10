@@ -12,3 +12,7 @@ export const announcementSchema = z
     subject: z.string().min(1, { message: 'Subjek harus diisi!' }),
   })
   .passthrough();
+
+export const tagSchema = z.object({
+  name: z.string().min(1),
+});

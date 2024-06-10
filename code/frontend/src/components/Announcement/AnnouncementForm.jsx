@@ -10,7 +10,6 @@ import InputHelper from '../InputHelper';
 import InputLabel from '../InputLabel';
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import AttachmentField from './AttachmentField.jsx';
-
 import TagBottomSheet from './TagBottomSheet';
 import TagField from './TagField.jsx';
 
