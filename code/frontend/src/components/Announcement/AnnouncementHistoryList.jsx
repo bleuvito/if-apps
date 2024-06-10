@@ -39,6 +39,10 @@ export default function AnnouncementHistoryList() {
     return <ListEmpty itemType='histori pengumuman' />;
   }, []);
 
+  const onRefresh = useCallback(async () => {
+    await getAnnouncementHistory();
+  }, []);
+
   useFocusEffect(
     useCallback(() => {
       getAnnouncementHistory();
@@ -54,6 +58,8 @@ export default function AnnouncementHistoryList() {
       data={announcementHistory}
       keyExtractor={(announcementHistory) => announcementHistory.id}
       renderItem={renderItem}
+      onRefresh={onRefresh}
+      refreshing={isLoading}
       ListEmptyComponent={renderListEmpty}
       contentContainerStyle={styles.contentContainer}
     />

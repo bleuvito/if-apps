@@ -39,6 +39,10 @@ export default function AnnouncementList({ subject, tags }) {
     return <ListEmpty itemType='pengumuman' />;
   }, []);
 
+  const onRefresh = useCallback(async () => {
+    await getAnnouncements();
+  }, []);
+
   useFocusEffect(
     useCallback(() => {
       getAnnouncements();
@@ -59,6 +63,8 @@ export default function AnnouncementList({ subject, tags }) {
       keyExtractor={(announcement) => announcement.id}
       renderItem={renderItem}
       ListEmptyComponent={renderListEmpty}
+      onRefresh={onRefresh}
+      refreshing={isLoading}
       contentContainerStyle={styles.contentContainer}
     />
   );
