@@ -22,6 +22,11 @@ export default function SignInScreen() {
         style={{ height: 300, width: 300, aspectRatio: 1 }}
       />
       {/* </View> */}
+      {error && (
+        <Text style={{ color: 'red', marginBottom: 8 }}>
+          Harap berikan semua izin akses.
+        </Text>
+      )}
       <SignInWithGoogleButton handleError={setError} />
     </View>
   );

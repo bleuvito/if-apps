@@ -11,13 +11,6 @@ import { FormLoading, useFormLoading } from '../FormLoading';
 export default function ResponseButtons({ status, userId, organizerId }) {
   const { session } = useSession();
   const { appointmentId } = useLocalSearchParams();
-
-  const [visible, setVisible] = useState(false);
-  const [declineReason, setDeclineReason] = useState('');
-
-  const hideDialog = () => setVisible(false);
-  const showDialog = () => setVisible(true);
-
   const {
     visible: formLoadingVisible,
     showDialog: formLoadingShow,
@@ -32,28 +25,11 @@ export default function ResponseButtons({ status, userId, organizerId }) {
     setMessage,
   } = useFormError();
 
-  if (status === 'ACCEPTED') {
-    return null;
-  }
+  const [visible, setVisible] = useState(false);
+  const [declineReason, setDeclineReason] = useState('');
 
-  if (userId === organizerId) {
-    if (status === 'DECLINED') {
-      return (
-        <Button
-          onPress={() => router.push(`appointment/${appointmentId}/edit`)}
-          mode='contained'
-        >
-          Reschedule
-        </Button>
-      );
-    }
-
-    return null;
-  }
-
-  if (status === 'DECLINED') {
-    return null;
-  }
+  const hideDialog = () => setVisible(false);
+  const showDialog = () => setVisible(true);
 
   const responseToInvite = useCallback(
     async (status, declineReason) => {
@@ -77,6 +53,29 @@ export default function ResponseButtons({ status, userId, organizerId }) {
     },
     [status]
   );
+
+  if (status === 'ACCEPTED') {
+    return null;
+  }
+
+  if (userId === organizerId) {
+    if (status === 'DECLINED') {
+      return (
+        <Button
+          onPress={() => router.push(`appointment/${appointmentId}/edit`)}
+          mode='contained'
+        >
+          Reschedule
+        </Button>
+      );
+    }
+
+    return null;
+  }
+
+  if (status === 'DECLINED') {
+    return null;
+  }
 
   return (
     <>

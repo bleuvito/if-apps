@@ -7,21 +7,25 @@ import { getTimeDuration } from '../../helpers/utils';
 import LeftCalendarComponent from '../LeftCalendarIconComponent';
 import StatusChip from '../StatusChip';
 
-export default function AppointmentListItem({ appointment }) {
+export default function ReservationListItem({ reservation }) {
   return (
-    <Card onPress={() => router.push(`appointment/${appointment.id}`)}>
+    <Card
+      onPress={() => {
+        router.push(`reservation/${reservation.id}`);
+      }}
+    >
       <Card.Content style={styles.container}>
-        <LeftCalendarComponent date={appointment.start} />
-        <View style={{ marginLeft: 12, paddingRight: 4 }}>
+        <LeftCalendarComponent date={reservation.start} />
+        <View style={{ marginLeft: 12 }}>
           <View style={styles.statusContainer}>
-            <StatusChip data={appointment.status} />
+            <StatusChip data={reservation.status} />
           </View>
           <Text
             variant='titleLarge'
             numberOfLines={1}
             ellipsizeMode='tail'
           >
-            {appointment.topic}
+            {reservation.title}
           </Text>
           <View style={styles.container}>
             <Icon source='clock-outline' />
@@ -29,34 +33,25 @@ export default function AppointmentListItem({ appointment }) {
               variant='bodyMedium'
               style={styles.detailsText}
             >
-              {getTimeDuration(appointment.start, appointment.end)}
+              {getTimeDuration(reservation.start, reservation.end)}
             </Text>
           </View>
           <View style={styles.container}>
-            <MaterialIcons name='place' />
+            <MaterialIcons name='location-pin' />
             <Text
               variant='bodyMedium'
               style={styles.detailsText}
             >
-              {appointment.place}
+              {reservation.room.name}
             </Text>
           </View>
           <View style={styles.container}>
-            <Icon source='alpha-o' />
+            <Icon source='account' />
             <Text
               variant='bodyMedium'
               style={styles.detailsText}
             >
-              {appointment.organizer.name}
-            </Text>
-          </View>
-          <View style={styles.container}>
-            <Icon source='alpha-p' />
-            <Text
-              variant='bodyMedium'
-              style={styles.detailsText}
-            >
-              {appointment.participant.name}
+              {reservation.reservee.name}
             </Text>
           </View>
         </View>
@@ -70,8 +65,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  detailsText: {
+    marginLeft: 4,
+  },
   statusContainer: {
     marginBottom: 8,
   },
-  detailsText: { marginLeft: 4 },
 });

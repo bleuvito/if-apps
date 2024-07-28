@@ -56,7 +56,7 @@ export default function TagDetailsScreen() {
 
       setTag(data);
     } catch (error) {
-      console.log('Error getting tag details: ', error);
+      console.error('Error getting tag details: ', error);
     }
     setIsLoading(false);
   };

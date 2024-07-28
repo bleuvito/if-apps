@@ -9,6 +9,7 @@ import { FAB } from 'react-native-paper';
 
 import CalendarToolbar from '../../../../../components/CalendarToolbar';
 import Event from '../../../../../components/schedule/Event';
+import ScheduleLegend from '../../../../../components/schedule/ScheduleLegend';
 import { dayInt } from '../../../../../constants';
 import { useSession } from '../../../../../providers/SessionProvider';
 
@@ -89,6 +90,18 @@ export default function ScheduleScreen() {
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
+      <View
+        style={{
+          flexDirection: 'row',
+          gap: 8,
+          marginBottom: 4,
+          justifyContent: 'center',
+        }}
+      >
+        <ScheduleLegend type='Kelas' />
+        <ScheduleLegend type='Pertemuan' />
+        <ScheduleLegend type='Lainnya' />
+      </View>
       <Calendar
         date={selectedDate}
         activeDate={selectedDate}
@@ -97,7 +110,8 @@ export default function ScheduleScreen() {
         mode='week'
         weekStartsOn={0}
         height={1}
-        onSwipeEnd={false}
+        onSwipeEnd={() => {}}
+        locale='id'
         onPressDateHeader={(date) => {
           setSelectedDate(dayjs(date));
         }}

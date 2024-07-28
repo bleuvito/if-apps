@@ -127,7 +127,7 @@ export default function DrawerContent(props) {
             // onPress={() => handleDrawerItemPress(drawerItem.profile.route)}
           /> */}
         {/* </Drawer.Section> */}
-        {['ADMIN', 'KAJUR'].includes(userRole) && (
+        {['ADMIN'].includes(userRole) && (
           <Drawer.Item
             label={drawerItem.user.label}
             icon='account-group'

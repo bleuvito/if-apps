@@ -28,7 +28,6 @@ export default function AnnouncementEditScreen() {
 
   async function handleSubmit(data) {
     const form = createAnnouncementFormData(data);
-    console.log(form);
 
     const patchUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
     showDialog();
@@ -40,7 +39,7 @@ export default function AnnouncementEditScreen() {
         },
       });
     } catch (error) {
-      console.log('Error submitting form', error.request);
+      console.error('Error submitting form', error.request);
     } finally {
       hideDialog();
       goBack();

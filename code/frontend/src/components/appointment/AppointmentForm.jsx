@@ -8,11 +8,11 @@ import { id, registerTranslation } from 'react-native-paper-dates';
 import { appointmentSchema } from '../../helpers/schemas';
 import { updateDateTime } from '../../helpers/utils';
 import { ConfirmationDialog, useConfirmation } from '../ConfirmationDialog';
+import DateField from '../DateField';
 import InputHelper from '../InputHelper';
 import InputLabel from '../InputLabel';
 import TimeField from '../TimeField';
 import AgendaBottomSheet from './AgendaBottomSheet';
-import AppointmentDateField from './AppointmentDateField';
 import ParticipantBottomSheet from './ParticipantBottomSheet';
 import AppointmentParticipantField from './ParticipantField';
 
@@ -57,13 +57,13 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
   }
 
   return (
-    <ScrollView style={{ flex: 1, padding: 16 }}>
+    <ScrollView style={styles.container}>
       <Controller
         name='topic'
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <View style={{ marginBottom: 16 }}>
+            <View style={styles.inputContainer}>
               <InputLabel
                 isRequired={true}
                 title='Topik'
@@ -87,8 +87,8 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
         control={control}
         render={({ field: { onChange, value } }) => {
           return (
-            <View style={{ marginBottom: 16 }}>
-              <AppointmentDateField
+            <View style={styles.inputContainer}>
+              <DateField
                 onChange={onChange}
                 value={value}
               />
@@ -100,13 +100,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
           );
         }}
       />
-      <View
-        style={{
-          flexDirection: 'row',
-          columnGap: 16,
-          marginBottom: 16,
-        }}
-      >
+      <View style={[styles.inputContainer, styles.timeInputContainer]}>
         <Controller
           name='start'
           control={control}
@@ -151,7 +145,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
         control={control}
         render={({ field: { onChange, value } }) => {
           return (
-            <View style={{ marginBottom: 16 }}>
+            <View style={styles.inputContainer}>
               <InputLabel
                 isRequired={true}
                 title='Tempat'
@@ -174,8 +168,8 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <View style={{ marginBottom: 16 }}>
-              <Text style={{ marginBottom: 8 }}>Link Meeting</Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>Link Meeting</Text>
               <TextInput
                 mode='outlined'
                 value={value}
@@ -197,7 +191,7 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
         render={({ field: { onChange, value } }) => {
           return (
             <>
-              <View style={{ marginBottom: 32 }}>
+              <View style={styles.lastInputContainer}>
                 <AppointmentParticipantField
                   selectedParticipant={value}
                   setSelectedParticipant={onChange}
@@ -249,3 +243,11 @@ export default function AppointmentForm({ defaultValues, onSubmit }) {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 16 },
+  inputLabel: { marginBottom: 8 },
+  inputContainer: { marginBottom: 16 },
+  timeInputContainer: { flexDirection: 'row', columnGap: 16 },
+  lastInputContainer: { marginBottom: 32 },
+});

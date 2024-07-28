@@ -25,9 +25,10 @@ export default function UserRoleFilter({ setRoles }) {
         mode='outlined'
         closeIcon='menu-down'
         onPress={handlePresentModalPress}
+        onClose={handlePresentModalPress}
         style={{ alignSelf: 'flex-start' }}
       >
-        Role
+        Filter
       </Chip>
       <SelectedUserRoleList
         selectedRoles={selectedRoles}

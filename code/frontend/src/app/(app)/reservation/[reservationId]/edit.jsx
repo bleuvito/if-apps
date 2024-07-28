@@ -8,7 +8,7 @@ import {
   FormLoading,
   useFormLoading,
 } from '../../../../components/FormLoading';
-import Form from '../../../../components/reservation/Form';
+import Form from '../../../../components/reservation/ReservationForm';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function ReservasionEditScreen() {
@@ -24,6 +24,7 @@ export default function ReservasionEditScreen() {
     room: {
       id: '',
       name: '',
+      capacity: '',
     },
   });
   const {
@@ -52,7 +53,7 @@ export default function ReservasionEditScreen() {
       data.date = dayjs(data.start);
       setDefaultValues(data);
     } catch (error) {
-      console.log('Error fetching reservation: ', error);
+      console.error('Error fetching reservation: ', error);
     }
 
     setIsLoading(false);

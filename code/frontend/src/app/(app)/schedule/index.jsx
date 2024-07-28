@@ -109,7 +109,7 @@ export default function ScheduleScreen() {
         weekStartsOn={0}
         locale='id'
         height={1}
-        onSwipeEnd={false}
+        onSwipeEnd={() => {}}
         onPressDateHeader={(date) => {
           setSelectedDate(dayjs(date));
         }}

@@ -2,7 +2,8 @@ import axios from 'axios';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { ActivityIndicator, FAB, List, Text } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
+import LoadingIndicator from '../../../components/LoadingIndicator';
 import RoomCard from '../../../components/room/Card';
 import RoomSearchInput from '../../../components/room/RoomSearchInput';
 import { useSession } from '../../../providers/SessionProvider';
@@ -39,7 +40,7 @@ export default function RoomScreen() {
   );
 
   if (isLoading) {
-    return <ActivityIndicator size='large' />;
+    return <LoadingIndicator />;
   }
 
   return (

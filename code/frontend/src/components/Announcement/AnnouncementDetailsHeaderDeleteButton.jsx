@@ -6,7 +6,7 @@ import { useSession } from '../../providers/SessionProvider';
 import { FormLoading, useFormLoading } from '../FormLoading';
 
 export default function AnnouncementDetailsHeaderDeleteButton() {
-  const { appointmentId } = useLocalSearchParams();
+  const { announcementId } = useLocalSearchParams();
 
   const { session } = useSession();
   const {
@@ -27,7 +27,7 @@ export default function AnnouncementDetailsHeaderDeleteButton() {
   }
 
   async function handleDeleteAnnouncement() {
-    const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/appointment/${appointmentId}`;
+    const deleteUri = `${process.env.EXPO_PUBLIC_BASE_URL}/announcement/${announcementId}`;
     hideDialog();
     showFormDialog();
     try {

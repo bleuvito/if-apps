@@ -5,6 +5,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import { ActivityIndicator, FAB, Text } from 'react-native-paper';
 
 // import TagCard from '../../../components/TagCard';
+import LoadingIndicator from '../../../components/LoadingIndicator';
 import UserCard from '../../../components/user/Card';
 import UserListControl from '../../../components/user/UserListControl';
 import UserSearchInput from '../../../components/user/UserSearchInput';
@@ -45,7 +46,7 @@ export default function UserScreen() {
   }
 
   if (isLoading) {
-    return <ActivityIndicator size='large' />;
+    return <LoadingIndicator />;
   }
 
   return (

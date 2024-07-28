@@ -5,12 +5,14 @@ import { useCallback, useEffect, useState } from 'react';
 import { Calendar } from 'react-native-big-calendar';
 
 import { useWatch } from 'react-hook-form';
+import { View } from 'react-native';
 import { dayInt } from '../../constants';
 import { useSession } from '../../providers/SessionProvider';
 import CalendarToolbar from '../CalendarToolbar';
 import Event from '../schedule/Event';
+import ScheduleLegend from '../schedule/ScheduleLegend';
 
-export default function RoomCalendar({ roomId, control }) {
+export default function RoomCalendar({ control }) {
   const { session } = useSession();
   const value = useWatch({
     control,
@@ -67,8 +69,6 @@ export default function RoomCalendar({ roomId, control }) {
         return { ...event, start: dayjs(event.start), end: dayjs(event.end) };
       });
 
-      console.log(fetchedEvents);
-
       setEvents(fetchedEvents);
     } catch (error) {
       console.error('Error catching agenda', error);
@@ -94,6 +94,19 @@ export default function RoomCalendar({ roomId, control }) {
         selectedDate={currDate}
         setSelectedDate={setCurrDate}
       />
+      <View
+        style={{
+          flexDirection: 'row',
+          gap: 8,
+          marginBottom: 4,
+          justifyContent: 'center',
+        }}
+      >
+        <ScheduleLegend type='Kelas' />
+        <ScheduleLegend type='Pertemuan' />
+        <ScheduleLegend type='Pinjamruang' />
+        <ScheduleLegend type='Lainnya' />
+      </View>
       <Calendar
         date={currDate}
         activeDate={value}
@@ -102,7 +115,8 @@ export default function RoomCalendar({ roomId, control }) {
         mode='week'
         weekStartsOn={0}
         height={1}
-        onSwipeEnd={false}
+        onSwipeEnd={() => {}}
+        locale='id'
       />
     </>
   );

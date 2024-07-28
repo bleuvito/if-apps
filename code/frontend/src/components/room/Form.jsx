@@ -28,8 +28,11 @@ export default function RoomForm({ defaultValues, onSubmit }) {
     onSubmit(data);
   }
 
-  const { visible: confirmationVisible, showDialog: confirmationShowDialog } =
-    useConfirmation();
+  const {
+    visible: confirmationVisible,
+    showDialog: confirmationShowDialog,
+    hideDialog: confirmationHideDialog,
+  } = useConfirmation();
 
   return (
     <View style={{ flex: 1, paddingHorizontal: 16, rowGap: 16 }}>
@@ -119,7 +122,10 @@ export default function RoomForm({ defaultValues, onSubmit }) {
         >
           Batal
         </Button>
-        <ConfirmationDialog visible={confirmationVisible} />
+        <ConfirmationDialog
+          visible={confirmationVisible}
+          hideDialog={confirmationHideDialog}
+        />
         <Button
           mode='contained'
           onPress={handleSubmit(handleFormSubmit)}

@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { TabScreen, Tabs } from 'react-native-paper-tabs';
-import AppointmentTabList from './AppointmentTabList';
+import AppointmentTabList from './AppointmentList';
 
 export default function AppointmentTabs({
   setType,
@@ -25,7 +25,7 @@ export default function AppointmentTabs({
           </View>
         </TabScreen>
         <TabScreen
-          label='Masuk'
+          label='Diterima'
           onPress={() => setType('participant')}
         >
           <View style={{ flex: 1 }}>

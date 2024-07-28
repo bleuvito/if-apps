@@ -1,6 +1,6 @@
 import { Chip, Text, useTheme } from 'react-native-paper';
 
-export default function AppointmentStatusChip({ data }) {
+export default function StatusChip({ data }) {
   const theme = useTheme();
 
   let config;
@@ -31,7 +31,6 @@ export default function AppointmentStatusChip({ data }) {
       style={{
         backgroundColor: config.backgroundColor,
         alignSelf: 'flex-start',
-        // borderRadius: 200,
       }}
     >
       <Text

@@ -24,7 +24,10 @@ export default function UserListControl({ setUsers }) {
     <View>
       {/* <SearchInput setSearch={setSearch} />; */}
       <View style={{ paddingHorizontal: 16, marginBottom: 8 }}>
-        <SearchInput setSearch={setSearch} />
+        <SearchInput
+          setSearch={setSearch}
+          itemToSearchFor={'pengguna'}
+        />
       </View>
       <View style={{ paddingLeft: 16, marginBottom: 16 }}>
         <UserRoleFilter setRoles={setRoles} />

@@ -35,7 +35,7 @@ export default function EditTagDetailsScreen() {
       setDefaultValues(data);
       setIsLoading(false);
     } catch (error) {
-      console.log('Error getting tag details: ', error);
+      console.error('Error getting tag details: ', error);
     }
   };
 

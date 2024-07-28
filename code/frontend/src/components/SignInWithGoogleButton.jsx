@@ -23,12 +23,18 @@ export default function SignInWithGoogleButton({ handleError }) {
 
   let handleSignIn;
   if (Platform.OS === 'web') {
-    const { useGoogleLogin } = require('@react-oauth/google');
+    const { useGoogleLogin, googleLogout } = require('@react-oauth/google');
 
     handleSignIn = useGoogleLogin({
       flow: 'auth-code',
       scope: scopes.join(' '),
-      onSuccess: async ({ code }) => {
+      onSuccess: async ({ code, scope }) => {
+        if (scope.split(' ').length < 7) {
+          googleLogout();
+          handleError('Harap berikan semua izin aksesa.');
+          return;
+        }
+
         const data = await backendAuth(code, 'web');
 
         signIn(data);
@@ -59,7 +65,13 @@ export default function SignInWithGoogleButton({ handleError }) {
       try {
         await GoogleSignin.hasPlayServices();
 
-        const { serverAuthCode } = await GoogleSignin.signIn();
+        const { serverAuthCode, scopes } = await GoogleSignin.signIn();
+
+        if (scopes.length < 5) {
+          await GoogleSignin.signOut();
+          handleError('Harap berikan semua izin akses.');
+          return;
+        }
 
         const data = await backendAuth(serverAuthCode, 'android');
 
@@ -85,6 +97,7 @@ export default function SignInWithGoogleButton({ handleError }) {
       mode='elevated'
       icon='google'
       onPress={() => {
+        handleError();
         handleSignIn();
       }}
     >

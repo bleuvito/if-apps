@@ -1,6 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { Appbar } from 'react-native-paper';
-import AnnouncementDetailsHeaderDeleteButton from '../announcement/AnnouncementDetailsHeaderDeleteButton';
+
+import AppointmentDetailsHeaderRightDeleteButton from './AppointmentDetailsHeaderRightDeleteButton';
 
 export default function AppointmentDetailsHeaderRight({ status }) {
   const { appointmentId } = useLocalSearchParams();
@@ -12,7 +13,7 @@ export default function AppointmentDetailsHeaderRight({ status }) {
           onPress={() => router.push(`appointment/${appointmentId}/edit`)}
         />
       )}
-      <AnnouncementDetailsHeaderDeleteButton />
+      <AppointmentDetailsHeaderRightDeleteButton />
     </>
   );
 }

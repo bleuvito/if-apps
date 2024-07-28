@@ -34,8 +34,11 @@ export default function RoomCreateScreen() {
     hideDialog: formLoadingHide,
     goBack,
   } = useFormLoading();
-  const { visible: confirmationVisible, showDialog: confirmationShowDialog } =
-    useConfirmation();
+  const {
+    visible: confirmationVisible,
+    showDialog: confirmationShowDialog,
+    hideDialog: confirmationHideDialog,
+  } = useConfirmation();
 
   const [errorUsers, setErrorUsers] = useState([]);
 
@@ -126,7 +129,10 @@ export default function RoomCreateScreen() {
         >
           Batal
         </Button>
-        <ConfirmationDialog visible={confirmationVisible} />
+        <ConfirmationDialog
+          visible={confirmationVisible}
+          hideDialog={confirmationHideDialog}
+        />
         <Button
           mode='contained'
           onPress={handleSubmit(handleFormSubmit)}

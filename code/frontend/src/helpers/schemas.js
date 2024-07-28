@@ -71,3 +71,50 @@ export const appointmentSchema = z
       path: ['start'],
     }
   );
+
+export const reservationSchema = z
+  .object({
+    title: z.string().min(1),
+    date: z.coerce.date(),
+    start: z.coerce.date(),
+    end: z.coerce.date(),
+    room: z
+      .object({
+        id: z.string(),
+        name: z.string(),
+        capacity: z.number(),
+        description: z.string(),
+      })
+      .partial()
+      .refine(atLeastOneDefined, { message: 'Ruangan harus dipilih' }),
+  })
+  .refine(
+    (data) => {
+      return data.end > data.start;
+    },
+    {
+      message: 'Waktu mulai tidak boleh lebih dari waktu selesai',
+      path: ['start'],
+    }
+  )
+  .refine(
+    (data) => {
+      const upEnd = updateDateTime(data.date, data.end);
+
+      return upEnd > new Date();
+    },
+    {
+      message: 'Waktu selesai harus melebihi waktu saat ini.',
+      path: ['end'],
+    }
+  )
+  .refine(
+    (data) => {
+      const upStart = updateDateTime(data.date, data.start);
+      return upStart > new Date();
+    },
+    {
+      message: 'Waktu mulai harus melebihi waktu saat ini.',
+      path: ['start'],
+    }
+  );

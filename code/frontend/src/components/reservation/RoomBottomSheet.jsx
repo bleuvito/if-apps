@@ -1,22 +1,27 @@
 import {
   BottomSheetBackdrop,
-  BottomSheetFlatList,
   BottomSheetModal,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
-import axios from 'axios';
-import { useFocusEffect } from 'expo-router';
 import { forwardRef, useCallback, useMemo, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { useSession } from '../../providers/SessionProvider';
-import DayCheckbox from './DayCheckbox';
+import { StyleSheet, View } from 'react-native';
+import BottomSheetSearch from '../BottomSheetSearch';
+import RoomBottomSheetList from './RoomBottomSheetList';
 
 const RoomBottomSheet = forwardRef(({ selectedRoom, setSelectedRoom }, ref) => {
-  const { session } = useSession();
   const snapPoints = useMemo(() => ['50%', '75%'], []);
-  const [rooms, setRooms] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const topInset = useMemo(() => 60, []);
+
+  const [search, setSearch] = useState('');
+
+  const resetSearch = useCallback(
+    (index) => {
+      if (index === -1) {
+        setSearch('');
+      }
+    },
+    [setSearch]
+  );
 
   const renderBackdrop = useCallback((props) => (
     <BottomSheetBackdrop
@@ -26,60 +31,27 @@ const RoomBottomSheet = forwardRef(({ selectedRoom, setSelectedRoom }, ref) => {
     />
   ));
 
-  const handleRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await getRooms();
-    setRefreshing(false);
-  }, []);
-
-  const renderItem = useCallback(({ item }) => {
-    return (
-      <DayCheckbox
-        room={item}
-        selectedRoom={selectedRoom}
-        setSelectedRoom={setSelectedRoom}
-      />
-    );
-  });
-
-  const getRooms = async () => {
-    setIsLoading(true);
-
-    try {
-      const getUri = `${process.env.EXPO_PUBLIC_BASE_URL}/room`;
-      const { data } = await axios.get(getUri, {
-        headers: { Authorization: `Bearer ${session}` },
-      });
-
-      setRooms(data);
-    } catch (error) {
-      console.error('Error');
-    }
-
-    setIsLoading(false);
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      getRooms();
-    }, [])
-  );
-
   return (
     <BottomSheetModal
       ref={ref}
-      index={0}
       snapPoints={snapPoints}
+      index={0}
+      topInset={topInset}
       backdropComponent={renderBackdrop}
-      topInset={50}
+      onChange={resetSearch}
     >
       <BottomSheetView style={styles.contentContainer}>
-        <BottomSheetFlatList
-          data={rooms}
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
-          keyExtractor={(room) => room.id}
-          renderItem={renderItem}
+        <View style={styles.searchContainer}>
+          <BottomSheetSearch
+            search={search}
+            setSearch={setSearch}
+            itemToSearchFor='ruangan'
+          />
+        </View>
+        <RoomBottomSheetList
+          search={search}
+          selectedRoom={selectedRoom}
+          setSelectedRoom={setSelectedRoom}
         />
       </BottomSheetView>
     </BottomSheetModal>
@@ -96,6 +68,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
   },
+  searchContainer: { width: '100%', padding: 16 },
 });
 
 export default RoomBottomSheet;

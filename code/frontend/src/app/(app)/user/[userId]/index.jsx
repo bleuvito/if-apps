@@ -40,7 +40,7 @@ export default function UserDetailsScreen() {
 
       setUser(data);
     } catch (error) {
-      console.log('Error getting user details: ', error);
+      console.error('Error getting user details: ', error);
     }
     setIsLoading(false);
   };

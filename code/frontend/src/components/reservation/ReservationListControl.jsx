@@ -2,13 +2,13 @@ import { StyleSheet, View } from 'react-native';
 import SearchInput from '../SearchInput';
 import StatusFilter from '../StatusFilter';
 
-export default function AppointmentListControl({ setSearch, setStatuses }) {
+export default function ReservationListControl({ setSearch, setStatuses }) {
   return (
     <>
       <View style={styles.listControlContainer}>
         <SearchInput
           setSearch={setSearch}
-          itemToSearchFor='janji temu'
+          itemToSearchFor='pinjaman ruangan'
         />
       </View>
       <View style={styles.listControlContainer}>

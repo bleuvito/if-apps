@@ -3,12 +3,13 @@ import {
   BottomSheetModal,
   BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
-import { forwardRef, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import RoomCalendar from './RoomCalendar';
 
-const AgendaBottomSheet = forwardRef(({ selectedRoom, control }, ref) => {
-  const snapPoints = useMemo(() => ['30%', '100%'], []);
+export default function AgendaBottomSheet({ bottomSheetRef, control }) {
+  const snapPoints = useMemo(() => ['30%', '50%', '100%'], []);
+  const topInset = useMemo(() => 60, []);
 
   const renderBackdrop = useCallback((props) => (
     <BottomSheetBackdrop
@@ -20,21 +21,18 @@ const AgendaBottomSheet = forwardRef(({ selectedRoom, control }, ref) => {
 
   return (
     <BottomSheetModal
-      ref={ref}
-      index={0}
+      ref={bottomSheetRef}
+      index={1}
       snapPoints={snapPoints}
       backdropComponent={renderBackdrop}
-      topInset={75}
+      topInset={topInset}
     >
       <BottomSheetScrollView style={styles.contentContainer}>
-        <RoomCalendar
-          roomId={selectedRoom?.id || null}
-          control={control}
-        />
+        <RoomCalendar control={control} />
       </BottomSheetScrollView>
     </BottomSheetModal>
   );
-});
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -47,5 +45,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-export default AgendaBottomSheet;

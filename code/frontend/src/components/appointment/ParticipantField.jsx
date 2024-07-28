@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { Button, Text, TextInput } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import InputLabel from '../InputLabel';
 
 export default function AppointmentParticipantField({

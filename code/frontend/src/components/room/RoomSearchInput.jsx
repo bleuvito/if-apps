@@ -15,5 +15,10 @@ export default function RoomSearchInput({ setRooms }) {
     listRooms();
   }, [search]);
 
-  return <SearchInput setSearch={setSearch} />;
+  return (
+    <SearchInput
+      setSearch={setSearch}
+      itemToSearchFor={'ruangan'}
+    />
+  );
 }

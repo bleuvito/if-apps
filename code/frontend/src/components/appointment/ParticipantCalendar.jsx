@@ -1,10 +1,10 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
-import { Calendar } from 'react-native-big-calendar';
-
 import { useWatch } from 'react-hook-form';
 import { View } from 'react-native';
+import { Calendar } from 'react-native-big-calendar';
+
 import { dayInt } from '../../constants';
 import { useSession } from '../../providers/SessionProvider';
 import CalendarToolbar from '../CalendarToolbar';

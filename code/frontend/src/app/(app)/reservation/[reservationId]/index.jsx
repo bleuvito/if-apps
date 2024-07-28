@@ -14,12 +14,15 @@ import {
   Portal,
   Text,
 } from 'react-native-paper';
+
 import {
   FormLoading,
   useFormLoading,
 } from '../../../../components/FormLoading';
+import StatusChip from '../../../../components/StatusChip';
 import ReservationDetailsHeaderRight from '../../../../components/reservation/HeaderRight';
 import ReservationDetailsText from '../../../../components/reservation/ReservationDetailsText';
+import ResponseButtons from '../../../../components/reservation/ResponseButtons';
 import { useSession } from '../../../../providers/SessionProvider';
 
 export default function ReservationDetailsScreen() {
@@ -28,6 +31,7 @@ export default function ReservationDetailsScreen() {
   const navigation = useNavigation();
 
   const [reservation, setReservation] = useState({
+    status: 'PENDING',
     title: '',
     start: new Date(),
     end: new Date(),
@@ -35,6 +39,7 @@ export default function ReservationDetailsScreen() {
       id: '',
       name: '',
     },
+    reserveeId: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -106,7 +111,10 @@ export default function ReservationDetailsScreen() {
       headerRight: () => {
         return reservation?.reserveeId === userId ||
           ['ADMIN', 'KAJUR', 'KALAB'].includes(role) ? (
-          <ReservationDetailsHeaderRight onPressDelete={showDialog} />
+          <ReservationDetailsHeaderRight
+            onPressDelete={showDialog}
+            status={reservation.status}
+          />
         ) : null;
       },
     });
@@ -118,6 +126,9 @@ export default function ReservationDetailsScreen() {
 
   return (
     <View style={{ paddingHorizontal: 16 }}>
+      <View style={{ flexDirection: 'row-reverse', paddingLeft: 16 }}>
+        <StatusChip data={reservation?.status} />
+      </View>
       <Text
         variant='headlineLarge'
         style={{ marginBottom: 24 }}
@@ -137,6 +148,12 @@ export default function ReservationDetailsScreen() {
       <ReservationDetailsText
         title={'Place'}
         body={reservation.room.name}
+      />
+      <ResponseButtons
+        status={reservation.status}
+        userId={userId}
+        userRole={role}
+        reserveeId={reservation.reserveeId}
       />
       <Portal>
         <Dialog

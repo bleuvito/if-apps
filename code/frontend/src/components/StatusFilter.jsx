@@ -2,11 +2,11 @@ import { useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Chip } from 'react-native-paper';
-import { useDebounce } from '../../hooks/useDebounce';
+import { useDebounce } from '../hooks/useDebounce';
 import SelectedStatusList from './SelectedStatusList';
 import StatusBottomSheet from './StatusBottomSheet';
 
-export default function AppointmentStatusFilter({ setStatuses }) {
+export default function StatusFilter({ setStatuses }) {
   const bottomSheetRef = useRef(null);
 
   const [selectedStatuses, setSelectedStatuses] = useState([]);

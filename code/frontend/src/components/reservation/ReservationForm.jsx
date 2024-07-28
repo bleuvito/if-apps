@@ -1,75 +1,27 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import { useCallback, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
-import { ca, en, id, registerTranslation } from 'react-native-paper-dates';
+import { id, registerTranslation } from 'react-native-paper-dates';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import dayjs from 'dayjs';
-import z, { date, object } from 'zod';
-import { atLeastOneDefined, updateDateTime } from '../../helpers/utils';
+import { reservationSchema } from '../../helpers/schemas';
+import { updateDateTime } from '../../helpers/utils';
 import { ConfirmationDialog, useConfirmation } from '../ConfirmationDialog';
+import DateField from '../DateField';
 import InputHelper from '../InputHelper';
 import InputLabel from '../InputLabel';
 import TimeField from '../TimeField';
 import AgendaBottomSheet from './AgendaBottomSheet';
-import DateField from './DateField';
 import RoomBottomSheet from './RoomBottomSheet';
 import RoomField from './RoomField';
-
-const schema = z
-  .object({
-    title: z.string().min(1),
-    date: z.coerce.date(),
-    start: z.coerce.date(),
-    end: z.coerce.date(),
-    room: z
-      .object({
-        id: z.string(),
-        name: z.string(),
-        capacity: z.number(),
-        description: z.string(),
-      })
-      .partial()
-      .refine(atLeastOneDefined, { message: 'Ruangan harus dipilih' }),
-  })
-  .refine(
-    (data) => {
-      return data.end > data.start;
-    },
-    {
-      message: 'Waktu mulai tidak boleh lebih dari waktu selesai',
-      path: ['start'],
-    }
-  )
-  .refine(
-    (data) => {
-      const upEnd = updateDateTime(data.date, data.end);
-
-      return upEnd > new Date();
-    },
-    {
-      message: 'Waktu selesai harus melebihi waktu saat ini.',
-      path: ['end'],
-    }
-  )
-  .refine(
-    (data) => {
-      const upStart = updateDateTime(data.date, data.start);
-      return upStart > new Date();
-    },
-    {
-      message: 'Waktu mulai harus melebihi waktu saat ini.',
-      path: ['start'],
-    }
-  );
 
 export default function Form({ defaultValues, onSubmit }) {
   registerTranslation('id', id);
 
-  const [selectedRoom, setSelectedRoom] = useState(defaultValues.room);
-  const bottomSheetModalRef = useRef(null);
+  const roomBottomSheetModalRef = useRef(null);
   const agendaBottomSheetModalRef = useRef(null);
   const {
     control,
@@ -77,14 +29,14 @@ export default function Form({ defaultValues, onSubmit }) {
     formState: { errors },
   } = useForm({
     defaultValues,
-    resolver: zodResolver(schema),
+    resolver: zodResolver(reservationSchema),
   });
 
   const { visible: confirmationVisible, showDialog: confirmationShowDialog } =
     useConfirmation();
 
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
+  const handlePresentRoomModalPress = useCallback(() => {
+    roomBottomSheetModalRef.current?.present();
   }, []);
 
   const handlePresentAgendaModalPress = useCallback(() => {
@@ -179,7 +131,7 @@ export default function Form({ defaultValues, onSubmit }) {
         <Controller
           name='end'
           control={control}
-          render={({ field: { onChange, onBlur, value } }) => {
+          render={({ field: { onChange, value } }) => {
             return (
               <View style={{ flexDirection: 'column', flex: 1 }}>
                 <TimeField
@@ -199,17 +151,31 @@ export default function Form({ defaultValues, onSubmit }) {
       <Controller
         name='room'
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => {
+        render={({ field: { onChange, value } }) => {
           return (
             <>
               <RoomField
                 selectedRoom={value}
                 setSelectedRoom={onChange}
-                onPresentModalPress={handlePresentModalPress}
+                onPresentModalPress={handlePresentRoomModalPress}
                 onPresentAgendaModalPress={handlePresentAgendaModalPress}
               />
+              {value.name?.length > 0 && (
+                <>
+                  <InputLabel
+                    isRequired={false}
+                    title='Kapasitas'
+                  />
+                  <Text>{value.capacity}</Text>
+                  <InputLabel
+                    isRequired={false}
+                    title='Deskripsi'
+                  />
+                  <Text>{value.description}</Text>
+                </>
+              )}
               <RoomBottomSheet
-                ref={bottomSheetModalRef}
+                ref={roomBottomSheetModalRef}
                 selectedRoom={value}
                 setSelectedRoom={onChange}
               />
@@ -246,9 +212,8 @@ export default function Form({ defaultValues, onSubmit }) {
         </Button>
       </View>
       <AgendaBottomSheet
-        ref={agendaBottomSheetModalRef}
+        bottomSheetRef={agendaBottomSheetModalRef}
         control={control}
-        // selectedRoom={selectedRoom}
       />
     </View>
   );

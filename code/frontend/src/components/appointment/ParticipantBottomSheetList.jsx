@@ -1,6 +1,7 @@
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
+
 import { useSession } from '../../providers/SessionProvider';
 import ListEmpty from '../ListEmpty';
 import LoadingIndicator from '../LoadingIndicator';
@@ -63,7 +64,7 @@ export default function ParticipantBottomSheetList({
     <BottomSheetFlatList
       data={filteredParticipants}
       keyExtractor={(participant) => participant.id}
-      style={{ width: '100%', flex: 1 }}
+      style={{ width: '100%', flexGrow: 1 }}
       renderItem={renderItem}
       ListEmptyComponent={renderListEmpty}
     />

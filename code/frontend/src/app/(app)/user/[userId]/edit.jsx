@@ -41,7 +41,7 @@ export default function EditUserDetailsScreen() {
 
       setDefaultValues(data);
     } catch (error) {
-      console.log('Error getting tag details: ', error);
+      console.error('Error getting tag details: ', error);
     }
     setIsLoading(false);
   };

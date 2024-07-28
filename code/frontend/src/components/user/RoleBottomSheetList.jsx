@@ -35,6 +35,7 @@ export default function RoleBottomSheetList({
       data={roles}
       keyExtractor={(role, index) => index}
       renderItem={renderItem}
+      style={{ flexGrow: 1, width: '100%', paddingHorizontal: 16 }}
     />
   );
 }

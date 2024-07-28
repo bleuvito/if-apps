@@ -93,15 +93,17 @@ export default function AnnouncementDetailScreen() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return ['ADMIN', 'KAJUR', 'KAPRODI'].includes(role) ||
-          announcement.author.id === userId ? (
+        return (
           <AnnouncementDetailsHeader
             showFormDialog={showFormDialog}
             hideFormDialog={hideFormDialog}
             goBack={goBack}
             isPinned={announcement.isPinned}
+            role={role}
+            userId={userId}
+            authorId={announcement.author.id}
           />
-        ) : null;
+        );
       },
     });
   }, [navigation, announcement]);

@@ -1,12 +1,11 @@
 import axios from 'axios';
-import dayjs from 'dayjs';
+
 import { FormError, useFormError } from '../../../components/FormError';
 import { FormLoading, useFormLoading } from '../../../components/FormLoading';
-import Form from '../../../components/reservation/Form';
+import ReservationForm from '../../../components/reservation/ReservationForm';
 import { useSession } from '../../../providers/SessionProvider';
 
 export default function ReservationCreateScreen() {
-  const { session } = useSession();
   const defaultValues = {
     title: '',
     date: new Date(),
@@ -14,6 +13,8 @@ export default function ReservationCreateScreen() {
     end: '',
     room: {},
   };
+
+  const { session } = useSession();
   const {
     visible: formLoadingVisible,
     showDialog: formLoadingShow,
@@ -41,16 +42,16 @@ export default function ReservationCreateScreen() {
       formLoadingHide();
       goBack();
     } catch (error) {
+      console.error('Error creating reservation', error);
       formLoadingHide();
       setMessage(error.response.data);
       formErrorShow();
-      // console.error('Error creating appointment', error);
     }
   };
 
   return (
     <>
-      <Form
+      <ReservationForm
         defaultValues={defaultValues}
         onSubmit={handleSubmit}
       />

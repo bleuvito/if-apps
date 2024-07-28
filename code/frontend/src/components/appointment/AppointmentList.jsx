@@ -3,19 +3,12 @@ import { useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
-import { useTabNavigation } from 'react-native-paper-tabs';
 import { useSession } from '../../providers/SessionProvider';
 import ListEmpty from '../ListEmpty';
 import LoadingIndicator from '../LoadingIndicator';
 import AppointmentListItem from './AppointmentListItem';
 
-export default function AppointmentTabList({
-  type,
-  searchType,
-  search,
-  status,
-}) {
-  const goTo = useTabNavigation();
+export default function AppointmentList({ type, searchType, search, status }) {
   const { getUserId, session } = useSession();
   const userId = getUserId();
 

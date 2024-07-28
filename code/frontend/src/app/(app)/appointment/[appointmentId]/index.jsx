@@ -11,9 +11,10 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import LoadingIndicator from '../../../../components/LoadingIndicator';
+import StatusChip from '../../../../components/StatusChip';
+// import AppointmentDetailsHeaderRight from '../../../../components/appointment/AppointmentDetailsHeaderRight';
 import AppointmentDetailsHeaderRight from '../../../../components/appointment/AppointmentDetailsHeaderRight';
 import AppointmentDetailsText from '../../../../components/appointment/AppointmentDetailsText';
-import AppointmentStatusChip from '../../../../components/appointment/AppointmentStatusChip';
 import ResponseButtons from '../../../../components/appointment/ResponseButtons';
 import { getTimeDuration } from '../../../../helpers/utils';
 import { useSession } from '../../../../providers/SessionProvider';
@@ -84,7 +85,7 @@ export default function AppointmentDetailsScreen() {
     <View style={[styles.screen]}>
       <View>
         <View style={{ flexDirection: 'row-reverse', paddingLeft: 16 }}>
-          <AppointmentStatusChip data={appointment?.status} />
+          <StatusChip data={appointment?.status} />
         </View>
         <Text
           variant='headlineLarge'

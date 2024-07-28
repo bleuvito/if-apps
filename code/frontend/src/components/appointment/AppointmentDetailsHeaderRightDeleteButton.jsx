@@ -1,9 +1,15 @@
 import axios from 'axios';
+import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { Appbar, Dialog, Portal } from 'react-native-paper';
+import { Appbar, Button, Dialog, Portal } from 'react-native-paper';
+
+import { useSession } from '../../providers/SessionProvider';
 import { FormLoading, useFormLoading } from '../FormLoading';
 
 export default function AppointmentDetailsHeaderRightDeleteButton() {
+  const { session } = useSession();
+  const { appointmentId } = useLocalSearchParams();
+
   const [visible, setVisible] = useState(false);
 
   const {

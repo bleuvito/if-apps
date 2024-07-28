@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { TabScreen } from 'react-native-paper-tabs';
 import { useAppointment } from '../../providers/AppointmentProvider';
-import AppointmentTabList from './AppointmentTabList';
+import AppointmentList from './AppointmentList';
 
 export default function AppointmentTab({
   label,
@@ -18,7 +18,7 @@ export default function AppointmentTab({
       onPress={() => setType(type)}
     >
       <View style={{ flex: 1 }}>
-        <AppointmentTabList
+        <AppointmentList
           type={type}
           searchType={searchType}
           search={search}
