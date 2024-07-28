@@ -2,10 +2,11 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-function generateWhere(topic, type, filter, user) {
+function generateAppointmentWhere(topic, type, statuses, user) {
   const where = {
     topic: {
       contains: topic,
+      mode: 'insensitive',
     },
   };
 
@@ -35,11 +36,11 @@ function generateWhere(topic, type, filter, user) {
   }
 
   where.AND = [typeCondition];
-  if (filter?.length > 0) {
+  if (statuses?.length > 0) {
     where.AND = [
       ...where.AND,
       {
-        OR: filter.map((status) => {
+        OR: statuses.map((status) => {
           return { status };
         }),
       },
@@ -56,7 +57,7 @@ async function listAppointment(args) {
   } = args;
 
   try {
-    const where = generateWhere(
+    const where = generateAppointmentWhere(
       requestQuery.search,
       requestQuery.type,
       requestQuery.status,
@@ -88,7 +89,7 @@ async function listAppointment(args) {
         updatedAt: true,
       },
       orderBy: {
-        createdAt: 'desc',
+        updatedAt: 'desc',
       },
     });
 

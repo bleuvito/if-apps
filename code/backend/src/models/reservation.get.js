@@ -11,6 +11,7 @@ async function getReservasion(args) {
         id: requestParams.id,
       },
       select: {
+        status: true,
         title: true,
         start: true,
         end: true,

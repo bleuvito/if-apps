@@ -112,6 +112,7 @@ async function checkUserOverlapAgenda(
   endTime,
   day
 ) {
+  // console.log('schedule userid:', userId);
   const oneTimeScheduleWhere = {
     lecturerId: userId,
     isRecurring: false,
@@ -148,6 +149,7 @@ async function checkUserOverlapAgenda(
   // console.log(oneTimeSchedules);
   // console.log('onetime', oneTimeSchedules);
 
+  // console.log(oneTimeSchedules);
   if (oneTimeSchedules.length > 0) {
     throw Error('E_OVERLAP_SCHEDULE');
   }
@@ -183,6 +185,7 @@ async function checkUserOverlapAgenda(
     return scheduleStartTime < reqEnd && scheduleEndTime > reqStart;
   });
 
+  // console.log('overlap where', recurringScheduleWhere);
   // console.log('overlap', overlapRecurringSchedules);
 
   if (overlapRecurringSchedules.length > 0) {
@@ -429,10 +432,84 @@ async function validateUsers(usersString) {
   return [passedUsers, errorUsers];
 }
 
+function generateAppointmentWhere(topic, type, statuses, user) {
+  const where = {
+    topic: {
+      contains: topic,
+      mode: 'insensitive',
+    },
+  };
+
+  let typeCondition = {
+    OR: [
+      {
+        organizerId: {
+          equals: user.id,
+        },
+      },
+      {
+        participantId: {
+          equals: user.id,
+        },
+      },
+    ],
+  };
+
+  if (type === 'participant') {
+    typeCondition = {
+      participantId: user.id,
+    };
+  } else if (type === 'organizer') {
+    typeCondition = {
+      organizerId: user.id,
+    };
+  }
+
+  where.AND = [typeCondition];
+  if (statuses?.length > 0) {
+    where.AND = [
+      ...where.AND,
+      {
+        OR: statuses.map((status) => {
+          return { status };
+        }),
+      },
+    ];
+  }
+
+  return where;
+}
+
+function generateReservationWhere(roomId, title, statuses, user) {
+  const where = {
+    roomId,
+    title: {
+      contains: title,
+      mode: 'insensitive',
+    },
+  };
+
+  const statusesCondition = {
+    OR: statuses.map((status) => {
+      return { status };
+    }),
+  };
+
+  if (['KAPRODI', 'DOSEN', 'MAHASISWA'].includes(user.role)) {
+    where.AND = [{ reserveeId: user.id }, statusesCondition];
+  } else {
+    where.OR = statusesCondition.OR;
+  }
+
+  return where;
+}
+
 export {
   checkRoomOverlapAgenda,
   checkUserOverlapAgenda,
+  generateAppointmentWhere,
   generateAttachmentUrls,
+  generateReservationWhere,
   getRefreshToken,
   upload,
   uploadAttachments,

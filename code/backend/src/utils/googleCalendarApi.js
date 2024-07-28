@@ -38,11 +38,15 @@ async function deleteEvent(clientType, refreshToken, gCalendarId) {
   const oAuth2Client = getReadyOauth2Client(clientType, refreshToken);
   const calendar = google.calendar({ version: 'v3', auth: oAuth2Client });
 
-  await calendar.events.delete({
-    calendarId: 'primary',
-    eventId: gCalendarId,
-    sendUpdates: 'all',
-  });
+  try {
+    await calendar.events.delete({
+      calendarId: 'primary',
+      eventId: gCalendarId,
+      sendUpdates: 'all',
+    });
+  } catch (error) {
+    console.error('error deleting event');
+  }
 }
 
 export { createEvent, deleteEvent, putEvent };

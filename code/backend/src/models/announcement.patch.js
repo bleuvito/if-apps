@@ -16,8 +16,6 @@ async function patchAnnouncement(args) {
     files: attachments,
   } = args;
 
-  console.log('attachments', attachments);
-
   const { pin, recipient, subject, body, tags } = requestBody;
   const refreshToken = await getRefreshToken(clientType, user.id);
 
@@ -64,7 +62,6 @@ async function patchAnnouncement(args) {
     let to = recipient;
     if (recipient.includes(user.email)) {
       const emailArray = recipient.split(',');
-      console.log('emailArray', recipient);
       const filteredEmails = emailArray.filter((email) => email !== user.email);
 
       from = user.email;

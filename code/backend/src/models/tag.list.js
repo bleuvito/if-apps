@@ -20,6 +20,7 @@ async function listTag(args) {
       where: {
         name: {
           contains: requestParams.name,
+          mode: 'insensitive',
         },
       },
       orderBy: {

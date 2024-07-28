@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { generateReservationWhere } from '../utils/helpers.js';
 
 const prisma = new PrismaClient();
 
@@ -9,22 +10,31 @@ async function listReservation(args) {
     params: requestParams,
   } = args;
 
+  // console.log(requestQuery);
+
+  const where = generateReservationWhere(
+    requestParams.roomId,
+    requestQuery.search,
+    requestQuery.status || ['PENDING', 'ACCEPTED', 'DECLINED', 'RESCHEDULE'],
+    user
+  );
+
   try {
     const reservations = await prisma.roomReservation.findMany({
-      where: {
-        roomId: requestParams.roomId,
-        reserveeId: user.id,
-        title: {
-          contains: requestQuery.title,
-        },
-      },
+      where,
       select: {
         id: true,
+        status: true,
         title: true,
         type: true,
         start: true,
         end: true,
         room: {
+          select: {
+            name: true,
+          },
+        },
+        reservee: {
           select: {
             name: true,
           },

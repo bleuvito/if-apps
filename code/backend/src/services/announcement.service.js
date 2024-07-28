@@ -50,7 +50,7 @@ AnnouncementService.patch(
   verify(['DOSEN', 'KALAB', 'KAPRODI', 'KAJUR', 'ADMIN']),
   upload.array('attachments'),
   async (req, res, next) => {
-    console.log('PATCH IS HIT');
+    // console.log('PATCH IS HIT');
     try {
       const result = await patchAnnouncement(req);
       res.json(result);
@@ -78,6 +78,7 @@ AnnouncementService.delete(
   verify(['DOSEN', 'KALAB', 'KAPRODI', 'KAJUR', 'ADMIN']),
   async (req, res, next) => {
     try {
+      // console.log('announcement delete is hit');
       const result = await deleteAnnouncement(req);
       res.json(result);
     } catch (error) {

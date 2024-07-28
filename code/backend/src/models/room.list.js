@@ -15,10 +15,12 @@ async function listRoom(args) {
         id: true,
         name: true,
         capacity: true,
+        description: true,
       },
       where: {
         name: {
           contains: requestQuery.name,
+          mode: 'insensitive',
         },
       },
     });

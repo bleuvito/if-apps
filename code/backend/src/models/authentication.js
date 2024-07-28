@@ -87,6 +87,7 @@ async function authenticate(args) {
 }
 
 function verify(allowedRoles) {
+  // console.log(allowedRoles);
   return (req, res, next) => {
     try {
       const authorizationHeader = req.get('authorization');
@@ -105,6 +106,9 @@ function verify(allowedRoles) {
         if (err) {
           throw new Error('Invalid token');
         }
+
+        // console.log(allowedRoles);
+        // console.log(allowedRoles.includes(decoded.user.role));
 
         if (
           allowedRoles !== 'all' &&

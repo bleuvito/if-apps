@@ -14,7 +14,7 @@ async function createSchedule(args) {
 
   try {
     await checkUserOverlapAgenda(
-      user.Id,
+      user.id,
       null,
       requestBody.start,
       requestBody.end,

@@ -54,6 +54,7 @@ async function listRoomAgenda(args) {
             },
           },
         ],
+        status: 'ACCEPTED',
       },
       select: {
         id: true,

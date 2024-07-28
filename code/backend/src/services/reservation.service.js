@@ -6,6 +6,7 @@ import { deleteReservation } from '../models/reservation.delete.js';
 import { getReservasion } from '../models/reservation.get.js';
 import { listReservation } from '../models/reservation.list.js';
 import { patchReservation } from '../models/reservation.patch.js';
+import { responseReservation } from '../models/reservation.response.js';
 
 const ReservationService = express.Router();
 
@@ -44,6 +45,19 @@ ReservationService.patch('/:id', verify('all'), async (req, res, next) => {
     next(error);
   }
 });
+
+ReservationService.patch(
+  '/:id/response',
+  verify(['ADMIN', 'KAJUR', 'KALAB']),
+  async (req, res, next) => {
+    try {
+      const result = await responseReservation(req);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 ReservationService.delete('/:id', verify('all'), async (req, res, next) => {
   try {

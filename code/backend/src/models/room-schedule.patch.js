@@ -21,7 +21,6 @@ async function patchRoomSchedule(args) {
       throw Error('E_NOT_EXIST');
     }
 
-    console.log(requestBody);
     await checkRoomOverlapAgenda(
       requestParams.roomId,
       requestParams.sheduleId,

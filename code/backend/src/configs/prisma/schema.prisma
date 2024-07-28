@@ -177,6 +177,7 @@ model RoomReservation {
   // date                 DateTime
   start                   DateTime
   end                     DateTime
+  status                  AppointmentStatus @default(PENDING)
   type                    ScheduleType @default(PERTEMUAN)
   createdAt               DateTime @default(now())
   updatedAt               DateTime @default(now())

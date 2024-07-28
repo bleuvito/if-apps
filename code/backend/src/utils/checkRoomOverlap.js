@@ -34,6 +34,7 @@ export async function checkRoomOverlapReservations(
           },
         },
       ],
+      status: 'ACCEPTED',
     },
     select: {
       id: true,
@@ -41,7 +42,7 @@ export async function checkRoomOverlapReservations(
     },
   });
 
-  console.log(reservations);
+  // console.log(reservations);
 
   if (reservations.length > 0) {
     throw Error('E_OVERLAP_APPOINTMENT');

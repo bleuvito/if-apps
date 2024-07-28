@@ -1,14 +1,16 @@
 import { PrismaClient } from '@prisma/client';
+import { deleteEvent } from '../utils/googleCalendarApi.js';
+import { getRefreshToken } from '../utils/helpers.js';
 
 const prisma = new PrismaClient();
 
 async function deleteAppointment(args) {
   const {
-    locals: { user },
+    locals: { user, clientType },
     params: { id },
   } = args;
 
-  // console.log(id);
+  const refreshToken = await getRefreshToken(clientType, user.id);
 
   try {
     const appointment = await prisma.appointment.findFirst({
@@ -20,6 +22,12 @@ async function deleteAppointment(args) {
     if (!appointment) {
       throw Error('E_UNAUTHORIZED');
     }
+
+    const deleteAppointmentResponse = await deleteEvent(
+      clientType,
+      refreshToken,
+      appointment.gCalendarId
+    );
 
     const deletedAppointment = await prisma.appointment.delete({
       where: {
